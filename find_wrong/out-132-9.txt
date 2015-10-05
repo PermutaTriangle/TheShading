@@ -1,0 +1,482 @@
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,2),(1,0),(1,1),(1,3),(2,2),(2,3)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,2),(1,0),(1,1),(1,3),(2,3)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,2),(1,0),(1,1),(1,3),(2,1),(2,2),(2,3)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,2),(1,0),(1,1),(1,3),(2,1),(2,3)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,1),(1,3),(2,3),(3,1)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,3),(2,3),(3,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,2),(1,1),(1,3),(2,2),(2,3)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,2),(1,1),(1,3),(2,3)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,2),(1,1),(1,3),(2,1),(2,2),(2,3)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,2),(1,1),(1,3),(2,1),(2,3)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,1),(1,3),(2,2),(2,3)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,1),(1,3),(2,3)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,3),(2,3)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,0),(1,1),(1,3),(2,2),(2,3)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,0),(1,1),(1,3),(2,3)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,0),(1,3),(2,3)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,0),(1,1),(1,3),(2,3),(3,1)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,0),(1,3),(2,3),(3,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,0),(1,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,0),(1,1),(1,3)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,0),(1,3)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,0),(1,1),(2,1),(2,2),(3,1)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,0),(1,2),(2,1),(2,2),(3,1)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,0),(2,1),(2,2),(3,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,1),(0,2),(1,0),(1,2),(2,1),(2,2),(3,1)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,1),(0,2),(1,0),(2,1),(2,2),(3,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(0,3),(1,3),(2,2),(2,3),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(0,3),(1,3),(2,2),(2,3),(3,0),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,2),(0,3),(1,3),(2,2),(2,3),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,2),(0,3),(1,3),(2,2),(2,3),(3,0),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,2),(0,3),(1,1),(1,2),(2,1),(2,2),(3,3)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,2),(0,3),(1,1),(2,2),(2,3),(3,2),(3,3)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,1),(0,2),(0,3),(1,1),(1,2),(2,1),(2,2),(3,3)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,1),(0,2),(0,3),(1,1),(2,2),(2,3),(3,2),(3,3)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,2),(0,3),(1,0),(1,1),(1,3),(2,2),(2,3)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,2),(0,3),(1,0),(1,1),(2,2),(2,3)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,2),(0,3),(1,0),(1,1),(2,3)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,2),(0,3),(1,0),(1,1),(1,3),(2,1),(2,2),(2,3)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,2),(0,3),(1,0),(1,1),(2,1),(2,2),(2,3)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,2),(0,3),(1,0),(1,1),(2,1),(2,3)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,2),(0,3)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,2),(0,3),(1,1),(1,3),(2,2),(2,3)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(0,3),(1,0),(1,1),(2,3),(3,1)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(0,3),(1,0),(2,3),(3,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(0,3),(1,0),(1,1),(1,3),(2,2),(2,3)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(0,3),(1,0),(1,1),(2,2),(2,3)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(0,3),(1,0),(1,1),(2,3)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(0,3),(1,0),(2,3)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(0,3),(1,0),(1,1),(2,1),(2,2),(2,3),(3,1)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(0,3),(1,0),(2,1),(2,2),(2,3),(3,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(0,3),(1,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(0,3),(1,0),(1,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(0,3),(1,0),(1,1),(2,1),(2,2),(3,1)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(0,3),(1,0),(1,2),(2,1),(2,2),(3,1)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(0,3),(1,0),(2,1),(2,2),(3,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,1),(0,2),(0,3),(1,0),(1,2),(2,1),(2,2),(3,1)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,1),(0,2),(0,3),(1,0),(2,1),(2,2),(3,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,2),(2,1),(2,2),(3,3)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,2),(2,1),(3,3)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,0),(1,2),(2,1),(2,2),(3,3)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,0),(1,2),(2,1),(3,3)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,2),(2,1),(2,2),(3,3)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,2),(2,1),(3,3)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(3,3)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(1,1),(1,2),(2,1),(2,2),(3,3)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(1,1),(2,2),(2,3),(3,2),(3,3)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(1,1),(2,2),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(2,2),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(1,1),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(1,1),(1,3),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(1,3),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(1,1),(1,2),(1,3),(2,2),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(1,2),(1,3),(2,2),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(1,1),(2,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(2,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(1,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(1,1),(1,2),(1,3),(2,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(1,2),(1,3),(2,1),(2,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(1,2),(1,3),(2,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,1),(1,0),(1,2),(1,3),(2,1),(2,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,1),(1,0),(1,2),(1,3),(2,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(1,1),(2,2),(2,3)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(2,2),(2,3)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(1,1),(2,3)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(2,3)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(1,1),(2,3),(3,1)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(2,3),(3,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(1,1),(2,1),(2,2),(2,3),(3,1)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(2,1),(2,2),(2,3),(3,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(1,1),(2,1),(2,2),(3,1)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(1,2),(2,1),(2,2),(3,1)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(2,1),(2,2),(3,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,1),(1,0),(1,2),(2,1),(2,2),(3,1)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,1),(1,0),(2,1),(2,2),(3,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,0),(1,1),(2,1),(2,3),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,0),(1,3),(2,1),(2,3),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,0),(2,1),(2,3),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,0),(2,1),(2,3),(3,0),(3,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,0),(1,1),(2,1),(2,2),(2,3),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,0),(2,1),(2,2),(2,3),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,0),(2,1),(2,2),(2,3),(3,0),(3,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,0),(1,1),(2,1),(2,2),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,0),(1,2),(2,1),(2,2),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,0),(2,1),(2,2),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,0),(2,1),(2,2),(3,0),(3,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(1,2),(2,1),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(1,2),(2,1),(3,0),(3,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(1,0),(1,2),(2,1),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(1,0),(1,2),(2,1),(3,0),(3,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(1,0),(1,2),(2,1),(2,2),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(1,0),(1,2),(2,1),(2,2),(3,0),(3,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(1,0),(2,1),(2,3),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(1,0),(2,1),(2,3),(3,0),(3,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(1,0),(2,1),(2,2),(2,3),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(1,0),(2,1),(2,2),(2,3),(3,0),(3,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(1,0),(2,1),(2,2),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(1,0),(2,1),(2,2),(3,0),(3,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(1,2),(1,3),(2,1),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(1,2),(1,3),(2,1),(3,0),(3,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(1,0),(1,2),(1,3),(2,1),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(1,0),(1,2),(1,3),(2,1),(3,0),(3,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(1,0),(1,3),(2,1),(2,3),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(1,0),(1,3),(2,1),(2,3),(3,0),(3,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,1),(1,3),(2,2),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,1),(1,3),(2,2),(3,0),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,3),(2,2),(3,0)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,1),(1,2),(1,3),(2,2),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,2),(1,3),(2,2),(3,0)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,3),(2,2),(2,3),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,3),(2,2),(2,3),(3,0),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(1,3),(2,2),(2,3),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(1,3),(2,2),(2,3),(3,0),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,1),(1,2),(1,3),(2,1),(2,2),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,2),(1,3),(2,1),(2,2),(3,0)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,0),(1,1),(1,2),(1,3),(2,1),(2,2),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,0),(1,2),(1,3),(2,1),(2,2),(3,0)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,1),(1,3),(2,1),(2,2),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,3),(2,1),(2,2),(3,0)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,0),(1,1),(1,3),(2,1),(2,2),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,0),(1,3),(2,1),(2,2),(3,0)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,3),(2,2),(2,3),(3,0),(3,1),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,3),(2,2),(3,0),(3,1),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,1),(0,3),(1,2),(1,3),(3,0),(3,1),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,1),(0,3),(1,2),(3,0),(3,1),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,3),(1,1),(1,2),(1,3),(3,0),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,3),(1,1),(1,2),(3,0),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,3),(1,2),(3,0),(3,1),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,3),(2,2),(2,3),(3,0),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,3),(2,2),(3,0),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,3),(1,0),(2,2),(2,3),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,3),(1,0),(2,2),(2,3),(3,0),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,3),(1,0),(1,1),(2,1),(2,3),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,3),(1,0),(1,1),(2,1),(2,3),(3,0),(3,1)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,3),(1,0),(1,3),(2,1),(2,3),(3,0)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,3),(1,0),(1,3),(2,1),(2,3),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,3),(1,0),(1,3),(2,1),(2,3),(3,0),(3,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,3),(1,3),(2,2),(2,3),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,3),(1,3),(2,2),(2,3),(3,0),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,3),(1,1),(1,2),(2,1),(2,2),(3,1)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,3),(1,2),(2,1),(2,2),(3,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,3),(1,1),(1,2),(2,1),(2,2),(3,1)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,3),(1,2),(2,1),(2,2),(3,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,3),(1,1),(1,2),(2,2),(3,1)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,3),(1,2),(2,2),(3,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,3),(1,1),(1,2),(2,2),(3,1)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,3),(1,2),(2,2),(3,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,3),(2,2),(2,3),(3,1),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,3),(2,2),(3,1),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,3),(2,2),(2,3),(3,1),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,3),(2,2),(3,1),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,3),(1,1),(2,1),(2,2),(3,1)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,3),(2,1),(2,2),(3,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,3),(1,1),(2,2),(2,3),(3,1)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,3),(1,1),(2,2),(3,1)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,3),(2,2),(3,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,1),(0,3),(1,2),(1,3),(2,1),(3,1)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,1),(0,3),(1,2),(2,1),(3,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,3),(1,2),(1,3),(2,1),(3,1)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,3),(1,2),(2,1),(3,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,1),(0,3),(1,2),(1,3),(3,1),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,1),(0,3),(1,2),(3,1),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,1),(0,3),(1,2),(1,3),(2,1),(2,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,1),(0,3),(1,2),(2,1),(2,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,1),(0,3),(1,2),(1,3),(2,1)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,1),(0,3),(1,2),(2,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,3),(1,2),(1,3),(2,1)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,3),(1,2),(2,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,1),(0,3),(1,2),(1,3),(2,2),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,1),(0,3),(1,2),(2,2),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,1),(0,3),(1,2),(1,3),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,1),(0,3),(1,2),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,1),(0,3),(1,2),(1,3),(2,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,1),(0,3),(1,2),(2,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,3),(1,1),(1,2),(2,2),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,3),(1,2),(1,3),(2,2),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,3),(1,2),(2,2),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,3),(1,1),(1,2),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,3),(1,2),(1,3),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,3),(1,2),(3,1),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,3),(1,2),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,3),(1,1),(1,2),(2,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,3),(1,2),(1,3),(2,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,3),(1,2),(2,1),(2,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,3),(1,2),(2,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,2),(1,0),(1,1),(1,3),(2,0),(2,1),(2,2),(2,3)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,2),(1,0),(1,1),(1,3),(2,0),(2,1),(2,3)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,2),(1,1),(2,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,2),(1,1),(2,0),(2,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,1),(1,2),(2,0),(2,2),(3,1),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,1),(1,2),(2,0),(3,1),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,2),(1,1),(2,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,2),(1,1),(2,0),(2,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,0),(1,1),(2,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,0),(2,0)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,0),(1,1),(1,3),(2,0),(2,2),(2,3)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,0),(1,1),(1,3),(2,0),(2,3)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,0),(1,3),(2,0),(2,3)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,0),(1,1),(1,3),(2,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,0),(1,3),(2,0)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,0),(1,1),(2,0),(2,2),(3,1),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,0),(1,1),(2,0),(3,1),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,0),(2,0),(3,1),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,0),(1,1),(2,0),(3,1)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,0),(2,0),(3,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,0),(1,1),(1,3),(2,0),(3,1),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,0),(1,3),(2,0),(3,1),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,0),(1,1),(1,3),(2,0),(2,3),(3,1)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,0),(1,3),(2,0),(2,3),(3,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,0),(1,1),(1,3),(2,0),(3,1)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,0),(1,3),(2,0),(3,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,2),(1,0),(1,1),(2,0),(2,2),(3,0),(3,1)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,2),(1,0),(1,1),(2,0),(2,2),(3,0),(3,1),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,1),(1,2),(2,0),(2,2),(3,0),(3,1),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,1),(1,2),(2,0),(3,0)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,2),(1,1),(2,0),(2,2),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,2),(1,1),(2,0),(3,0)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,1),(2,0),(2,2),(3,0),(3,1),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,1),(2,0),(2,2),(3,0),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,2),(1,1),(2,0),(2,2),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,2),(1,1),(2,0),(3,0)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,0),(1,1),(2,0),(2,2),(3,0),(3,1),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,0),(1,1),(2,0),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,0),(2,0),(3,0)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,0),(1,1),(1,3),(2,0),(2,3),(3,0),(3,1)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,0),(1,3),(2,0),(2,3),(3,0),(3,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,0),(1,1),(1,3),(2,0),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(1,0),(1,3),(2,0),(3,0)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,2),(0,3),(1,1),(2,0),(2,2),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,2),(0,3),(1,1),(2,0),(3,0)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,2),(0,3),(1,1),(2,0),(2,2),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,2),(0,3),(1,1),(2,0),(3,0)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(0,3),(1,0),(1,1),(1,2),(2,0),(2,1),(2,2),(3,0),(3,3)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(0,3),(1,0),(1,1),(2,0),(2,2),(2,3),(3,0),(3,2),(3,3)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,1),(0,2),(0,3),(1,0),(1,1),(1,2),(2,0),(2,1),(2,2),(3,0),(3,3)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,1),(0,2),(0,3),(1,0),(1,1),(2,0),(2,2),(2,3),(3,0),(3,2),(3,3)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(0,3),(1,0),(1,1),(2,0),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(0,3),(1,0),(2,0),(3,0)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,2),(0,3),(1,0),(1,1),(1,3),(2,0),(2,2),(2,3)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,2),(0,3),(1,0),(1,1),(2,0),(2,2),(2,3)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,2),(0,3),(1,0),(1,1),(1,3),(2,0),(2,1),(2,2),(2,3)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,2),(0,3),(1,0),(1,1),(2,0),(2,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,2),(0,3),(1,1),(2,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,2),(0,3),(1,1),(2,0),(2,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(0,3),(1,1),(1,3),(2,0),(2,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(0,3),(1,1),(1,3),(2,0),(2,2),(2,3)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,2),(0,3),(1,1),(2,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,2),(0,3),(1,1),(2,0),(2,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(0,3),(1,0),(1,1),(1,3),(2,0),(2,2),(2,3)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(0,3),(1,0),(1,1),(2,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(0,3),(1,0),(2,0)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(0,3),(1,0),(1,1),(1,3),(2,0),(3,1),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(0,3),(1,0),(1,3),(2,0),(3,1),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(0,3),(1,0),(1,1),(2,0),(3,1)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(0,2),(0,3),(1,0),(2,0),(3,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,1),(1,2),(2,0),(2,2),(3,1),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,1),(1,2),(2,0),(3,1),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,1),(2,0),(2,2),(3,1),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,1),(2,0),(3,1),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,0),(1,1),(1,3),(2,0),(3,1),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,0),(1,3),(2,0),(3,1),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,0),(1,1),(2,0),(2,2),(3,1),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,0),(1,1),(2,0),(3,1),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,0),(2,0),(3,1),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,1),(1,2),(2,0),(2,2),(3,1),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,1),(1,2),(2,0),(3,1),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,1),(2,0),(2,2),(3,1),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,1),(2,0),(3,1),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(1,1),(2,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(2,0)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(1,1),(1,2),(1,3),(2,0),(2,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(1,2),(1,3),(2,0),(2,1),(2,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(1,2),(1,3),(2,0),(2,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,1),(1,0),(1,2),(1,3),(2,0),(2,1),(2,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,1),(1,0),(1,2),(1,3),(2,0),(2,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(1,1),(2,0),(2,2),(3,1),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(1,1),(2,0),(3,1),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(2,0),(3,1),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(1,1),(1,3),(2,0),(3,1),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(1,3),(2,0),(3,1),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(1,1),(2,0),(3,1)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(2,0),(3,1)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,1),(1,2),(2,0),(2,1),(2,2),(3,0),(3,3)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,1),(2,0),(2,2),(2,3),(3,0),(3,2),(3,3)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(1,0),(1,1),(1,2),(2,0),(2,1),(2,2),(3,0),(3,3)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(1,0),(1,1),(2,0),(2,2),(2,3),(3,0),(3,2),(3,3)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,1),(1,2),(2,0),(2,2),(3,0),(3,1),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,1),(1,2),(2,0),(2,2),(3,0),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,1),(1,2),(2,0),(3,0),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,1),(2,0),(2,2),(3,0),(3,1),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,1),(2,0),(2,2),(3,0),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,1),(2,0),(3,0),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(1,1),(2,0),(2,2),(3,0),(3,1),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(2,0),(3,0)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(1,1),(1,3),(2,0),(3,0),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(1,3),(2,0),(3,0),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(1,1),(2,0),(2,2),(3,0),(3,1),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(1,1),(2,0),(2,2),(3,0),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(1,1),(2,0),(3,0),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(2,0),(3,0),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(1,1),(1,2),(1,3),(2,0),(2,2),(3,0),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(1,2),(1,3),(2,0),(2,2),(3,0),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(1,1),(2,0),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(2,0),(3,0)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(1,1),(1,2),(1,3),(2,0),(2,2),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(1,2),(1,3),(2,0),(2,1),(2,2),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,1),(1,0),(1,2),(1,3),(2,0),(2,2),(3,0)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,1),(1,0),(1,2),(1,3),(2,0),(2,1),(2,2),(3,0)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,0),(0,1),(1,0),(1,2),(1,3),(2,0),(2,2),(3,0)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,3),(2,0),(2,2),(2,3),(3,0),(3,1),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,3),(2,0),(2,2),(3,0),(3,1),(3,2)]}
+
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,3),(1,0),(2,0),(2,2),(2,3),(3,0),(3,1),(3,2)]}
+MP {getPerm = fromList [0,2,1], getMesh = fromList [(0,3),(1,0),(2,0),(2,2),(3,0),(3,1),(3,2)]}
