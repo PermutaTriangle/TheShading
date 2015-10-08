@@ -76,13 +76,15 @@ class ShadingLemmaCoincifier(Coincifier):
             ProgressBar.progress()
 
             poss = []
-            for i in range(n+1):
-                for j in range(n+1):
-                    for sh in mp.can_shade((i,j)):
-                        if simultaneous and (i,j) not in mp.mesh:
-                            poss.append((sh, set([(i,j)])))
-                        if not simultaneous:
-                            self.uf.unite(self.mps[mp], self.mps[mp.shade((i,j))])
+            for (i,j) in mp.non_pointless_boxes():
+                # # Was
+                # for i in range(n+1):
+                #     for j in range(n+1):
+                for sh in mp.can_shade((i,j)):
+                    if simultaneous and (i,j) not in mp.mesh:
+                        poss.append((sh, set([(i,j)])))
+                    if not simultaneous:
+                        self.uf.unite(self.mps[mp], self.mps[mp.shade((i,j))])
 
             if simultaneous:
                 for i in range(n+1):
@@ -280,15 +282,16 @@ def supersets_of_mesh(n, mesh):
         yield (mesh | set(sub))
 
 # mps = MeshPatternSet(3, Permutation([1,3,2]))
+mps = MeshPatternSet(3, Permutation([1,2,3]))
 # mps = MeshPatternSet(3, Permutation([1,2,3,4]))
 # mps = MeshPatternSet(1, Permutation([1]))
-mps = MeshPatternSet(2, Permutation([1,2]))
+# mps = MeshPatternSet(2, Permutation([1,2]))
 # mps = MeshPatternSet(3)
 # mps = MeshPatternSet(4, Permutation([1,2,3,4]))
 coin = ShadingLemmaCoincifier(mps)
 coin.coincify(False)
 # coin.take_closure()
-coin.brute_coincify(7)
+coin.brute_coincify(8)
 # coin.take_closure()
 # coin = BruteCoincifier(mps)
 # coin.coincify(7)

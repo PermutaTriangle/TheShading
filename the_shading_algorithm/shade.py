@@ -127,7 +127,7 @@ def tsa1(p, B, force=(1,0), maxdepth=3):
                         return
 
                 if len(add) != 1:
-                    print 'snatan2'
+                    #print 'snatan2' TODO: Address this in version 2 or 3 or ...
                     continue
 
                 add = list(add)[0]
@@ -201,7 +201,7 @@ def tsa1(p, B, force=(1,0), maxdepth=3):
                 # print sub
                 # print putin
                 if len(putin2) != 1:
-                    print 'snatan'
+                    # print 'snatan' TODO: Address this in version 2 or 3 or ...
                     return
                 putin2 = list(putin2)[0]
 
@@ -275,14 +275,15 @@ def tsa1(p, B, force=(1,0), maxdepth=3):
     #                 # print x,y
     #         # dfs()
 
-def all_points_all_dir(mp, B, maxdepth):
+def all_points_all_dir(mp, B, maxdepth, cut=False):
     all_traces = []
     for i in range(len(mp.perm.perm)):
         for d in range(4):
             all_traces += tsa1(mp, B, (i,d), maxdepth)
+            if cut and all_traces: return all_traces
     return all_traces
 
-run = all_points_all_dir(MeshPattern(Permutation([1]), [(1,1)]), (0,1), 5)    
+# run = all_points_all_dir(MeshPattern(Permutation([1]), [(1,1)]), (0,1), 5)
 
 #C1
 # run = all_points_all_dir(MeshPattern(Permutation([1,2,3]), [(0,0),(0,1),(1,0),(2,0),(2,2),(3,0),(3,2),(3,3)]), (2,1), 3)
@@ -397,5 +398,5 @@ run = all_points_all_dir(MeshPattern(Permutation([1]), [(1,1)]), (0,1), 5)
 # run = tsa1(MeshPattern(Permutation([1,2,3]), [(0,1),(1,0),(2,0),(2,2),(3,0),(3,2),(3,3)]), (2,1))
 # run = tsa1(MeshPattern(Permutation([1,2,3]), [(0,0),(1,0),(1,1),(2,3),(3,0),(3,1)]), (2,1))
 
-print("\n================================================================================\n".join(['\n'.join(i) for i in run]))
-print("\nTotal number of successful branches: {}\n".format(len(run)))
+# print("\n================================================================================\n".join(['\n'.join(i) for i in run]))
+# print("\nTotal number of successful branches: {}\n".format(len(run)))
