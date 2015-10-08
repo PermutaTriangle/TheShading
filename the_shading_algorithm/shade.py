@@ -282,8 +282,10 @@ def all_points_all_dir(mp, B, maxdepth):
             all_traces += tsa1(mp, B, (i,d), maxdepth)
     return all_traces
 
+run = all_points_all_dir(MeshPattern(Permutation([1]), [(1,1)]), (0,1), 5)    
+
 #C1
-#run = all_points_all_dir(MeshPattern(Permutation([1,2,3]), [(0,0),(0,1),(1,0),(2,0),(2,2),(3,0),(3,2),(3,3)]), (2,1), 3)
+# run = all_points_all_dir(MeshPattern(Permutation([1,2,3]), [(0,0),(0,1),(1,0),(2,0),(2,2),(3,0),(3,2),(3,3)]), (2,1), 3)
 #run = tsa1(MeshPattern(Permutation([1,2,3]), [(0,0),(0,1),(1,0),(2,0),(2,2),(3,0),(3,2),(3,3)]), (2,1), (1, 3),  3)
 
 #C2
@@ -317,7 +319,7 @@ def all_points_all_dir(mp, B, maxdepth):
 # ---------------------------------------------------------------------------- #
 
 # C19
-run = all_points_all_dir(MeshPattern(Permutation([1,2,3]), [(1,0),(1,3),(2,1),(3,0)]), (3,3), 10)
+# run = all_points_all_dir(MeshPattern(Permutation([1,2,3]), [(1,0),(1,3),(2,1),(3,0)]), (3,3), 10)
 
 # C20
 # run = all_points_all_dir(MeshPattern(Permutation([1,2,3]), [(1,3),(2,1),(3,0)]), (3,3), 4)

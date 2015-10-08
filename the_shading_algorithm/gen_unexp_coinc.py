@@ -12,6 +12,8 @@ import sys
 import time
 import math
 
+from shade import *
+
 perm_ids = TrieMap()
 def get_perm_id(perm):
     if perm not in perm_ids:
@@ -66,7 +68,7 @@ class ShadingLemmaCoincifier(Coincifier):
     def __init__(self, mps):
         super(ShadingLemmaCoincifier, self).__init__(mps)
 
-    def coincify(self, simultaneous=False):
+    def coincify(self, maxdepth=3):
         cnt = len(self.mps)
         n = self.mps.n
 
@@ -78,35 +80,40 @@ class ShadingLemmaCoincifier(Coincifier):
             poss = []
             for i in range(n+1):
                 for j in range(n+1):
-                    for sh in mp.can_shade((i,j)):
-                        if simultaneous and (i,j) not in mp.mesh:
-                            poss.append((sh, set([(i,j)])))
-                        if not simultaneous:
+                    if (i,j) not in mp.mesh:
+                        if all_points_all_dir(mp, (i,j), maxdepth):
                             self.uf.unite(self.mps[mp], self.mps[mp.shade((i,j))])
 
-            if simultaneous:
-                for i in range(n+1):
-                    for j in range(n+1):
-                        for di in range(-1,2):
-                            for dj in range(-1,2):
-                                if (di == 0) == (dj == 0):
-                                    continue
-                                i2,j2 = (i+di, j+dj)
-                                if 0 <= i2 < n+1 and 0 <= j2 < n+1:
-                                    for sh in mp.can_shade2((i,j),(i2,j2)):
-                                        poss.append((sh, set([(i,j),(i2,j2)])))
 
-                def bt(at, nm, used):
-                    if at == len(poss):
-                        mp2 = mp.shade(nm)
-                        self.uf.unite(self.mps[mp], self.mps[mp2])
-                        return
-
-                    bt(at + 1, nm, used)
-                    if poss[at][0] not in used and not (nm & poss[at][1]):
-                        bt(at + 1, nm | poss[at][1], used | set([poss[at][0]]))
-
-                bt(0, set(), set())
+            #         for sh in mp.can_shade((i,j)):
+            #             if simultaneous and (i,j) not in mp.mesh:
+            #                 poss.append((sh, set([(i,j)])))
+            #             if not simultaneous:
+            #                 self.uf.unite(self.mps[mp], self.mps[mp.shade((i,j))])
+            #
+            # if simultaneous:
+            #     for i in range(n+1):
+            #         for j in range(n+1):
+            #             for di in range(-1,2):
+            #                 for dj in range(-1,2):
+            #                     if (di == 0) == (dj == 0):
+            #                         continue
+            #                     i2,j2 = (i+di, j+dj)
+            #                     if 0 <= i2 < n+1 and 0 <= j2 < n+1:
+            #                         for sh in mp.can_shade2((i,j),(i2,j2)):
+            #                             poss.append((sh, set([(i,j),(i2,j2)])))
+                #
+                # def bt(at, nm, used):
+                #     if at == len(poss):
+                #         mp2 = mp.shade(nm)
+                #         self.uf.unite(self.mps[mp], self.mps[mp2])
+                #         return
+                #
+                #     bt(at + 1, nm, used)
+                #     if poss[at][0] not in used and not (nm & poss[at][1]):
+                #         bt(at + 1, nm | poss[at][1], used | set([poss[at][0]]))
+                #
+                # bt(0, set(), set())
         ProgressBar.finish()
 
     def take_closure(self):
@@ -286,151 +293,9 @@ mps = MeshPatternSet(2, Permutation([1,2]))
 # mps = MeshPatternSet(3)
 # mps = MeshPatternSet(4, Permutation([1,2,3,4]))
 coin = ShadingLemmaCoincifier(mps)
-coin.coincify(False)
-# coin.take_closure()
+coin.coincify(True)
+coin.take_closure()
 coin.brute_coincify(7)
 # coin.take_closure()
 # coin = BruteCoincifier(mps)
 # coin.coincify(7)
-
-# patt = Permutation([1,3,2])
-# # patt = Permutation([2,1])
-# n = len(patt)
-# check_len = 8
-#
-#
-#
-#
-#
-
-#
-# # print(c)
-# sys.exit()
-
-# cnt = len(mps)
-# uf = UnionFind(cnt)
-#
-# # #|#|#
-# # -2-+-
-# #  |#|
-# # -+-1-
-# #  |#|
-# #
-#
-#
-
-# mentioned = set()
-# for _,v in containment.items():
-#     if len(v) <= 1:
-#         continue
-#     print(v)
-#     mentioned |= set(v)
-#
-# ss = {}
-# for i in range(cnt):
-#     ss.setdefault(uf.find(i),[])
-#     ss[uf.find(i)].append(i)
-#
-# for m in sorted(mentioned):
-#     print 'Group', m
-#     for t in ss[uf.find(m)]:
-#         print(mps[t])
-#         print ""
-
-# class BruteCoincifier(Coincifier):
-#     def __init__(self, mps):
-#         super(BruteCoincifier, self).__init__(mps)
-#
-#     def coincify_len(self, l):
-#         n = self.mps.n
-#         patt = self.mps.patt
-#         assert patt is not None
-#         cnt = len(self.mps)
-#         mesh_perms = {}
-#
-#         sys.stderr.write('Permutations of length %d\n' % l)
-#         ProgressBar.create(factorial(l))
-#         for perm in Permutations(l):
-#             ProgressBar.progress()
-#             # perm = Permutation([5,2,1,6,4,3,7])
-#             # perm = Permutation([5,2,11,1,8,6,4,9,3,10,7])
-#             idx = {}
-#             for i,x in enumerate(perm):
-#                 idx[x] = i
-#             poss = []
-#             for res in containment(patt, perm):
-#                 # print([ i-1 for i in res ])
-#                 con = set(res)
-#                 colcnt = 0
-#                 col = [-1]*len(perm)
-#                 for i,v in enumerate(perm):
-#                     if v in con:
-#                         colcnt += 1
-#                     else:
-#                         col[v-1] = colcnt
-#                 rowcnt = 0
-#                 row = [-1]*len(perm)
-#                 for v in range(len(perm)):
-#                     if v+1 in con:
-#                         rowcnt += 1
-#                     else:
-#                         row[v] = rowcnt
-#                 bad = set( (u,v) for u,v in zip(col,row) if u != -1 )
-#                 cur = set( (u,v) for u in range(len(patt)+1) for v in range(len(patt)+1) if (u,v) not in bad )
-#                 poss.append(cur)
-#
-#             last = None
-#             maxima = []
-#             for cur in sorted(poss):
-#                 if cur == last:
-#                     continue
-#                 add = True
-#                 for other in poss:
-#                     if cur < other:
-#                         add = False
-#                 if add:
-#                     maxima.append(cur)
-#                 last = cur
-#             for m in maxima:
-#                 m = tuple(sorted(m))
-#                 mesh_perms.setdefault(m, [])
-#                 mesh_perms[m].append(perm)
-#         ProgressBar.finish()
-#
-#         max_shaded = {}
-#         for i in range(cnt):
-#             here = self.mps[i]
-#             if self.uf.find(i) not in max_shaded or len(here.mesh) > len(max_shaded[self.uf.find(i)]):
-#                 max_shaded[self.uf.find(i)] = here
-#
-#         comps = 0
-#         for i in range(cnt):
-#             if i == self.uf.find(i):
-#                 comps += 1
-#
-#         cont = {}
-#         notcnt = 0
-#         sys.stderr.write('Brute supersets\n')
-#         ProgressBar.create(comps)
-#         for i in range(cnt):
-#             if i == self.uf.find(i):
-#                 perms = set()
-#                 here = max_shaded[i]
-#                 ProgressBar.progress()
-#                 notcnt += 1
-#                 # print(i, here)
-#                 for nxt in supersets_of_mesh(n+1, here.mesh):
-#                     nxt = tuple(sorted(nxt))
-#                     if nxt in mesh_perms:
-#                         perms |= set(mesh_perms[nxt])
-#                 # print(i, perms)
-#                 perms = tuple([ tuple(p) for p in sorted(perms) ])
-#                 cont.setdefault(perms, [])
-#                 cont[perms].append(i)
-#         ProgressBar.finish()
-#
-#
-#     def coincify(self, max_len):
-#         # self.coincify_len(max_len)
-#         for l in range(self.mps.n, max_len+1):
-#             self.coincify_len(l)
