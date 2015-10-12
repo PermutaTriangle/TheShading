@@ -287,6 +287,8 @@ def supersets_of_mesh(n, mesh):
 
 # print MeshPattern(Permutation([1,2]),[]).non_pointless_boxes()
 
+
+
 # mps = MeshPatternSet(1, Permutation([1]))
 mps = MeshPatternSet(2, Permutation([1,2]))
 # mps = MeshPatternSet(3, Permutation([1,2,3]))
@@ -314,8 +316,8 @@ if with_closure: coin.take_closure()
 # ---------- Look for surprising coincidences ---------- #
 # Upper bound (inclusive) on the length of permutations to look for surprising
 # coincidences
-perm_length = 8
-coin.brute_coincify(perm_length)
+# perm_length = 8
+# coin.brute_coincify(perm_length)
 # ------------------------------------------------------ #
 
 

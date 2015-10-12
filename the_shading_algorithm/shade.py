@@ -85,6 +85,7 @@ def tsa1(p, B, force, maxdepth=3):
             nxtyval = yval[1:putin[1]+1] + [(yval[putin[1]]+yval[putin[1]+1])/2.0] + yval[putin[1]+1:-1]
             # print nxtperm
 
+<<<<<<< Updated upstream
             with msg([
                     (CONSIDER_POINT, STR_ADJ[d], putin[0], putin[1]),
                     (AND_GET, nxt),
