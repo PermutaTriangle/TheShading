@@ -61,11 +61,7 @@ def tsa1(p, B, force, maxdepth=3):
 
         # if putin contains no points, then we're done
         # otherwise, it contains at least one point
-        # for d in range(4):
-        #for d in [3, 2]:
-        #for d in [0]:
         for d in range(4):
-            # d = 3
             # pick the east/north/west/south-most point
             # print imp
             # print putin
