@@ -16,6 +16,7 @@ MSGS = [
     ('CONSIDER_SUB', 'We now consider the subsequence ({})'),
     ('WHICH_PATTERN', "Which is the pattern\n{}"),
     ('ANOTHER_OCC', "If the box ({}, {}), which corresponds to the box(es) bounded by ({},{}) and ({},{}) in the larger pattern is empty, we have a contradiction because we have another occurence of p where {} is further {}"),
+    ('DOING_SNATAN', 'MEOWOOOOOOOOOOOOOOOOOOOOOO {}'),
 ]
 
 for i, v in enumerate(MSGS):
@@ -170,21 +171,34 @@ def tsa1(p, B, force, maxdepth=3):
                             break
                     if inside:
                         continue
-                    # print occ
-                    # print sub
-                    # print putin
+
                     if len(putin2) != 1:
                         # print 'snatan' TODO: Address this in version 2 or 3 or ...
                         return False
-                    putin2 = list(putin2)[0]
 
                     with msg([
-                            (CONSIDER_SUB, ', '.join([str(i) for i in occ])),
-                            (WHICH_PATTERN, sub),
-                            (ANOTHER_OCC, add[0], add[1], left, down, right, up, sub.perm.perm[force[0]], STR_ADJ2[force[1]]),
+                            (DOING_SNATAN, str(putin2)),
                         ]):
+                        all = True
+                        for pi in putin2:
+                            # print occ
+                            # print sub
+                            # print putin
+                            # if len(putin2) != 1:
+                            #     # print 'snatan' TODO: Address this in version 2 or 3 or ...
+                            #     return False
+                            # putin2 = list(putin2)[0]
 
-                        if dfs(nxt, putin2, nxtxval, nxtyval, nseen, depth_cutoff-1):
+                            with msg([
+                                    (CONSIDER_SUB, ', '.join([str(i) for i in occ])),
+                                    (WHICH_PATTERN, sub),
+                                    (ANOTHER_OCC, add[0], add[1], left, down, right, up, sub.perm.perm[force[0]], STR_ADJ2[force[1]]),
+                                ]):
+
+                                if not dfs(nxt, pi, nxtxval, nxtyval, nseen, depth_cutoff-1):
+                                    all = False
+                                    break
+                        if all:
                             return True
         return False
 
@@ -202,7 +216,7 @@ def all_points_all_dir(mp, B, maxdepth, cut=False):
 
 if __name__ == '__main__':
 
-    run = all_points_all_dir(MeshPattern(Permutation([1]), [(1,1)]), (0,1), 5)
+    # run = all_points_all_dir(MeshPattern(Permutation([1]), [(1,1)]), (0,1), 5)
 
     #C1
     # run = all_points_all_dir(MeshPattern(Permutation([1,2,3]), [(0,0),(0,1),(1,0),(2,0),(2,2),(3,0),(3,2),(3,3)]), (2,1), 3)
@@ -242,7 +256,7 @@ if __name__ == '__main__':
     # run = all_points_all_dir(MeshPattern(Permutation([1,2,3]), [(1,0),(1,3),(2,1),(3,0)]), (3,3), 10)
 
     # C20
-    # run = all_points_all_dir(MeshPattern(Permutation([1,2,3]), [(1,3),(2,1),(3,0)]), (3,3), 4)
+    run = all_points_all_dir(MeshPattern(Permutation([1,2,3]), [(1,3),(2,1),(3,0)]), (3,3), 10)
 
     # ---------------------------------------------------------------------------- #
 
