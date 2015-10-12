@@ -300,7 +300,13 @@ maxdepth = 2
 with_closure = False
 
 coin = ShadingLemmaCoincifier(mps)
-coin.coincify(maxdepth)
+# coin.coincify(maxdepth)
+
+import cProfile
+cProfile.run('coin.coincify(maxdepth)')
+
+import sys
+sys.exit(0)
 
 if with_closure: coin.take_closure()
 # --------------------------------------------------------------------------- #
