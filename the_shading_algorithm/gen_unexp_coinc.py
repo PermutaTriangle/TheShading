@@ -287,20 +287,70 @@ def supersets_of_mesh(n, mesh):
 
 # print MeshPattern(Permutation([1,2]),[]).non_pointless_boxes()
 
-# mps = MeshPatternSet(3, Permutation([1,3,2]))
-mps = MeshPatternSet(3, Permutation([1,2,3]))
-# mps = MeshPatternSet(3, Permutation([1,2,3,4]))
 # mps = MeshPatternSet(1, Permutation([1]))
-# mps = MeshPatternSet(2, Permutation([1,2]))
-# mps = MeshPatternSet(3)
-# mps = MeshPatternSet(4, Permutation([1,2,3,4]))
+mps = MeshPatternSet(2, Permutation([1,2]))
+# mps = MeshPatternSet(3, Permutation([1,2,3]))
+# mps = MeshPatternSet(3, Permutation([1,3,2]))
+
+# ------------------------ Run the shading algorithm ------------------------ #
+# Set the maximum depth = maximum number of points can be added
+maxdepth = 2
+
+# Set to true to take the closure of each class at the end
+with_closure = False
 
 coin = ShadingLemmaCoincifier(mps)
-coin.coincify(2)
-# coin.take_closure()
-coin.brute_coincify(8)
+coin.coincify(maxdepth)
+
+if with_closure: coin.take_closure()
+# --------------------------------------------------------------------------- #
+
+# ---------- Look for surprising coincidences ---------- #
+# Upper bound (inclusive) on the length of permutations to look for surprising
+# coincidences
+perm_length = 8
+coin.brute_coincify(perm_length)
+# ------------------------------------------------------ #
 
 
+# ------------------- Sanity check --------------------- #
+# Set to True to perform a sanity check
+san_check = False
+
+# Upper bound (inclusive) on the length of permutations to use for sanity check
+check_len = 6
+
+if san_check:
+    uf = coin.uf
+    cnt = len(coin.mps)
+
+    ss = {}
+    for i in range(cnt):
+        ss.setdefault(uf.find(i),[])
+        ss[uf.find(i)].append(i)
+
+    res = 0
+    for _,v in sorted(ss.items(),key=lambda k: min(k[1])):
+        res += 1
+        # print('{%s}' % ','.join(map(str,sorted(v))))
+
+        if len(v) > 1:
+            print 'Sanity checking the class  %s' %v
+            # Sanity check: make sure patterns in the same group are avoided by the same permutations
+            ans = None
+            for i in v:
+                mp = mps[i]
+                av = []
+                for l in range(1,check_len+1):
+                    for p in Permutations(l):
+                        if p.avoids(mp):
+                            av.append(p)
+                if ans is None:
+                    ans = av
+                assert av == ans
+
+    print(res)
+# ------------------------------------------------------ #
 
 # coin.take_closure()
 # coin = BruteCoincifier(mps)
