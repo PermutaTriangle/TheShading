@@ -287,13 +287,12 @@ def all_points_all_dir(mp, B, maxdepth, cut=False):
 
 #C1
 # run = all_points_all_dir(MeshPattern(Permutation([1,2,3]), [(0,0),(0,1),(1,0),(2,0),(2,2),(3,0),(3,2),(3,3)]), (2,1), 3)
-#run = tsa1(MeshPattern(Permutation([1,2,3]), [(0,0),(0,1),(1,0),(2,0),(2,2),(3,0),(3,2),(3,3)]), (2,1), (1, 3),  3)
 
 #C2
-#run = tsa1(MeshPattern(Permutation([1,2,3]), [(0,1),(1,0),(2,0),(2,2),(3,0),(3,2),(3,3)]), (2,1), 3)
+# run = all_points_all_dir(MeshPattern(Permutation([1,2,3]), [(0,1),(1,0),(2,0),(2,2),(3,0),(3,2),(3,3)]), (2,1), 4)
 
 #C5
-#run = tsa1(MeshPattern(Permutation([1,2,3]), [(0,1),(2,0),(2,2),(3,0),(3,2),(3,3)]), (2,1), 3)
+# run = all_points_all_dir(MeshPattern(Permutation([1,2,3]), [(0,1),(2,0),(2,2),(3,0),(3,2),(3,3)]), (2,1), 3)
 
 # ---------------------------------------------------------------------------- #
 
@@ -301,7 +300,7 @@ def all_points_all_dir(mp, B, maxdepth, cut=False):
 # run = all_points_all_dir(MeshPattern(Permutation([1,2,3]), [(0,3),(1,0),(1,1),(1,2),(2,0),(2,2),(3,0)]), (2,3), 3)
 
 #C9
-#run = all_points_all_dir(MeshPattern(Permutation([1,2,3]), [(0,0),(0,3),(1,0),(1,1),(1,2),(2,0),(2,2),(3,0)]), (2,3), 3)
+run = all_points_all_dir(MeshPattern(Permutation([1,2,3]), [(0,0),(0,3),(1,0),(1,1),(1,2),(2,0),(2,2),(3,0)]), (2,3), 5)
 
 #C14
 # run = all_points_all_dir(MeshPattern(Permutation([1,2,3]), [(0,0),(1,0),(1,1),(2,3),(3,0),(3,1),(3,2),(3,2),(3,3)]), (2,1), 3)
@@ -323,18 +322,18 @@ def all_points_all_dir(mp, B, maxdepth, cut=False):
 # run = all_points_all_dir(MeshPattern(Permutation([1,2,3]), [(1,0),(1,3),(2,1),(3,0)]), (3,3), 10)
 
 # C20
-# run = all_points_all_dir(MeshPattern(Permutation([1,2,3]), [(1,3),(2,1),(3,0)]), (3,3), 4)
+# run = all_points_all_dir(MeshPattern(Permutation([1,2,3]), [(1,3),(2,1),(3,0)]), (3,3), 2)
 
 # ---------------------------------------------------------------------------- #
 
 # C21
-# run = all_points_all_dir(MeshPattern(Permutation([1,2,3]), [(0,0),(0,1),(1,1),(2,1),(2,2),(3,0)]), (3,2), 3)
+# run = all_points_all_dir(MeshPattern(Permutation([1,2,3]), [(0,0),(0,1),(1,1),(2,1),(2,2),(3,0)]), (3,2), 6)
 
 # C22
 # run = all_points_all_dir(MeshPattern(Permutation([1,2,3]), [(0,0),(1,0),(1,1),(2,1),(2,2),(3,0)]), (3,2), 6)
 
 # C23
-# run = all_points_all_dir(MeshPattern(Permutation([1,2,3]), [(0,0),(1,1),(2,1),(2,2),(3,0)]), (3,2), 3)
+# run = all_points_all_dir(MeshPattern(Permutation([1,2,3]), [(0,0),(1,1),(2,1),(2,2),(3,0)]), (3,2), 6)
 
 # ---------------------------------------------------------------------------- #
 
@@ -388,7 +387,14 @@ def all_points_all_dir(mp, B, maxdepth, cut=False):
 
 # ---------------------------------------------------------------------------- #
 
+# C37
+# run = all_points_all_dir(MeshPattern(Permutation([1,2,3]), [(0,1),(1,1),(2,1),(2,2),(3,0)]), (3,2), 6)
+
 # ---------------------------------------------------------------------------- #
+
+# C38 This is a chain
+# run = all_points_all_dir(MeshPattern(Permutation([1,2,3]), [(0,1),(2,2),(3,0),(3,2),(3,3)]), (2,1), 6)
+# run = all_points_all_dir(MeshPattern(Permutation([1,2,3]), [(0,1),(2,1),(2,2),(3,0),(3,2),(3,3)]), (0,0), 6)
 
 # ---------------------------------------------------------------------------- #
 
@@ -398,5 +404,5 @@ def all_points_all_dir(mp, B, maxdepth, cut=False):
 # run = tsa1(MeshPattern(Permutation([1,2,3]), [(0,1),(1,0),(2,0),(2,2),(3,0),(3,2),(3,3)]), (2,1))
 # run = tsa1(MeshPattern(Permutation([1,2,3]), [(0,0),(1,0),(1,1),(2,3),(3,0),(3,1)]), (2,1))
 
-# print("\n================================================================================\n".join(['\n'.join(i) for i in run]))
-# print("\nTotal number of successful branches: {}\n".format(len(run)))
+print("\n================================================================================\n".join(['\n'.join(i) for i in run]))
+print("\nTotal number of successful branches: {}\n".format(len(run)))
