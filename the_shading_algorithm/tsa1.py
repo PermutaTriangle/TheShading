@@ -22,7 +22,7 @@ MSGS = [
 for i, v in enumerate(MSGS):
     locals()[v[0]] = i
 
-def tsa1(p, B, force, maxdepth=3):
+def tsa1(p, B, force, maxdepth, cut=False):
     assert B not in p.mesh
     q = p.shade(B)
     k = len(p.perm)
@@ -81,7 +81,6 @@ def tsa1(p, B, force, maxdepth=3):
             nxtyval = yval[1:putin[1]+1] + [(yval[putin[1]]+yval[putin[1]+1])/2.0] + yval[putin[1]+1:-1]
             # print nxtperm
 
-<<<<<<< Updated upstream
             with msg([
                     (CONSIDER_POINT, STR_ADJ[d], putin[0], putin[1]),
                     (AND_GET, nxt),
@@ -171,31 +170,16 @@ def tsa1(p, B, force, maxdepth=3):
 
                     if len(putin2) != 1:
                         # print 'snatan' TODO: Address this in version 2 or 3 or ...
-                        return False
+                        continue
 
+                    pi = list(putin2)[0]
                     with msg([
-                            (DOING_SNATAN, str(putin2)),
+                            (CONSIDER_SUB, ', '.join([str(i) for i in occ])),
+                            (WHICH_PATTERN, sub),
+                            (ANOTHER_OCC, add[0], add[1], left, down, right, up, sub.perm.perm[force[0]], STR_ADJ2[force[1]]),
                         ]):
-                        all = True
-                        for pi in putin2:
-                            # print occ
-                            # print sub
-                            # print putin
-                            # if len(putin2) != 1:
-                            #     # print 'snatan' TODO: Address this in version 2 or 3 or ...
-                            #     return False
-                            # putin2 = list(putin2)[0]
 
-                            with msg([
-                                    (CONSIDER_SUB, ', '.join([str(i) for i in occ])),
-                                    (WHICH_PATTERN, sub),
-                                    (ANOTHER_OCC, add[0], add[1], left, down, right, up, sub.perm.perm[force[0]], STR_ADJ2[force[1]]),
-                                ]):
-
-                                if not dfs(nxt, pi, nxtxval, nxtyval, nseen, depth_cutoff-1):
-                                    all = False
-                                    break
-                        if all:
+                        if dfs(nxt, pi, nxtxval, nxtyval, nseen, depth_cutoff-1) and cut:
                             return True
         return False
 
@@ -206,7 +190,7 @@ def all_points_all_dir(mp, B, maxdepth, cut=False):
     all_traces = []
     for i in range(len(mp.perm.perm)):
         for d in range(4):
-            all_traces += tsa1(mp, B, (i,d), maxdepth)
+            all_traces += tsa1(mp, B, (i,d), maxdepth, cut=cut)
             if cut and all_traces: return all_traces
     return all_traces
 
@@ -252,7 +236,7 @@ if __name__ == '__main__':
     # run = all_points_all_dir(MeshPattern(Permutation([1,2,3]), [(1,0),(1,3),(2,1),(3,0)]), (3,3), 10)
 
     # C20
-    run = all_points_all_dir(MeshPattern(Permutation([1,2,3]), [(1,3),(2,1),(3,0)]), (3,3), 10)
+    # run = all_points_all_dir(MeshPattern(Permutation([1,2,3]), [(1,3),(2,1),(3,0)]), (3,3), 5)
 
     # ---------------------------------------------------------------------------- #
 
