@@ -34,7 +34,7 @@ with open('data.txt', 'r') as f:
         pop(cur)
 
 for (id,a,b) in surprises:
-    # os.mkdir(id)
+    os.mkdir(id)
     with open(os.path.join(id, '__init__.py'), 'w') as f:
         f.write('from permuta import *\n')
         f.write('mp1 = %s\n' % repr(a))
