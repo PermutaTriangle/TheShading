@@ -41,32 +41,48 @@ class TSAResult:
     def no_contradiction(*args):
         return TSAResult(TSAResult.NO_CONTRADICTION, *args)
 
+    def __repr__(self):
+        return 'TSAResult(%s, desc=%s, cases=%s)' % (
+                    repr(self.res),
+                    repr(self.desc),
+                    repr(self.cases)
+                )
+
     def _output(self, case, indent):
         pad = '    '*indent
+        res = []
         if self.desc is not None:
             outp = 'Case %s: %s' % (case, self.desc)
-            print '\n'.join([ pad + line for line in outp.split('\n') ])
+            res.append('\n'.join([ pad + line for line in outp.split('\n') ]))
         for c in range(len(self.cases)):
             if len(self.cases) == 1:
-                self.cases[c]._output(case, indent)
+                res.append(self.cases[c]._output(case, indent))
             else:
                 if c != 0:
-                    print pad + '    ----------'
-                self.cases[c]._output(case + '.%d' % (c+1), indent+1)
+                    res.append(pad + '    ----------')
+                res.append(self.cases[c]._output(case + '.%d' % (c+1), indent+1))
+        return ''.join( s + '\n' for s in res )
 
-    def output(self):
-        self._output('1', 0)
+    def __str__(self):
+        return self._output('1', 0).rstrip()
 
 class TSA:
     def __init__(self, p, q, depth):
         # TODO: clean up
         # TODO: assertions
+
+        if q.mesh <= p.mesh:
+            p,q = q,p
+        assert p.mesh <= q.mesh
+        add = q.mesh - p.mesh
+        assert len(add) == 1
+
         self.p = p
         self.q = q
-        self.shade = list(q.mesh - p.mesh)[0]
+        self.shade = list(add)[0]
         self.cut = False
-        # self.handle_simple = True
-        self.handle_simple = False
+        self.handle_simple = True
+        # self.handle_simple = False
         self.mx_size = len(self.p) + depth
         self.k = len(p.perm)
 
@@ -303,7 +319,7 @@ if __name__ == '__main__':
     # run = tsa2(MeshPattern(Permutation([1,2,3]), [(0,0),(0,1),(1,1),(2,1),(2,2),(3,0)]), (3,2), 3)
 
     # C22
-    run = tsa2(MeshPattern(Permutation([1,2,3]), [(0,0),(1,0),(1,1),(2,1),(2,2),(3,0)]), (3,2), 5)
+    # run = tsa2(MeshPattern(Permutation([1,2,3]), [(0,0),(1,0),(1,1),(2,1),(2,2),(3,0)]), (3,2), 5)
 
     # C23
     # run = tsa2(MeshPattern(Permutation([1,2,3]), [(0,0),(1,1),(2,1),(2,2),(3,0)]), (3,2), 3)
@@ -381,11 +397,12 @@ if __name__ == '__main__':
     # run = tsa2(MeshPattern(Permutation([1,2,3]), [(0,1),(1,0),(2,0),(2,2),(3,0),(3,2),(3,3)]), (2,1))
     # run = tsa2(MeshPattern(Permutation([1,2,3]), [(0,0),(1,0),(1,1),(2,3),(3,0),(3,1)]), (2,1))
 
-# print("\n================================================================================\n".join(['\n'.join(i) for i in run]))
-# print("\nTotal number of successful branches: {}\n".format(len(run)))
+    # print("\n================================================================================\n".join(['\n'.join(i) for i in run]))
+    # print("\nTotal number of successful branches: {}\n".format(len(run)))
 
-if run.res == TSAResult.CONTRADICTION:
-    run.output()
-else:
-    print 'Noooooooooo'
+    if run.res == TSAResult.CONTRADICTION:
+        print run
+        # run.output()
+    else:
+        print 'Noooooooooo'
 
