@@ -153,14 +153,15 @@ class TSA:
         return TSAResult.no_contradiction()
 
     def dfs(self, mp, force, xyval, seen):
+        # print seen
         xval, yval = xyval
 
         desc0 = 'Now we have the permutation:\n%s' % mp
 
         for occ in choose(len(xval), self.k):
             subperm = [ mp.perm[occ[i]] for i in range(self.k) ]
-            subxval = [ xval[occ[i]] for i in range(self.k) ]
-            subyval = [ yval[subperm[i]-1] for i in range(self.k) ]
+            subxval = sorted([ xval[occ[i]] for i in range(self.k) ])
+            subyval = sorted([ yval[subperm[i]-1] for i in range(self.k) ])
 
             if tuple(subxval) in seen:
                 continue
@@ -227,6 +228,14 @@ class TSA:
             if inside:
                 continue
 
+            assert len(boxes) > 0
+            # if len(boxes) == 0:
+            #     print repr(self.p)
+            #     print repr(self.q)
+            #     print repr(sub)
+            #     print repr(xval), repr(yval)
+            #     print repr(subxval), repr(subyval)
+
             # if len(boxes) != len(adds):
             #     continue
 
@@ -245,7 +254,8 @@ class TSA:
 
         assert self.shade not in self.p.mesh
 
-        res = self.init_dfs(self.p, self.shade, force, ([ i+1 for i in range(self.k) ], [ i+1 for i in range(self.k) ]), set([tuple(self.p.perm.perm)]))
+        # res = self.init_dfs(self.p, self.shade, force, ([ i+1 for i in range(self.k) ], [ i+1 for i in range(self.k) ]), set([tuple(self.p.perm.perm)]))
+        res = self.init_dfs(self.p, self.shade, force, ([ i+1 for i in range(self.k) ], [ i+1 for i in range(self.k) ]), set([tuple([ i for i in range(1,self.k+1) ])]))
         return res
 
     def tsa2(self):
@@ -267,6 +277,8 @@ def tsa2(mp, shade, depth):
     return tsa.run()
 
 if __name__ == '__main__':
+
+
 
     # run = tsa2(MeshPattern(Permutation([1]), [(1,1)]), (0,1), 5)
 
@@ -399,6 +411,8 @@ if __name__ == '__main__':
 
     # print("\n================================================================================\n".join(['\n'.join(i) for i in run]))
     # print("\nTotal number of successful branches: {}\n".format(len(run)))
+
+    run = tsa2(MeshPattern(Permutation([1,3,2]), []),(0,0), 100)
 
     if run.res == TSAResult.CONTRADICTION:
         print run
