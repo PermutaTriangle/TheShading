@@ -175,6 +175,10 @@ class TSA:
 
             desc1 = desc0 + '\nWe choose the subsequence at indices %s and get the pattern:\n%s' % (occ, sub)
 
+            if self.q.mesh <= sub.mesh:
+                desc2 = desc1 + '\nThis is an instance of the objective pattern q, which means this branch leads to a contradiction'
+                return TSAResult.contradiction(desc2)
+
             if len(adds) == 0:
                 desc2 = desc1 + '\nThis is another instance of p where the point (%d,%d) is more to the %s, which means this branch leads to a contradiction.' % (force[0]+1, self.p.perm[force[0]], STR_ADJ2[force[1]])
                 if force[1] == 0 and subxval[force[0]] > force[0]+1:
@@ -258,7 +262,7 @@ class TSA:
         res = self.init_dfs(self.p, self.shade, force, ([ i+1 for i in range(self.k) ], [ i+1 for i in range(self.k) ]), set([tuple([ i for i in range(1,self.k+1) ])]))
         return res
 
-    def tsa2(self):
+    def tsa3(self):
         for i in range(self.k):
             for d in range(4):
                 res = self.run_specific((i,d))
@@ -267,9 +271,9 @@ class TSA:
         return TSAResult.no_contradiction()
 
     def run(self):
-        return self.tsa2()
+        return self.tsa3()
 
-def tsa2(mp, shade, depth):
+def tsa3(mp, shade, depth):
     print mp
     print 'shade', shade
     mp2 = mp.shade(shade)
@@ -280,31 +284,31 @@ if __name__ == '__main__':
 
 # [1 2 3] PATTERNS
 
-    # run = tsa2(MeshPattern(Permutation([1]), [(1,1)]), (0,1), 5)
+    # run = tsa3(MeshPattern(Permutation([1]), [(1,1)]), (0,1), 5)
 
     #C1
-    # run = tsa2(MeshPattern(Permutation([1,2,3]), [(0,0),(0,1),(1,0),(2,0),(2,2),(3,0),(3,2),(3,3)]), (2,1), 3)
-    # run = tsa2(MeshPattern(Permutation([1,2,3]), [(0,0),(0,1),(1,0),(2,0),(2,2),(3,0),(3,2),(3,3)]), (2,1), (1, 3),  3)
+    # run = tsa3(MeshPattern(Permutation([1,2,3]), [(0,0),(0,1),(1,0),(2,0),(2,2),(3,0),(3,2),(3,3)]), (2,1), 3)
+    # run = tsa3(MeshPattern(Permutation([1,2,3]), [(0,0),(0,1),(1,0),(2,0),(2,2),(3,0),(3,2),(3,3)]), (2,1), (1, 3),  3)
 
     #C2
     # mp1 = MeshPattern(Permutation([1,2,3]), [(0,1),(1,0),(2,0),(2,2),(3,0),(3,2),(3,3)])
     # mp2 = mp1.shade((2,1))
     # run = TSA(mp1, mp2, 3).run()
-    # run = tsa2(MeshPattern(Permutation([1,2,3]), [(0,1),(1,0),(2,0),(2,2),(3,0),(3,2),(3,3)]), (2,1), 3)
+    # run = tsa3(MeshPattern(Permutation([1,2,3]), [(0,1),(1,0),(2,0),(2,2),(3,0),(3,2),(3,3)]), (2,1), 3)
 
     #C5
-    # run = tsa2(MeshPattern(Permutation([1,2,3]), [(0,1),(2,0),(2,2),(3,0),(3,2),(3,3)]), (2,1), 3)
+    # run = tsa3(MeshPattern(Permutation([1,2,3]), [(0,1),(2,0),(2,2),(3,0),(3,2),(3,3)]), (2,1), 3)
 
     # ---------------------------------------------------------------------------- #
 
     #C8
-    # run = tsa2(MeshPattern(Permutation([1,2,3]), [(0,3),(1,0),(1,1),(1,2),(2,0),(2,2),(3,0)]), (2,3), 3)
+    # run = tsa3(MeshPattern(Permutation([1,2,3]), [(0,3),(1,0),(1,1),(1,2),(2,0),(2,2),(3,0)]), (2,3), 3)
 
     #C9
-    # run = tsa2(MeshPattern(Permutation([1,2,3]), [(0,0),(0,3),(1,0),(1,1),(1,2),(2,0),(2,2),(3,0)]), (2,3), 5)
+    # run = tsa3(MeshPattern(Permutation([1,2,3]), [(0,0),(0,3),(1,0),(1,1),(1,2),(2,0),(2,2),(3,0)]), (2,3), 5)
 
     #C14
-    # run = tsa2(MeshPattern(Permutation([1,2,3]), [(0,0),(1,0),(1,1),(2,3),(3,0),(3,1),(3,2),(3,2),(3,3)]), (2,1), 3)
+    # run = tsa3(MeshPattern(Permutation([1,2,3]), [(0,0),(1,0),(1,1),(2,3),(3,0),(3,1),(3,2),(3,2),(3,3)]), (2,1), 3)
 
     # C15
     # C16
@@ -312,102 +316,102 @@ if __name__ == '__main__':
     # ---------------------------------------------------------------------------- #
 
     # C17
-    # run = tsa2(MeshPattern(Permutation([1,2,3]), [(1,1),(1,3),(2,1),(2,2),(2,3),(3,0),(3,3)]), (1,0), 3)
+    # run = tsa3(MeshPattern(Permutation([1,2,3]), [(1,1),(1,3),(2,1),(2,2),(2,3),(3,0),(3,3)]), (1,0), 3)
 
     # C18
-    # run = tsa2(MeshPattern(Permutation([1,2,3]), [(1,1),(1,3),(2,1),(2,2),(2,3),(3,0)]), (1,0), 3)
+    # run = tsa3(MeshPattern(Permutation([1,2,3]), [(1,1),(1,3),(2,1),(2,2),(2,3),(3,0)]), (1,0), 3)
 
     # ---------------------------------------------------------------------------- #
 
     # C19
-    # run = tsa2(MeshPattern(Permutation([1,2,3]), [(1,0),(1,3),(2,1),(3,0)]), (3,3), 4)
+    # run = tsa3(MeshPattern(Permutation([1,2,3]), [(1,0),(1,3),(2,1),(3,0)]), (3,3), 4)
 
     # C20
-    # run = tsa2(MeshPattern(Permutation([1,2,3]), [(1,3),(2,1),(3,0)]), (3,3), 5)
+    # run = tsa3(MeshPattern(Permutation([1,2,3]), [(1,3),(2,1),(3,0)]), (3,3), 5)
 
     # ---------------------------------------------------------------------------- #
 
     # C21
-    # run = tsa2(MeshPattern(Permutation([1,2,3]), [(0,0),(0,1),(1,1),(2,1),(2,2),(3,0)]), (3,2), 3)
+    # run = tsa3(MeshPattern(Permutation([1,2,3]), [(0,0),(0,1),(1,1),(2,1),(2,2),(3,0)]), (3,2), 3)
 
     # C22
-    # run = tsa2(MeshPattern(Permutation([1,2,3]), [(0,0),(1,0),(1,1),(2,1),(2,2),(3,0)]), (3,2), 5)
+    # run = tsa3(MeshPattern(Permutation([1,2,3]), [(0,0),(1,0),(1,1),(2,1),(2,2),(3,0)]), (3,2), 5)
 
     # C23
-    # run = tsa2(MeshPattern(Permutation([1,2,3]), [(0,0),(1,1),(2,1),(2,2),(3,0)]), (3,2), 3)
+    # run = tsa3(MeshPattern(Permutation([1,2,3]), [(0,0),(1,1),(2,1),(2,2),(3,0)]), (3,2), 3)
 
     # ---------------------------------------------------------------------------- #
 
     # C24
-    # run = tsa2(MeshPattern(Permutation([1,2,3]), [(1,1),(2,1),(2,2),(2,3),(3,0),(3,3)]), (1,0), 3)
+    # run = tsa3(MeshPattern(Permutation([1,2,3]), [(1,1),(2,1),(2,2),(2,3),(3,0),(3,3)]), (1,0), 3)
 
     # ---------------------------------------------------------------------------- #
 
     # C25
-    # run = tsa2(MeshPattern(Permutation([1,2,3]), [(0,0),(1,0),(1,1),(1,2),(2,3),(3,0)]), (3,3), 8)
+    #run = tsa3(MeshPattern(Permutation([1,2,3]), [(0,0),(1,0),(1,1),(1,2),(2,3),(3,0)]), (3,3), 5)
 
     # C26
-    # run = tsa2(MeshPattern(Permutation([1,2,3]), [(0,0),(1,1),(1,2),(2,3),(3,0)]), (3,3), 6)
+    # run = tsa3(MeshPattern(Permutation([1,2,3]), [(0,0),(1,1),(1,2),(2,3),(3,0)]), (3,3), 6)
 
     # C27
-    # run = tsa2(MeshPattern(Permutation([1,2,3]), [(0,0),(1,2),(2,3),(3,0)]), (3,3), 6)
+    # run = tsa3(MeshPattern(Permutation([1,2,3]), [(0,0),(1,2),(2,3),(3,0)]), (3,3), 6)
 
     # C28
-    # run = tsa2(MeshPattern(Permutation([1,2,3]), [(1,2),(2,3),(3,0)]), (3,3), 4)
+    # run = tsa3(MeshPattern(Permutation([1,2,3]), [(1,2),(2,3),(3,0)]), (3,3), 4)
 
     # C29
-    # run = tsa2(MeshPattern(Permutation([1,2,3]), [(1,1),(1,2),(2,3),(3,0)]), (3,3), 4)
+    # run = tsa3(MeshPattern(Permutation([1,2,3]), [(1,1),(1,2),(2,3),(3,0)]), (3,3), 4)
 
     # ---------------------------------------------------------------------------- #
 
     # C30 This is a chain
-    # run = tsa2(MeshPattern(Permutation([1,2,3]), [(0,0),(1,0),(1,1),(2,3),(3,0)]), (2,1), 3)
-    # run = tsa2(MeshPattern(Permutation([1,2,3]), [(0,0),(1,0),(1,1),(2,1),(2,3),(3,0)]), (3,3), 4)
+    # run = tsa3(MeshPattern(Permutation([1,2,3]), [(0,0),(1,0),(1,1),(2,3),(3,0)]), (2,1), 3)
+    # run = tsa3(MeshPattern(Permutation([1,2,3]), [(0,0),(1,0),(1,1),(2,1),(2,3),(3,0)]), (3,3), 4)
 
     # ---------------------------------------------------------------------------- #
 
     # C31
-    # run = tsa2(MeshPattern(Permutation([1,2,3]), [(1,1),(2,1),(2,2),(2,3),(3,0)]), (1,0), 4)
+    # run = tsa3(MeshPattern(Permutation([1,2,3]), [(1,1),(2,1),(2,2),(2,3),(3,0)]), (1,0), 4)
 
     # ---------------------------------------------------------------------------- #
 
     # C32
-    # run = tsa2(MeshPattern(Permutation([1,2,3]), [(0,1),(1,2),(2,2),(3,0),(3,3)]), (0,0), 6)
+    #run = tsa3(MeshPattern(Permutation([1,2,3]), [(0,1),(1,2),(2,2),(3,0),(3,3)]), (0,0), 5)
 
     # C33
-    # run = tsa2(MeshPattern(Permutation([1,2,3]), [(0,1),(1,2),(2,2),(3,0),(3,2),(3,3)]), (0,0), 6)
+    # run = tsa3(MeshPattern(Permutation([1,2,3]), [(0,1),(1,2),(2,2),(3,0),(3,2),(3,3)]), (0,0), 6)
 
     # C34
-    # run = tsa2(MeshPattern(Permutation([1,2,3]), [(0,1),(1,2),(3,0),(3,3)]), (0,0), 6)
+    # run = tsa3(MeshPattern(Permutation([1,2,3]), [(0,1),(1,2),(3,0),(3,3)]), (0,0), 6)
 
     # C35
-    # run = tsa2(MeshPattern(Permutation([1,2,3]), [(0,1),(1,2),(2,2),(3,0)]), (0,0), 4)
+    # run = tsa3(MeshPattern(Permutation([1,2,3]), [(0,1),(1,2),(2,2),(3,0)]), (0,0), 4)
 
     # C36
-    # run = tsa2(MeshPattern(Permutation([1,2,3]), [(0,1),(1,2),(3,0)]), (0,0), 4)
+    # run = tsa3(MeshPattern(Permutation([1,2,3]), [(0,1),(1,2),(3,0)]), (0,0), 4)
 
     # ---------------------------------------------------------------------------- #
 
     # ---------------------------------------------------------------------------- #
 
     # C37
-    # run = tsa2(MeshPattern(Permutation([1,2,3]), [(0,1),(1,1),(2,1),(2,2),(3,0)]), (3,2), 6)
+    # run = tsa3(MeshPattern(Permutation([1,2,3]), [(0,1),(1,1),(2,1),(2,2),(3,0)]), (3,2), 6)
 
     # ---------------------------------------------------------------------------- #
 
     # C38 This is a chain
-    # run = tsa2(MeshPattern(Permutation([1,2,3]), [(0,1),(2,2),(3,0),(3,2),(3,3)]), (2,1), 6)
-    # run = tsa2(MeshPattern(Permutation([1,2,3]), [(0,1),(2,1),(2,2),(3,0),(3,2),(3,3)]), (0,0), 6)
+    # run = tsa3(MeshPattern(Permutation([1,2,3]), [(0,1),(2,2),(3,0),(3,2),(3,3)]), (2,1), 6)
+    # run = tsa3(MeshPattern(Permutation([1,2,3]), [(0,1),(2,1),(2,2),(3,0),(3,2),(3,3)]), (0,0), 6)
 
     # ---------------------------------------------------------------------------- #
 
     # ---------------------------------------------------------------------------- #
 
-    # run = tsa2(meshpattern(permutation([1,2,3]), [(0,0),(0,1),(1,0),(2,0),(2,2),(3,0),(3,2),(3,3)]), (2,1))
-    # run = tsa2(MeshPattern(Permutation([1,2,3]), [(0,0),(0,1),(1,0),(2,0),(2,2),(3,0),(3,2),(3,3)]), (1,1))
-    # run = tsa2(MeshPattern(Permutation([1,2,3]), [(1,0),(1,3),(2,1),(3,0)]), (3,3))
-    # run = tsa2(MeshPattern(Permutation([1,2,3]), [(0,1),(1,0),(2,0),(2,2),(3,0),(3,2),(3,3)]), (2,1))
-    # run = tsa2(MeshPattern(Permutation([1,2,3]), [(0,0),(1,0),(1,1),(2,3),(3,0),(3,1)]), (2,1))
+    # run = tsa3(meshpattern(permutation([1,2,3]), [(0,0),(0,1),(1,0),(2,0),(2,2),(3,0),(3,2),(3,3)]), (2,1))
+    # run = tsa3(MeshPattern(Permutation([1,2,3]), [(0,0),(0,1),(1,0),(2,0),(2,2),(3,0),(3,2),(3,3)]), (1,1))
+    # run = tsa3(MeshPattern(Permutation([1,2,3]), [(1,0),(1,3),(2,1),(3,0)]), (3,3))
+    # run = tsa3(MeshPattern(Permutation([1,2,3]), [(0,1),(1,0),(2,0),(2,2),(3,0),(3,2),(3,3)]), (2,1))
+    # run = tsa3(MeshPattern(Permutation([1,2,3]), [(0,0),(1,0),(1,1),(2,3),(3,0),(3,1)]), (2,1))
 
     # print("\n================================================================================\n".join(['\n'.join(i) for i in run]))
     # print("\nTotal number of successful branches: {}\n".format(len(run)))
@@ -415,29 +419,30 @@ if __name__ == '__main__':
 # [1 3 2] PATTERNS
 
     # C32
-    #run = tsa2(MeshPattern(Permutation([1,3,2]), [(0,1),(1,0),(3,2)]), (1,1), 5)
+    #run = tsa3(MeshPattern(Permutation([1,3,2]), [(0,1),(1,0),(3,2)]), (1,1), 5)
 
     # C34
-    #run = tsa2(MeshPattern(Permutation([1,3,2]), [(0,1),(1,0),(1,2),(1,3),(2,2),(3,2)]), (1,1), 100000)
+    #run = tsa3(MeshPattern(Permutation([1,3,2]), [(0,1),(1,0),(1,2),(1,3),(2,2),(3,2)]), (1,1), 100000)
 
     # C35
-    #run = tsa2(MeshPattern(Permutation([1,3,2]), [(0,1),(1,0),(2,2)]), (1,1), 2)
+    #run = tsa3(MeshPattern(Permutation([1,3,2]), [(0,1),(1,0),(2,2)]), (1,1), 2)
 
     # C36
-    run = tsa2(MeshPattern(Permutation([1,3,2]), [(0,1),(1,0)]), (1,1), 3)
+    #run = tsa3(MeshPattern(Permutation([1,3,2]), [(0,1),(1,0)]), (1,1), 3)
 
     # C39
-    #run = tsa2(MeshPattern(Permutation([1,3,2]), [(0,1),(1,0),(2,2),(2,3)]), (1,1), 5)
+    #run = tsa3(MeshPattern(Permutation([1,3,2]), [(0,1),(1,0),(2,2),(2,3)]), (1,1), 5)
 
     # C39
-    #run = tsa2(MeshPattern(Permutation([1,3,2]), [(0,1),(1,0),(2,2),(2,3)]), (1,1), 10)
+    #run = tsa3(MeshPattern(Permutation([1,3,2]), [(0,1),(1,0),(2,2),(2,3)]), (1,1), 10)
 
 
-    #run = tsa2(MeshPattern(Permutation([1,3,2]), []),(0,0), 100)
+    #run = tsa3(MeshPattern(Permutation([1,3,2]), []),(0,0), 100)
 
     if run.res == TSAResult.CONTRADICTION:
         print run
         # run.output()
     else:
+        print run
         print 'Noooooooooo'
 
