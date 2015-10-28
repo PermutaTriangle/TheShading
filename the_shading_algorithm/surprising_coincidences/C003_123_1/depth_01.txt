@@ -1,0 +1,8 @@
+ERROR
+Traceback (most recent call last):
+  File "process_task.py", line 33, in <module>
+    tsa = TSA(task.mp1, task.mp2, depth)
+  File "../tsa2_clean.py", line 76, in __init__
+    assert p.mesh <= q.mesh
+AssertionError
+
