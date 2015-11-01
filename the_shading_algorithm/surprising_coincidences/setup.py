@@ -41,7 +41,7 @@ for (id,a,b) in surprises:
         f.write('mp2 = %s\n' % repr(b))
 
 with open('tasks.txt', 'w') as f:
-    for d in range(1, 8+1):
+    for d in range(1, 7+1):
         for (id,_,_) in surprises:
             f.write('%s %d\n' % (id, d))
 

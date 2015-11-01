@@ -22,7 +22,9 @@ sys.stderr.write("Running %s to depth %d\n" % (name, depth))
 sys.path.append('../')
 from permuta import *
 import imp
+
 from tsa2_clean import TSA, TSAResult
+# from tsa3 import TSA, TSAResult
 
 taskpath = os.path.join(name, '__init__.py')
 task = imp.load_source(name, taskpath)
