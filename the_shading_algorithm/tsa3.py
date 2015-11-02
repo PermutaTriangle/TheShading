@@ -81,29 +81,10 @@ class TSA:
         self.q = q
         self.shade = list(add)[0]
         self.cut = False
-        self.handle_simple = True
-        # self.handle_simple = False
         self.mx_size = len(self.p) + depth
         self.k = len(p.perm)
 
-    def do_empty_boxes1(self, boxes, mp, *args):
-        if len(boxes) == 1:
-            desc = None
-        else:
-            desc = 'Now we have %d cases' % len(boxes)
-        cases = []
-        all = True
-        for pi in boxes:
-            res = self.init_dfs(mp, pi, *args)
-            if res.res != TSAResult.CONTRADICTION:
-                all = False
-                break
-            cases.append(res)
-        if all:
-            return TSAResult.contradiction(desc, cases)
-        return TSAResult.no_contradiction()
-
-    def do_empty_boxes2(self, boxes, mp, *args):
+    def do_empty_boxes(self, boxes, mp, *args):
         if len(boxes) == 1:
             desc = None
         else:
@@ -122,12 +103,6 @@ class TSA:
         if all:
             return TSAResult.contradiction(desc, cases)
         return TSAResult.no_contradiction()
-
-    def do_empty_boxes(self, *args):
-        if self.handle_simple:
-            return self.do_empty_boxes1(*args)
-        else:
-            return self.do_empty_boxes2(*args)
 
     def add_point(self, mp, xyval, putin, d):
         xval, yval = xyval
@@ -407,7 +382,7 @@ if __name__ == '__main__':
 
     # ---------------------------------------------------------------------------- #
 
-    # run = tsa3(meshpattern(permutation([1,2,3]), [(0,0),(0,1),(1,0),(2,0),(2,2),(3,0),(3,2),(3,3)]), (2,1))
+    # run = tsa3(MeshPattern(Permutation([1,2,3]), [(0,0),(0,1),(1,0),(2,0),(2,2),(3,0),(3,2),(3,3)]), (2,1), 3)
     # run = tsa3(MeshPattern(Permutation([1,2,3]), [(0,0),(0,1),(1,0),(2,0),(2,2),(3,0),(3,2),(3,3)]), (1,1))
     # run = tsa3(MeshPattern(Permutation([1,2,3]), [(1,0),(1,3),(2,1),(3,0)]), (3,3))
     # run = tsa3(MeshPattern(Permutation([1,2,3]), [(0,1),(1,0),(2,0),(2,2),(3,0),(3,2),(3,3)]), (2,1))

@@ -22,7 +22,7 @@ MSGS = [
 for i, v in enumerate(MSGS):
     locals()[v[0]] = i
 
-def tsa2(p, B, force, maxdepth, cut=False, handle_simple=True):
+def tsa2(p, B, force, maxdepth, cut=False):
     assert B not in p.mesh
     q = p.shade(B)
     k = len(p.perm)
@@ -179,47 +179,29 @@ def tsa2(p, B, force, maxdepth, cut=False, handle_simple=True):
                     #     # print 'snatan' TODO: Address this in version 2 or 3 or ...
                     #     continue
 
-                    # Handling multiple putin2's, the simple way
-                    if handle_simple:
-                        with msg([
-                                (DOING_SNATAN, str(putin2)),
-                            ]):
-                            all = True
-                            for pi in putin2:
-                                with msg([
-                                        (CONSIDER_SUB, ', '.join([str(i) for i in occ])),
-                                        (WHICH_PATTERN, sub),
-                                        (ANOTHER_OCC, add[0], add[1], left, down, right, up, sub.perm.perm[force[0]], STR_ADJ2[force[1]]),
-                                    ]):
+                    # Handling multiple putin2's, by deciding the first non-empty box
+                    all = True
+                    shaded = set()
+                    for pi in putin2:
+                        if not dfs(nxt.shade(shaded), pi, nxtxval, nxtyval, nseen, depth_cutoff-1):
+                            all = False
+                            break
+                        shaded.add(pi)
 
-                                    if not dfs(nxt, pi, nxtxval, nxtyval, nseen, depth_cutoff-1):
-                                        all = False
-                                        break
-                            if all and cut:
-                                return True
-                    else:
-                        # Handling multiple putin2's, by deciding the first non-empty box
-                        all = True
-                        shaded = set()
-                        for pi in putin2:
-                            if not dfs(nxt.shade(shaded), pi, nxtxval, nxtyval, nseen, depth_cutoff-1):
-                                all = False
-                                break
-                            shaded.add(pi)
-
-                        if all and cut:
-                            return True
+                    if all and cut:
+                        return True
 
         return False
 
-    dfs(p, B, [ i+1 for i in range(k) ], [ i+1 for i in range(k) ], set([tuple(p.perm.perm)]), maxdepth)
+    x = dfs(p, B, [ i+1 for i in range(k) ], [ i+1 for i in range(k) ], set([tuple(p.perm.perm)]), maxdepth)
+    print x
     return [ [ MSGS[t[0]][1].format(*t[1:]) for t in ts ] for ts in traces ]
 
-def all_points_all_dir(mp, B, maxdepth, cut=False, handle_simple=True):
+def all_points_all_dir(mp, B, maxdepth, cut=False):
     all_traces = []
     for i in range(len(mp.perm.perm)):
         for d in range(4):
-            all_traces += tsa2(mp, B, (i,d), maxdepth, cut=cut, handle_simple=handle_simple)
+            all_traces += tsa2(mp, B, (i,d), maxdepth, cut=cut)
             if cut and all_traces: return all_traces
     return all_traces
 
@@ -274,6 +256,7 @@ if __name__ == '__main__':
 
     # C22
     # run = all_points_all_dir(MeshPattern(Permutation([1,2,3]), [(0,0),(1,0),(1,1),(2,1),(2,2),(3,0)]), (3,2), 5, cut=True)
+    run = all_points_all_dir(MeshPattern(Permutation([1,2,3]), [(0,0),(1,0),(1,1),(2,1),(2,2),(3,0)]), (3,2), 6, cut=True)
 
     # C23
     # run = all_points_all_dir(MeshPattern(Permutation([1,2,3]), [(0,0),(1,1),(2,1),(2,2),(3,0)]), (3,2), 3)
@@ -320,7 +303,7 @@ if __name__ == '__main__':
     # run = all_points_all_dir(MeshPattern(Permutation([1,2,3]), [(0,1),(1,2),(2,2),(3,0),(3,2),(3,3)]), (0,0), 6, cut=True, handle_simple=False)
 
     # C34
-    run = all_points_all_dir(MeshPattern(Permutation([1,2,3]), [(0,1),(1,2),(3,0),(3,3)]), (0,0), 8, cut=True, handle_simple=True)
+    # run = all_points_all_dir(MeshPattern(Permutation([1,2,3]), [(0,1),(1,2),(3,0),(3,3)]), (0,0), 6, cut=True, handle_simple=True)
 
     # C35
     # run = all_points_all_dir(MeshPattern(Permutation([1,2,3]), [(0,1),(1,2),(2,2),(3,0)]), (0,0), 4, cut=True, handle_simple=True)
@@ -353,3 +336,4 @@ if __name__ == '__main__':
 
 print("\n================================================================================\n".join(['\n'.join(i) for i in run]))
 print("\nTotal number of successful branches: {}\n".format(len(run)))
+
