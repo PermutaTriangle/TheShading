@@ -224,6 +224,7 @@ class TSA:
         possforce = TSAForce.none(self.k)
         cases = []
         for occ in choose(len(xval), self.k):
+
             subperm = [ mp.perm[occ[i]] for i in range(self.k) ]
             subxval = sorted([ xval[occ[i]] for i in range(self.k) ])
             subyval = sorted([ yval[subperm[i]-1] for i in range(self.k) ])
@@ -234,8 +235,6 @@ class TSA:
 
             # Use the force, Luke
             forceprime = force & TSAForce.from_sub(subperm, subxval, subyval)
-            if not forceprime:
-                continue
 
             nseen = set(list(seen))
             nseen.add(tuple(subxval))
@@ -248,9 +247,11 @@ class TSA:
             desc1 = desc0 + '\nWe choose the subsequence at indices %s and get the pattern:\n%s' % (occ, sub)
 
             if self.q.mesh <= sub.mesh:
-                desc2 = desc1 + '\nThis is an instance of the objective pattern q, which means this branch leads to a contradiction'
-                return TSAResult(forceprime, desc=desc2)
-                # return TSAResult.contradiction(desc2)
+                desc2 = desc1 + '\nThis is an instance of the objective pattern q, which means that this branch leads to a contradiction'
+                return TSAResult(force, desc=desc2)
+
+            if not forceprime:
+                continue
 
             if len(adds) == 0:
                 # desc2 = desc1 + '\nThis is another instance of p where the point (%d,%d) is more to the %s, which means this branch leads to a contradiction.' % (force[0]+1, self.p.perm[force[0]], STR_ADJ2[force[1]])
@@ -507,6 +508,9 @@ if __name__ == '__main__':
 
 # [1 3 2] PATTERNS
 
+    # C6_3
+    run = tsa4(MeshPattern(Permutation([1,3,2]), [(0, 1), (1, 3), (2, 3), (0, 2)]), (1,1), 2)
+
     # C32
     #run = tsa4(MeshPattern(Permutation([1,3,2]), [(0,1),(1,0),(3,2)]), (1,1), 5)
 
@@ -525,8 +529,8 @@ if __name__ == '__main__':
     # C39
     #run = tsa4(MeshPattern(Permutation([1,3,2]), [(0,1),(1,0),(2,2),(2,3)]), (1,1), 10)
 
-    # 69
-    run = tsa4(MeshPattern(Permutation([1,3,2]), [(3, 0), (0, 3), (2, 3), (1, 0), (2, 2)]), (3,2), 4)
+    # C69
+    # run = tsa4(MeshPattern(Permutation([1,3,2]), [(3, 0), (0, 3), (2, 3), (1, 0), (2, 2)]), (3,2), 4)
 
 
     #run = tsa4(MeshPattern(Permutation([1,3,2]), []),(0,0), 100)
