@@ -6,6 +6,7 @@ arr = [
     'tsa2_nonsimple',
     'tsa3_simple',
     'tsa3_nonsimple',
+    '.',
 ]
 
 res = {}

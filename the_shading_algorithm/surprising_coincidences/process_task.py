@@ -23,8 +23,9 @@ sys.path.append('../')
 from permuta import *
 import imp
 
-from tsa2_clean import TSA, TSAResult
+# from tsa2_clean import TSA, TSAResult
 # from tsa3 import TSA, TSAResult
+from tsa4 import TSA, TSAResult
 
 taskpath = os.path.join(name, '__init__.py')
 task = imp.load_source(name, taskpath)
@@ -36,7 +37,8 @@ try:
     res = tsa.run()
 
     with open(outfile, 'w') as f:
-        if res.res == TSAResult.CONTRADICTION:
+        # if res.res == TSAResult.CONTRADICTION:
+        if res.force:
             f.write('SUCCESS\n')
             f.write('p =\n%s\n' % task.mp1)
             f.write('q =\n%s\n' % task.mp2)
