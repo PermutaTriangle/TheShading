@@ -191,9 +191,13 @@ class TSAResult:
             use_force = ((),())
         return self._output('', 0, use_force, False).rstrip()
 
+# COUNTER = 0
+# OUTPUT = False
+
 class TSA:
     def __init__(self, p, q, depth, force_len=None):
         if force_len is None: force_len = len(p)
+        force_len = 1
         # TODO: clean up
         # TODO: assertions
 
@@ -222,12 +226,14 @@ class TSA:
         possforce = TSAForce.all()
         all = True
         shaded = set()
-        for pi in list(boxes)[::-1]:
+        for pi in boxes:
+        # for pi in list(boxes)[::-1]:
             res = self.init_dfs(mp.shade(shaded), pi, *args)
 
             possforce &= res.force
             if not possforce:
                 break
+
             # if res.res != TSAResult.CONTRADICTION:
             #     all = False
             #     break
@@ -260,6 +266,8 @@ class TSA:
         for d in DIRS:
             # choose the east/north/west/south-most point
 
+            # if len(mp) == 3 and d != 2: continue
+
             nxt, nxtxyval = self.add_point(mp, xyval, putin, d)
             res = self.dfs(nxt, force, nxtxyval, seen)
 
@@ -284,8 +292,10 @@ class TSA:
     def dfs(self, mp, force, xyval, seen):
         xval, yval = xyval
 
-        # print mp
-        # print ''
+        # if OUTPUT:
+        #     print '-------------------------'
+        #     print mp
+        #     print '-------------------------'
 
         desc0 = 'Now we have the permutation:\n%s' % mp
 
@@ -294,6 +304,8 @@ class TSA:
         for occ in choose(len(xval), self.k):
 
             # if len(mp) == 3 and occ != [0,1,2]: continue
+            # if len(mp) == 4 and occ != [1,2,3]: continue
+            # if len(mp) == 5 and occ != [1,2,3]: continue
             # if len(mp) == 4 and occ != [1,2,3]: continue
 
             subperm = [ mp.perm[occ[i]] for i in range(self.k) ]
@@ -327,38 +339,48 @@ class TSA:
                     # Use the force, Luke
                     forceprime = force & TSAForce.from_sub(subperm, subxval, subyval, self.force_len)
 
-                    # print ''
-                    # print mp
-                    # print occ, p_occ, adds
-                    # print sub
-                    # print force
-                    # print forceprime
-                    # print subperm
-                    # print subxval
-                    # print subyval
-                    # print TSAForce.from_sub(subperm, subxval, subyval)
-                    # print ''
+                    # global COUNTER
+                    # global OUTPUT
+                    # COUNTER += 1
+                    #
+                    # if COUNTER == 58:
+                    #     OUTPUT = True
+                    # OUTPUT = len(mp) <= 3
+                    #
+                    # if OUTPUT:
+                    #     print ''
+                    #     print COUNTER
+                    #     print mp
+                    #     print occ, p_occ, adds
+                    #     print sub
+                    #     print force
+                    #     print forceprime
+                    #     print subperm
+                    #     print subxval
+                    #     print subyval
+                    #     print TSAForce.from_sub(subperm, subxval, subyval, self.force_len)
+                    #     print ''
 
                     if not forceprime:
-                        # print 'aaaaa'
+                        # if OUTPUT: print 'aaaaa'
                         continue
 
                     if len(adds) == 0:
                         # desc2 = desc1 + '\nThis is another instance of p where the point (%d,%d) is more to the %s, which means this branch leads to a contradiction.' % (force[0]+1, self.p.perm[force[0]], STR_ADJ2[force[1]])
                         desc2 = desc1 + '\nThis is another instance of p with higher force = %(force)s, which means this branch leads to a contradiction.' # % forceprime
-                        # print 'bbbbb'
+                        # if OUTPUT: print 'bbbbb'
                         return TSAResult(forceprime, desc=desc2)
                 else:
                     forceprime = force
 
                     if len(adds) == 0:
                         desc2 = desc1 + '\nThis is an instance of the objective pattern q.'
-                        # print 'ccccc'
+                        # if OUTPUT: print 'ccccc'
                         return TSAResult(force, desc=desc2)
 
                 if len(mp) >= self.mx_size:
                     # We can't afford inserting more points :'(
-                    # print 'ddddd'
+                    # if OUTPUT: print 'ddddd'
                     continue
 
                 boxes = set()
@@ -383,14 +405,15 @@ class TSA:
                     if inside:
                         break
                 if inside:
-                    # print 'eeeee'
+                    # if OUTPUT: print 'eeeee'
                     continue
 
-                # print 'boxes ^ = %s' % boxes
-                # print 'mp ^ = %s' % mp
-                # print 'adds ^ = %s' % adds
-                # print 'subxval ^ = %s' % subxval
-                # print 'subyval ^ = %s' % subyval
+                # if OUTPUT:
+                #     print 'boxes ^ = %s' % boxes
+                #     print 'mp ^ = %s' % mp
+                #     print 'adds ^ = %s' % adds
+                #     print 'subxval ^ = %s' % subxval
+                #     print 'subyval ^ = %s' % subyval
 
                 # assert len(boxes) > 0
 
@@ -401,6 +424,10 @@ class TSA:
                 else:
                     desc2 += '\nIf they\'re empty, then we\'ve found an instance of q'
                 desc2 += '\nOtherwise we have a few cases:'
+
+                # if COUNTER == 58:
+                #     OUTPUT = False
+
                 res = self.do_empty_boxes(boxes, mp, forceprime, xyval, nseen)
 
                 if not res.force:
@@ -614,7 +641,7 @@ if __name__ == '__main__':
 # [1 3 2] PATTERNS
 
     # C6_3
-    run = tsa5(MeshPattern(Permutation([1,3,2]), [(0, 1), (1, 3), (2, 3), (0, 2)]), (1,1), 2)
+    # run = tsa5(MeshPattern(Permutation([1,3,2]), [(0, 1), (1, 3), (2, 3), (0, 2)]), (1,1), 2)
 
     # C32
     # run = tsa5(MeshPattern(Permutation([1,3,2]), [(0,1),(1,0),(3,2)]), (1,1), 5)
@@ -640,6 +667,8 @@ if __name__ == '__main__':
     # C85
     # run = tsa5(MeshPattern(Permutation([1,3,2]), [(0, 1), (1, 2), (0, 0), (2, 1), (0, 3)]), (1, 3), 6)
 
+
+    run = tsa5(MeshPattern(Permutation([1,3,2]), [(0,1),(0,2),(1,0),(1,3),(2,0),(3,1)]), (1,1), 2)
 
     #run = tsa5(MeshPattern(Permutation([1,3,2]), []),(0,0), 100)
 
