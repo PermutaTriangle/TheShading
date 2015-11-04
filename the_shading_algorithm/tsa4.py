@@ -4,6 +4,13 @@ from permuta.misc import *
 STR_ADJ = ["right-most","highest","left-most","lowest"]
 STR_ADJ2 = ["right","up","left","down"]
 
+def splice(a, b):
+    a = a.rstrip().split('\n')
+    b = b.rstrip().split('\n')
+    indent = max([ len(s) for s in a ]) + 5
+    res = [ (a[i] if i < len(a) else '').ljust(indent) + (b[i] if i < len(b) else '') for i in range(max(len(a), len(b))) ]
+    return '\n'.join(res)
+
 class TSAForce:
 
     def __init__(self, force):
@@ -90,27 +97,33 @@ class TSAResult:
                     repr(self.cases)
                 )
 
-    def _output(self, case, indent, force):
+    def _output(self, case, indent, force, do_case):
         pad = '    '*indent
         res = []
         if self.desc is not None:
-            outp = 'Case %s: %s' % (case, self.desc % {'force':force})
+            if case == '' or not do_case:
+                outp = ''
+            else:
+                outp = 'Case %s: ' % case
+                do_case = False
+            outp += self.desc % {'force':force, 'force_point': ', '.join([ str(i+1) for i,x in enumerate(force.force) if x ])}
             res.append('\n'.join([ pad + line for line in outp.split('\n') ]))
         curc = 0
+        one_case = len(self.cases) == 1 or not self.is_and
         for c in range(len(self.cases)):
             if not self.is_and and not (self.cases[c].force & force):
                 # print self.cases[c].force & force
                 continue
 
-            if len(self.cases) == 1 or not self.is_and:
-                res.append(self.cases[c]._output(case, indent, force))
+            if one_case:
+                res.append(self.cases[c]._output(case, indent, force, do_case))
             else:
                 if curc != 0:
                     res.append(pad + '    ----------')
-                res.append(self.cases[c]._output(case + '.%d' % (curc+1), indent+1, force))
+                res.append(self.cases[c]._output(case + ('' if case == '' else '.') + '%d' % (curc+1), indent+1, force, True))
                 curc += 1
 
-            if not self.is_and:
+            if one_case:
                 # res.append('%s, %s' % (self.cases[c].force, force))
                 break
 
@@ -124,7 +137,7 @@ class TSAResult:
                 break
         if not use_force:
             return 'FAIL'
-        return self._output('1', 0, use_force).rstrip()
+        return self._output('', 0, use_force, False).rstrip()
 
 class TSA:
     def __init__(self, p, q, depth):
@@ -352,7 +365,11 @@ class TSA:
         return res
 
     def tsa4(self):
-        return self.run_specific(TSAForce.all(self.k))
+        desc = 'The input patterns are:\n\n%s\n\n' % (splice(' p =\n'+str(self.p), ' q =\n'+str(self.q)))
+        desc += 'They differ by: %s\n' % str(self.shade)
+        desc += 'We consider the occurence of the pattern p where the point at index %(force_point)s is the %(force)s\n'
+        res = self.run_specific(TSAForce.all(self.k))
+        return TSAResult(res.force, desc=desc, cases=[res])
         # for i in range(self.k):
         #     for d in range(4):
         #         res = self.run_specific((i,d))
@@ -364,8 +381,6 @@ class TSA:
         return self.tsa4()
 
 def tsa4(mp, shade, depth):
-    print mp
-    print 'shade', shade
     mp2 = mp.shade(shade)
     tsa = TSA(mp, mp2, depth)
     return tsa.run()
@@ -461,7 +476,7 @@ if __name__ == '__main__':
     # ---------------------------------------------------------------------------- #
 
     # C31
-    # run = tsa4(MeshPattern(Permutation([1,2,3]), [(1,1),(2,1),(2,2),(2,3),(3,0)]), (1,0), 4)
+    run = tsa4(MeshPattern(Permutation([1,2,3]), [(1,1),(2,1),(2,2),(2,3),(3,0)]), (1,0), 4)
 
     # ---------------------------------------------------------------------------- #
 
@@ -509,10 +524,10 @@ if __name__ == '__main__':
 # [1 3 2] PATTERNS
 
     # C6_3
-    run = tsa4(MeshPattern(Permutation([1,3,2]), [(0, 1), (1, 3), (2, 3), (0, 2)]), (1,1), 2)
+    # run = tsa4(MeshPattern(Permutation([1,3,2]), [(0, 1), (1, 3), (2, 3), (0, 2)]), (1,1), 2)
 
     # C32
-    #run = tsa4(MeshPattern(Permutation([1,3,2]), [(0,1),(1,0),(3,2)]), (1,1), 5)
+    # run = tsa4(MeshPattern(Permutation([1,3,2]), [(0,1),(1,0),(3,2)]), (1,1), 5)
 
     # C34
     #run = tsa4(MeshPattern(Permutation([1,3,2]), [(0,1),(1,0),(1,2),(1,3),(2,2),(3,2)]), (1,1), 100000)
@@ -521,7 +536,7 @@ if __name__ == '__main__':
     #run = tsa4(MeshPattern(Permutation([1,3,2]), [(0,1),(1,0),(2,2)]), (1,1), 2)
 
     # C36
-    #run = tsa4(MeshPattern(Permutation([1,3,2]), [(0,1),(1,0)]), (1,1), 3)
+    run = tsa4(MeshPattern(Permutation([1,3,2]), [(0,1),(1,0)]), (1,1), 2)
 
     # C39
     #run = tsa4(MeshPattern(Permutation([1,3,2]), [(0,1),(1,0),(2,2),(2,3)]), (1,1), 5)
