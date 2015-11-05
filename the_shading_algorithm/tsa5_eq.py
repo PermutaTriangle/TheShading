@@ -197,7 +197,6 @@ class TSAResult:
 class TSA:
     def __init__(self, p, q, depth, force_len=None):
         if force_len is None: force_len = len(p)
-        force_len = 1
         # TODO: clean up
         # TODO: assertions
 
@@ -482,12 +481,12 @@ class TSA:
 
         return ress
 
-def tsa5_two(mp1, mp2, depth):
-    tsa = TSA(mp1, mp2, depth)
+def tsa5_two(mp1, mp2, depth, force_len=1):
+    tsa = TSA(mp1, mp2, depth, force_len=force_len)
     return tsa.run()
 
-def tsa5(mp, shade, depth):
-    return tsa5_two(mp, mp.shade(shade), depth)
+def tsa5(mp, shade, depth, force_len=1):
+    return tsa5_two(mp, mp.shade(shade), depth, force_len=force_len)
 
 if __name__ == '__main__':
 
@@ -565,7 +564,7 @@ if __name__ == '__main__':
     # ---------------------------------------------------------------------------- #
 
     # C25
-    # run = tsa5(MeshPattern(Permutation([1,2,3]), [(0,0),(1,0),(1,1),(1,2),(2,3),(3,0)]), (3,3), 5)
+    # run = tsa5(MeshPattern(Permutation([1,2,3]), [(0,0),(1,0),(1,1),(1,2),(2,3),(3,0)]), (3,3), 100, 1)
 
     # C26
     # run = tsa5(MeshPattern(Permutation([1,2,3]), [(0,0),(1,1),(1,2),(2,3),(3,0)]), (3,3), 6)

@@ -11,21 +11,27 @@ def splice(a, b):
     res = [ (a[i] if i < len(a) else '').ljust(indent) + (b[i] if i < len(b) else '') for i in range(max(len(a), len(b))) ]
     return '\n'.join(res)
 
+Q_CHECK = True
+FORCE_LEN = 3
+
 class TSAForce:
 
-    def __init__(self, force):
-        self.force = force
+    def __init__(self, force, is_universe=False):
+        self.force = force if not is_universe else set()
+        self.is_universe = is_universe
 
     @staticmethod
     def from_sub(perm, xval, yval):
-        res = TSAForce([ set() for _ in range(len(perm)) ])
+        # TODO: update
+        res = TSAForce(set())
 
-        # print perm
-        # print xval
-        # print yval
+        poss = [ set() for _ in range(len(perm)) ]
+        same = [ False for _ in range(len(perm)) ]
 
         for i in range(len(perm)):
             cur = set()
+            if xval[i] == i+1:
+                same[i] = True
             if xval[i] < i+1:
                 cur.add(DIR_WEST)
             if xval[i] > i+1:
@@ -35,39 +41,79 @@ class TSAForce:
             if yval[perm[i]-1] < perm[i]:
                 cur.add(DIR_SOUTH)
 
-            res.force[i] |= cur
+            poss[i] = cur
 
+        # print same
+        # print poss
+
+        rperm = []
+        dirs = {}
+        def bt(same_prefix, done):
+            if len(rperm) == FORCE_LEN:
+                if not same_prefix:
+                    res.force.add(tuple([ (x+1,dirs[x]) for x in rperm ]))
+            else:
+                for i in range(len(perm)):
+                    if i in done:
+                        continue
+
+                    for d in range(4):
+                        if same[i] or not same_prefix or (same_prefix and d in poss[i]):
+                            dirs[i] = d
+                            rperm.append(i)
+                            bt(same_prefix and same[i], done | set([i]))
+                            rperm.pop()
+
+        bt(True, set())
         return res
 
     @staticmethod
-    def none(n):
-        return TSAForce([ set() for _ in range(n) ])
+    def none():
+        return TSAForce(set())
 
     @staticmethod
-    def all(n):
-        return TSAForce([ set(DIRS) for _ in range(n) ])
+    def all():
+        return TSAForce(set(), is_universe=True)
 
     def __or__(self, other):
-        return TSAForce([ a|b for a,b in zip(self.force, other.force) ])
+        if self.is_universe or other.is_universe: return self
+        return TSAForce(self.force | other.force)
 
     def __and__(self, other):
-        return TSAForce([ a&b for a,b in zip(self.force, other.force) ])
+        if self.is_universe: return other
+        if other.is_universe: return self
+        return TSAForce(self.force & other.force)
 
     def __bool__(self):
-        return any( bool(x) for x in self.force )
+        return self.is_universe or bool(self.force)
     __nonzero__ = __bool__
 
     def __repr__(self):
+        if self.is_universe: return 'TSAForce(%s, is_universe=True)' % repr(self.force)
         return 'TSAForce(%s)' % repr(self.force)
 
     def __eq__(self, other):
+        if self.is_universe or other.is_universe:
+            return self.is_universe and other.is_universe
         return self.force == other.force
 
     def __len__(self):
+        assert not self.is_universe
         return len(self.force)
 
-    def __getitem__(self, *args):
-        return self.force.__getitem__(*args)
+    def __contains__(self, key):
+        return self.is_universe or key in self.force
+
+    # def __getitem__(self, *args):
+    #     assert not self.is_universe
+    #     return self.force.__getitem__(*args)
+
+
+# for (a,b) in TSAForce.from_sub(Permutation([1,3,2]), [1,1.25, 1.5], [1,1.25,1.5]).force:
+#     print a,b
+#
+# import sys
+# sys.exit(0)
 
 class TSAResult:
     # CONTRADICTION = 0
@@ -106,12 +152,13 @@ class TSAResult:
             else:
                 outp = 'Case %s: ' % case
                 do_case = False
-            outp += self.desc % {'force':force, 'force_point': ', '.join([ str(i+1) for i,x in enumerate(force.force) if x ])}
+            # outp += self.desc % {'force':force, 'force_point': ', '.join([ str(i+1) for i,x in enumerate(force.force) if x ])}
+            outp += self.desc % {'force':force}
             res.append('\n'.join([ pad + line for line in outp.split('\n') ]))
         curc = 0
         one_case = len(self.cases) == 1 or not self.is_and
         for c in range(len(self.cases)):
-            if not self.is_and and not (self.cases[c].force & force):
+            if not self.is_and and force not in self.cases[c].force:
                 # print self.cases[c].force & force
                 continue
 
@@ -130,13 +177,14 @@ class TSAResult:
         return ''.join( s + '\n' for s in res ).rstrip('\n')
 
     def __str__(self):
-        use_force = TSAForce.none(len(self.force))
-        for i in range(len(self.force)):
-            if self.force[i]:
-                use_force = TSAForce([ set([ list(self.force[i])[0] ]) if i == j else set() for j in range(len(self.force)) ])
-                break
-        if not use_force:
+        # use_force = TSAForce.none()
+        # for i in range(len(self.force)):
+        #     if self.force[i]:
+        #         use_force = TSAForce([ set([ list(self.force[i])[0] ]) if i == j else set() for j in range(len(self.force)) ])
+        #         break
+        if not self.force:
             return 'FAIL'
+        use_force = list(self.force.force)[0]
         return self._output('', 0, use_force, False).rstrip()
 
 class TSA:
@@ -163,7 +211,7 @@ class TSA:
         else:
             desc = 'Now we have %d case(s)' % len(boxes)
         cases = []
-        possforce = TSAForce.all(self.k)
+        possforce = TSAForce.all()
         all = True
         shaded = set()
         for pi in boxes:
@@ -199,7 +247,7 @@ class TSA:
 
         # if putin contains no points, then we're done
         # otherwise, it contains at least one point
-        possforce = TSAForce.none(self.k)
+        possforce = TSAForce.none()
         cases = []
         for d in DIRS:
             # choose the east/north/west/south-most point
@@ -234,7 +282,7 @@ class TSA:
 
         desc0 = 'Now we have the permutation:\n%s' % mp
 
-        possforce = TSAForce.none(self.k)
+        possforce = TSAForce.none()
         cases = []
         for occ in choose(len(xval), self.k):
 
@@ -259,7 +307,7 @@ class TSA:
 
             desc1 = desc0 + '\nWe choose the subsequence at indices %s and get the pattern:\n%s' % (occ, sub)
 
-            if self.q.mesh <= sub.mesh:
+            if Q_CHECK and self.q.mesh <= sub.mesh:
                 desc2 = desc1 + '\nThis is an instance of the objective pattern q, which means that this branch leads to a contradiction'
                 return TSAResult(force, desc=desc2)
 
@@ -321,6 +369,10 @@ class TSA:
             if inside:
                 continue
 
+            desc1 += '\nmp = %s' % boxes
+            desc1 += '\nadds = %s' % adds
+            desc1 += '\nsubxval = %s' % subxval
+            desc1 += '\nsubyval = %s' % subyval
             assert len(boxes) > 0
             # if len(boxes) == 0:
             #     print repr(self.p)
@@ -367,8 +419,9 @@ class TSA:
     def tsa4(self):
         desc = 'The input patterns are:\n\n%s\n\n' % (splice(' p =\n'+str(self.p), ' q =\n'+str(self.q)))
         desc += 'They differ by: %s\n' % str(self.shade)
-        desc += 'We consider the occurence of the pattern p where the point at index %(force_point)s is the %(force)s\n'
-        res = self.run_specific(TSAForce.all(self.k))
+        # desc += 'We consider the occurence of the pattern p where the point at index %(force_point)s is the %(force)s\n'
+        desc += 'We consider the occurence of the pattern p where %(force)s\n'
+        res = self.run_specific(TSAForce.all())
         return TSAResult(res.force, desc=desc, cases=[res])
         # for i in range(self.k):
         #     for d in range(4):
@@ -453,7 +506,7 @@ if __name__ == '__main__':
     # ---------------------------------------------------------------------------- #
 
     # C25
-    #run = tsa4(MeshPattern(Permutation([1,2,3]), [(0,0),(1,0),(1,1),(1,2),(2,3),(3,0)]), (3,3), 5)
+    # run = tsa4(MeshPattern(Permutation([1,2,3]), [(0,0),(1,0),(1,1),(1,2),(2,3),(3,0)]), (3,3), 5)
 
     # C26
     # run = tsa4(MeshPattern(Permutation([1,2,3]), [(0,0),(1,1),(1,2),(2,3),(3,0)]), (3,3), 6)
@@ -476,7 +529,7 @@ if __name__ == '__main__':
     # ---------------------------------------------------------------------------- #
 
     # C31
-    run = tsa4(MeshPattern(Permutation([1,2,3]), [(1,1),(2,1),(2,2),(2,3),(3,0)]), (1,0), 4)
+    # run = tsa4(MeshPattern(Permutation([1,2,3]), [(1,1),(2,1),(2,2),(2,3),(3,0)]), (1,0), 4)
 
     # ---------------------------------------------------------------------------- #
 
@@ -508,6 +561,11 @@ if __name__ == '__main__':
     # run = tsa4(MeshPattern(Permutation([1,2,3]), [(0,1),(2,2),(3,0),(3,2),(3,3)]), (2,1), 6)
     # run = tsa4(MeshPattern(Permutation([1,2,3]), [(0,1),(2,1),(2,2),(3,0),(3,2),(3,3)]), (0,0), 6)
 
+
+    # C85
+    # run = tsa4(MeshPattern(Permutation([1,2,3]), [(1, 2), (3, 3), (2, 3), (2, 2), (0, 3), (1, 1)]), (0,1), 5)
+
+
     # ---------------------------------------------------------------------------- #
 
     # ---------------------------------------------------------------------------- #
@@ -524,7 +582,7 @@ if __name__ == '__main__':
 # [1 3 2] PATTERNS
 
     # C6_3
-    # run = tsa4(MeshPattern(Permutation([1,3,2]), [(0, 1), (1, 3), (2, 3), (0, 2)]), (1,1), 2)
+    run = tsa4(MeshPattern(Permutation([1,3,2]), [(0, 1), (1, 3), (2, 3), (0, 2)]), (1,1), 2)
 
     # C32
     # run = tsa4(MeshPattern(Permutation([1,3,2]), [(0,1),(1,0),(3,2)]), (1,1), 5)
@@ -536,7 +594,7 @@ if __name__ == '__main__':
     #run = tsa4(MeshPattern(Permutation([1,3,2]), [(0,1),(1,0),(2,2)]), (1,1), 2)
 
     # C36
-    run = tsa4(MeshPattern(Permutation([1,3,2]), [(0,1),(1,0)]), (1,1), 2)
+    # run = tsa4(MeshPattern(Permutation([1,3,2]), [(0,1),(1,0)]), (1,1), 2)
 
     # C39
     #run = tsa4(MeshPattern(Permutation([1,3,2]), [(0,1),(1,0),(2,2),(2,3)]), (1,1), 5)
@@ -546,6 +604,9 @@ if __name__ == '__main__':
 
     # C69
     # run = tsa4(MeshPattern(Permutation([1,3,2]), [(3, 0), (0, 3), (2, 3), (1, 0), (2, 2)]), (3,2), 4)
+
+    # C85
+    # run = tsa4(MeshPattern(Permutation([1,3,2]), [(0, 1), (1, 2), (0, 0), (2, 1), (0, 3)]), (1, 3), 6)
 
 
     #run = tsa4(MeshPattern(Permutation([1,3,2]), []),(0,0), 100)
