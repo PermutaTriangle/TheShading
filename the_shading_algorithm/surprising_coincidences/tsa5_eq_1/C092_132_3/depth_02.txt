@@ -1,0 +1,78 @@
+SUCCESS
+The input patterns are:
+
+ p =         q =
+#| | |      #| | | 
+-+-3-+-     -+-3-+-
+ |#|#|       |#|#| 
+-+-+-2-     -+-+-2-
+#| | |      #|#| | 
+-1-+-+-     -1-+-+-
+ | | |       | | |
+
+We consider the occurence of the pattern p where ((1, 0),)
+
+Now we have the permutation:
+#| | | 
+-+-3-+-
+ |#|#| 
+-+-+-2-
+#| | | 
+-1-+-+-
+ | | | 
+We choose the subsequence at indices [0, 1, 2] and get the pattern:
+#| | | 
+-+-3-+-
+ |#|#| 
+-+-+-2-
+#| | | 
+-1-+-+-
+ | | | 
+Consider the non-shaded boxes set([(1, 1)]) in this sub-pattern, which correspond to set([(1, 1)]) in the current permutation
+If they're empty, then we've found an instance of q
+Otherwise we have a few cases:
+Choose the left-most point in (1, 1)
+Now we have the permutation:
+#| | | | 
+-+-+-4-+-
+ |#|#|#| 
+-+-+-+-3-
+#|#| | | 
+-+-2-+-+-
+#|#| | | 
+-1-+-+-+-
+ | | | | 
+We choose the subsequence at indices [1, 2, 3] and get the pattern:
+ | | | 
+-+-3-+-
+ |#|#| 
+-+-+-2-
+#| | | 
+-1-+-+-
+ | | | 
+Consider the non-shaded boxes set([(0, 3)]) in this sub-pattern, which correspond to set([(1, 4)]) in the current permutation
+If they're empty, then we've found another instance of p satisfying blaa
+Otherwise we have a few cases:
+Choose the lowest point in (1, 4)
+Now we have the permutation:
+#| | | | | 
+-+-5-+-+-+-
+#|#|#| | | 
+-+-+-+-4-+-
+ |#|#|#|#| 
+-+-+-+-+-3-
+#|#|#| | | 
+-+-+-2-+-+-
+#|#|#| | | 
+-1-+-+-+-+-
+ | | | | | 
+We choose the subsequence at indices [0, 1, 2] and get the pattern:
+#| | | 
+-+-3-+-
+ |#|#| 
+-+-+-2-
+#|#|#| 
+-1-+-+-
+ | | | 
+This is an instance of the objective pattern q.
+
