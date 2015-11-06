@@ -11,8 +11,6 @@ def splice(a, b):
     res = [ (a[i] if i < len(a) else '').ljust(indent) + (b[i] if i < len(b) else '') for i in range(max(len(a), len(b))) ]
     return '\n'.join(res)
 
-Q_CHECK = True
-
 class TSAForce:
 
     def __init__(self, force, is_universe=False):
@@ -195,7 +193,7 @@ class TSAResult:
 # OUTPUT = False
 
 class TSA:
-    def __init__(self, p, q, depth, force_len=None):
+    def __init__(self, p, q, depth, multbox=True, q_check=True, force_len=None):
         if force_len is None: force_len = len(p)
         # TODO: clean up
         # TODO: assertions
@@ -213,6 +211,8 @@ class TSA:
         self.cut = False
         self.mx_size = len(self.p) + depth
         self.k = len(p.perm)
+        self.multbox = multbox
+        self.q_check = q_check
         self.force_len = force_len
 
     def do_empty_boxes(self, boxes, mp, *args):
@@ -226,7 +226,6 @@ class TSA:
         all = True
         shaded = set()
         for pi in boxes:
-        # for pi in list(boxes)[::-1]:
             res = self.init_dfs(mp.shade(shaded), pi, *args)
 
             possforce &= res.force
@@ -293,8 +292,9 @@ class TSA:
 
         # if OUTPUT:
         #     print '-------------------------'
-        #     print mp
         #     print '-------------------------'
+
+        # print mp
 
         desc0 = 'Now we have the permutation:\n%s' % mp
 
@@ -324,14 +324,15 @@ class TSA:
 
             desc1 = desc0 + '\nWe choose the subsequence at indices %s and get the pattern:\n%s' % (occ, sub)
 
-            if Q_CHECK and self.q.mesh <= sub.mesh:
+            if self.q_check and self.q.mesh <= sub.mesh:
                 desc2 = desc1 + '\nThis is an instance of the objective pattern q.'
                 return TSAResult(force, desc=desc2)
 
-            for (p_occ, adds) in [
-                        (True, self.p.mesh - sub.mesh),
-                        (False, self.q.mesh - sub.mesh)
-                    ]:
+            next_steps = [ (True, self.p.mesh - sub.mesh) ]
+            if self.q_check or len(mp) == self.k:
+                next_steps.append((False, self.q.mesh - sub.mesh))
+
+            for (p_occ, adds) in next_steps:
 
                 if p_occ:
 
@@ -405,6 +406,9 @@ class TSA:
                         break
                 if inside:
                     # if OUTPUT: print 'eeeee'
+                    continue
+
+                if not self.multbox and len(boxes) > 1:
                     continue
 
                 # if OUTPUT:
@@ -481,12 +485,21 @@ class TSA:
 
         return ress
 
-def tsa5_two(mp1, mp2, depth, force_len=1):
-    tsa = TSA(mp1, mp2, depth, force_len=force_len)
+def tsa5_two(mp1, mp2, depth, multbox=True, q_check=True, force_len=None):
+    tsa = TSA(mp1, mp2, depth, multbox=multbox, q_check=q_check, force_len=force_len)
     return tsa.run()
 
-def tsa5(mp, shade, depth, force_len=1):
-    return tsa5_two(mp, mp.shade(shade), depth, force_len=force_len)
+def tsa5(mp, shade, depth, multbox=True, q_check=True, force_len=None):
+    return tsa5_two(mp, mp.shade(shade), depth, multbox=multbox, q_check=q_check, force_len=force_len)
+
+
+def tsa5_coincident(mp1, mp2, depth, multbox=True, q_check=True, force_len=None):
+    run = tsa5_two(mp1, mp2, depth, multbox=multbox, q_check=q_check, force_len=force_len)
+    for r in run:
+        if not bool(r.force):
+            return False
+    return True
+
 
 if __name__ == '__main__':
 
@@ -496,6 +509,10 @@ if __name__ == '__main__':
     # run = tsa5(MeshPattern(Permutation([1,2]), [(0,1),(0,2),(1,1),(1,2),(2,0)]), MeshPattern(Permutation([1,2]), [(0,2),(1,0),(1,1),(2,0),(2,1)]), 2)
     # run = TSA(MeshPattern(Permutation([1,2]), [(0,1),(0,2),(1,1),(1,2),(2,0)]), MeshPattern(Permutation([1,2]), [(0,2),(1,0),(1,1),(2,0),(2,1)]), 2).run()
     # run = TSA(MeshPattern(Permutation([1,2]), [(0,2),(1,0),(1,1),(2,0),(2,1)]), MeshPattern(Permutation([1,2]), [(0,1),(0,2),(1,1),(1,2),(2,0)]), 2).run()
+    run = tsa5_coincident(MeshPattern(Permutation([1,2]), [(0,2),(1,0),(1,1),(2,0),(2,1)]), MeshPattern(Permutation([1,2]), [(0,1),(0,2),(1,1),(1,2),(2,0)]), 2, True, True, 1)
+    print run
+    import sys
+    sys.exit(0)
 
 
 # [1 2 3] PATTERNS
@@ -573,7 +590,7 @@ if __name__ == '__main__':
     # run = tsa5(MeshPattern(Permutation([1,2,3]), [(0,0),(1,2),(2,3),(3,0)]), (3,3), 6)
 
     # C28
-    # run = tsa5(MeshPattern(Permutation([1,2,3]), [(1,2),(2,3),(3,0)]), (3,3), 4)
+    # run = tsa5(MeshPattern(Permutation([1,2,3]), [(1,2),(2,3),(3,0)]), (3,3), 100, 1)
 
     # C29
     # run = tsa5(MeshPattern(Permutation([1,2,3]), [(1,1),(1,2),(2,3),(3,0)]), (3,3), 4)
@@ -667,7 +684,7 @@ if __name__ == '__main__':
     # run = tsa5(MeshPattern(Permutation([1,3,2]), [(0, 1), (1, 2), (0, 0), (2, 1), (0, 3)]), (1, 3), 6)
 
 
-    run = tsa5(MeshPattern(Permutation([1,3,2]), [(0,1),(0,2),(1,0),(1,3),(2,0),(3,1)]), (1,1), 2)
+    # run = tsa5(MeshPattern(Permutation([1,3,2]), [(0,1),(0,2),(1,0),(1,3),(2,0),(3,1)]), (1,1), 2)
 
     #run = tsa5(MeshPattern(Permutation([1,3,2]), []),(0,0), 100)
 
@@ -682,4 +699,9 @@ if __name__ == '__main__':
             print ''
     else:
         print 'Noooooooooo'
+
+# mp1 = MeshPattern(Permutation([1,2]), set())
+# mp2 = MeshPattern(Permutation([1,2]), set([(1,2), (2,1)]))
+# res = tsa5_two(mp1, mp2, 1, False, False, 1)
+# print res
 

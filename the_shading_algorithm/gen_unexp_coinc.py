@@ -12,7 +12,7 @@ import sys
 import time
 import math
 
-from shade import *
+from tsa5_eq import tsa5_coincident
 
 perm_ids = TrieMap()
 def get_perm_id(perm):
@@ -68,21 +68,28 @@ class ShadingLemmaCoincifier(Coincifier):
     def __init__(self, mps):
         super(ShadingLemmaCoincifier, self).__init__(mps)
 
-    def coincify(self, maxdepth=3):
+    def coincify(self, maxdepth=3, multbox=True, q_check=True, force_len=None):
         cnt = len(self.mps)
         n = self.mps.n
 
         sys.stderr.write('Shading lemma coincifier\n')
         ProgressBar.create(len(self.mps))
-        for mp in self.mps:
+        for mpi, mp in enumerate(self.mps):
             ProgressBar.progress()
 
-            poss = []
-            for (i,j) in mp.non_pointless_boxes():
-                if (i,j) not in mp.mesh:
-                    if all_points_all_dir(mp, (i,j), maxdepth, cut=True):
-                        self.uf.unite(self.mps[mp], self.mps[mp.shade((i,j))])
-
+            if True:
+                for mpj in range(mpi+1, len(self.mps)):
+                    mp2 = self.mps[mpj]
+                    if self.uf.find(self.mps[mp]) != self.uf.find(self.mps[mp2]) and tsa5_coincident(mp, mp2, maxdepth, multbox=multbox, q_check=q_check, force_len=force_len):
+                        self.uf.unite(self.mps[mp], self.mps[mp2])
+            else:
+                poss = []
+                for (i,j) in mp.non_pointless_boxes():
+                    if (i,j) not in mp.mesh:
+                        # if all_points_all_dir(mp, (i,j), maxdepth, cut=True):
+                        mp2 = mp.shade((i,j))
+                        if self.uf.find(self.mps[mp]) != self.uf.find(self.mps[mp2]) and tsa5_coincident(mp, mp2, maxdepth, multbox=multbox, q_check=q_check, force_len=force_len):
+                            self.uf.unite(self.mps[mp], self.mps[mp2])
 
             #         for sh in mp.can_shade((i,j)):
             #             if simultaneous and (i,j) not in mp.mesh:
@@ -289,26 +296,29 @@ def supersets_of_mesh(n, mesh):
 
 
 
-# mps = MeshPatternSet(1, Permutation([1]))
-mps = MeshPatternSet(2, Permutation([1,2]))
+mps = MeshPatternSet(1, Permutation([1]))
+# mps = MeshPatternSet(2, Permutation([1,2]))
 # mps = MeshPatternSet(3, Permutation([1,2,3]))
 # mps = MeshPatternSet(3, Permutation([1,3,2]))
 
 # ------------------------ Run the shading algorithm ------------------------ #
 # Set the maximum depth = maximum number of points can be added
-maxdepth = 2
+maxdepth = 1
+multbox = True
+q_check = False
+force_len = 1
 
 # Set to true to take the closure of each class at the end
 with_closure = False
 
 coin = ShadingLemmaCoincifier(mps)
-# coin.coincify(maxdepth)
+coin.coincify(maxdepth, multbox=multbox, q_check=q_check, force_len=force_len)
 
-import cProfile
-cProfile.run('coin.coincify(maxdepth)')
-
-import sys
-sys.exit(0)
+# import cProfile
+# cProfile.run('coin.coincify(maxdepth)')
+#
+# import sys
+# sys.exit(0)
 
 if with_closure: coin.take_closure()
 # --------------------------------------------------------------------------- #
@@ -316,17 +326,17 @@ if with_closure: coin.take_closure()
 # ---------- Look for surprising coincidences ---------- #
 # Upper bound (inclusive) on the length of permutations to look for surprising
 # coincidences
-# perm_length = 8
-# coin.brute_coincify(perm_length)
+perm_length = 7
+coin.brute_coincify(perm_length)
 # ------------------------------------------------------ #
 
 
 # ------------------- Sanity check --------------------- #
 # Set to True to perform a sanity check
-san_check = False
+san_check = True
 
 # Upper bound (inclusive) on the length of permutations to use for sanity check
-check_len = 6
+check_len = 0
 
 if san_check:
     uf = coin.uf
@@ -355,6 +365,14 @@ if san_check:
                             av.append(p)
                 if ans is None:
                     ans = av
+                if av != ans:
+                    print 'Noooooooooooooooo'
+                    print mps[0]
+                    print ''
+                    print mps[i]
+                    # for mp in [ mps[i] for i in v ]:
+                    #     print mp
+                    #     print ''
                 assert av == ans
 
     print(res)
