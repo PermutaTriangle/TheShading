@@ -1,6 +1,10 @@
 from permuta import *
 from permuta.misc import *
 
+# To try to prove that mesh patterns m1 and m2 are coincident, run tsa5_coincident(m1, m2, D), where D is a suitable depth.
+# Note that permuta [1] has to be installed.
+# [1]: https://github.com/PermutaTriangle/Permuta
+
 STR_ADJ = ["right-most","highest","left-most","lowest"]
 STR_ADJ2 = ["right","up","left","down"]
 
