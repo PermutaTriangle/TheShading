@@ -64,32 +64,16 @@ def tsa1(p, B, force, maxdepth, cut=False):
         if depth_cutoff == 0:
             return False
 
-        #print 'Calling dfs'
-        #print imp
-        #print putin
-        #print impxval, impyval
-
         # if putin contains no points, then we're done
         # otherwise, it contains at least one point
         for d in range(4):
-            # pick the east/north/west/south-most point
-            # print imp
-            # print putin
-            # print d
-            # print putin
-
 
             nxt = imp.add_point(putin,d)
             xval = [0] + impxval + [k+1]
             yval = [0] + impyval + [k+1]
-            # print xval, yval
-            # print perm, B[0]
-            # print perm[1:B[0]+1]
-            # print [(perm[B[0]]+perm[B[0]+1])/2.0]
-            # print perm[B[0]+1:-1]
+
             nxtxval = xval[1:putin[0]+1] + [(xval[putin[0]]+xval[putin[0]+1])/2.0] + xval[putin[0]+1:-1]
             nxtyval = yval[1:putin[1]+1] + [(yval[putin[1]]+yval[putin[1]+1])/2.0] + yval[putin[1]+1:-1]
-            # print nxtperm
 
             with msg([
                     (CONSIDER_POINT, STR_ADJ[d], putin[0], putin[1]),
@@ -109,19 +93,8 @@ def tsa1(p, B, force, maxdepth, cut=False):
                     if not (Perm.to_standard(hereperm) == p.pattern):
                         continue
 
-                    #print occ
-                    # print hereperm
-
                     sub = nxt.sub_mesh_pattern([ x for x in occ ])
                     add = p.shading - sub.shading
-                    # print add
-
-                    # print sub
-                    #print herexval
-                    #print hereyval
-                    #print add
-
-                    print(p)
 
                     if len(add) == 0:
                         if force[1] == 0 and herexval[force[0]] > force[0]+1:
@@ -146,10 +119,6 @@ def tsa1(p, B, force, maxdepth, cut=False):
                         continue
 
                     add = list(add)[0]
-                    # print add
-                    # print occ
-                    # print sub
-                    # print putin, herexval
 
                     if force[1] == 0 and herexval[force[0]] <= force[0]+1:
                         continue
@@ -199,17 +168,17 @@ def tsa1(p, B, force, maxdepth, cut=False):
     dfs(p, B, [ i+1 for i in range(k) ], [ i+1 for i in range(k) ], set([tuple(p.pattern)]), maxdepth)
     return [ [ MSGS[t[0]][1].format(*t[1:]) for t in ts ] for ts in traces ]
 
-def all_points_all_dir(mp, B, maxdepth, cut=False):
+def all_points_all_dir(meshpatt, box, maxdepth, cut=False):
     """
     Args:
-        mp: <permuta.MeshPatt>
-        B: tuple(<numbers.Integral>, <numbers.Integral>)
+        meshpatt: <permuta.MeshPatt>
+        box: tuple(<numbers.Integral>, <numbers.Integral>)
         maxdepth: <numbers.Integral>
     """
     all_traces = []
     for i in range(len(mp.pattern)):
         for d in range(4):
-            all_traces += tsa1(mp, B, (i,d), maxdepth, cut=cut)
+            all_traces += tsa1(mp, box, (i, d), maxdepth, cut=cut)
             if cut and all_traces: return all_traces
     return all_traces
 
