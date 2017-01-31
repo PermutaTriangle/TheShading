@@ -93,7 +93,7 @@ def tsa1(p, B, force, maxdepth, cut=False):
                     if not (Perm.to_standard(hereperm) == p.pattern):
                         continue
 
-                    sub = nxt.sub_mesh_pattern([ x for x in occ ])
+                    sub = nxt.sub_mesh_pattern([x for x in occ ])
                     add = p.shading - sub.shading
 
                     if len(add) == 0:
@@ -176,9 +176,9 @@ def all_points_all_dir(meshpatt, box, maxdepth, cut=False):
         maxdepth: <numbers.Integral>
     """
     all_traces = []
-    for i in range(len(mp.pattern)):
+    for i in range(len(meshpatt.pattern)):
         for d in range(4):
-            all_traces += tsa1(mp, box, (i, d), maxdepth, cut=cut)
+            all_traces += tsa1(meshpatt, box, (i, d), maxdepth, cut=cut)
             if cut and all_traces: return all_traces
     return all_traces
 
