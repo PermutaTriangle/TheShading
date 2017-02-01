@@ -24,7 +24,7 @@ class TSAResult:
         return TSAResult(TSAResult.NO_CONTRADICTION, *args)
 
     def __repr__(self):
-        return 'TSAResult(%s, desc=%s, cases=%s)' % (
+        return 'TSAResult({}, desc={}, cases={})'.format(
                     repr(self.res),
                     repr(self.desc),
                     repr(self.cases)
@@ -34,7 +34,7 @@ class TSAResult:
         pad = '    '*indent
         res = []
         if self.desc is not None:
-            outp = 'Case %s: %s' % (case, self.desc)
+            outp = 'Case {}: {}'.format(case, self.desc)
             res.append('\n'.join([ pad + line for line in outp.split('\n') ]))
         for c in range(len(self.cases)):
             if len(self.cases) == 1:
@@ -42,7 +42,7 @@ class TSAResult:
             else:
                 if c != 0:
                     res.append(pad + '    ----------')
-                res.append(self.cases[c]._output(case + '.%d' % (c+1), indent+1))
+                res.append(self.cases[c]._output(case + '.{}'.format(c+1), indent+1))
         return ''.join( s + '\n' for s in res )
 
     def __str__(self):
@@ -50,8 +50,17 @@ class TSAResult:
 
 class TSA:
     def __init__(self, p, q, depth):
+        """
+        Args:
+            p: <permuta.MeshPatt>
+                The original mesh pattern.
+            q: <permuta.MeshPatt>
+                The mesh pattern we want to obain.
+            depth: <numbers.Integral>
+                Maximum depth for the reccurrence tree.
+        """
         # TODO: clean up
-        # TODO: assertions
+        # TODO: throw exceptions
 
         if q.shading <= p.shading:
             p,q = q,p
@@ -70,7 +79,7 @@ class TSA:
         if len(boxes) == 1:
             desc = None
         else:
-            desc = 'Now we have %d case(s)' % len(boxes)
+            desc = 'Now we have {} case(s)'.format(len(boxes))
         cases = []
         all = True
         shaded = set()
@@ -221,16 +230,22 @@ class TSA:
             for d in range(4):
                 res = self.run_specific((i,d))
                 if res.res == TSAResult.CONTRADICTION:
-                    return TSAResult.contradiction('Choose the occurrence of the pattern p where the point (%d,%d) is %s' % (i, self.p.pattern[i], STR_ADJ[d]), [res])
+                    return TSAResult.contradiction('Choose the occurrence of the pattern p where the point ({},{}) is {}'.format(i, self.p.pattern[i], STR_ADJ[d]), [res])
         return TSAResult.no_contradiction()
 
     def run(self):
         return self.tsa2()
 
-def tsa2(mp, shade, depth):
+def tsa2(mp, box, depth):
+    """
+    Args:
+        meshpatt: <permuta.MeshPatt>
+        box: tuple(<numbers.Integral>, <numbers.Integral>)
+        depth: <numbers.Integral>
+    """
     print(mp)
-    print('shade', shade)
-    mp2 = mp.shade(shade)
+    print('Box(es) to shade', box)
+    mp2 = mp.shade(box)
     tsa = TSA(mp, mp2, depth)
     return tsa.run()
 
