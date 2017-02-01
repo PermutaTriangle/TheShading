@@ -236,17 +236,17 @@ class TSA:
     def run(self):
         return self.tsa2()
 
-def tsa2(mp, box, depth):
+def tsa2(meshpatt, box, depth):
     """
     Args:
         meshpatt: <permuta.MeshPatt>
         box: tuple(<numbers.Integral>, <numbers.Integral>)
         depth: <numbers.Integral>
     """
-    print(mp)
+    print(meshpatt)
     print('Box(es) to shade', box)
-    mp2 = mp.shade(box)
-    tsa = TSA(mp, mp2, depth)
+    meshpatt2 = meshpatt.shade(box)
+    tsa = TSA(meshpatt, meshpatt2, depth)
     return tsa.run()
 
 if __name__ == '__main__':
