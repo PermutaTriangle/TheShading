@@ -1,13 +1,12 @@
 # coding: utf-8
 
 from permuta import (
-    Permutation,
-    Permutations,
-    MeshPattern,
-    MeshPatterns,
+    Perm,
+    PermSet,
+    MeshPatt,
+    gen_meshpatts
 )
-from permuta.misc import UnionFind, subsets, ProgressBar, TrieMap
-from permuta.math import factorial
+from permuta.misc import UnionFind, subsets, ProgressBar, TrieMap, factorial
 import sys
 import time
 import math
@@ -27,7 +26,7 @@ def get_perm_class_id(perm_class):
         perm_class_ids[perm_class] = len(perm_class_ids)
     return perm_class_ids[perm_class]
 
-class MeshPatternSet(object):
+class MeshPattSet(object):
     def __init__(self, n, patt=None):
         self.n = n
         self.patt = patt
@@ -37,7 +36,7 @@ class MeshPatternSet(object):
 
         sys.stderr.write('Generating mesh patterns\n')
         ProgressBar.create(2**((n+1)*(n+1)) * (factorial(n) if patt is None else 1))
-        for i,mp in enumerate(MeshPatterns(n, patt)):
+        for i, mp in enumerate(gen_meshpatts(n, patt)):
             ProgressBar.progress()
             self.mps.append(mp)
             self.idx[mp] = i
@@ -47,7 +46,7 @@ class MeshPatternSet(object):
         return self.idx[mp]
 
     def __getitem__(self, v):
-        if type(v) is MeshPattern:
+        if type(v) is MeshPatt:
             return self.get_id(v)
         else:
             return self.mps[v]
@@ -85,7 +84,7 @@ class ShadingLemmaCoincifier(Coincifier):
             else:
                 poss = []
                 for (i,j) in mp.non_pointless_boxes():
-                    if (i,j) not in mp.mesh:
+                    if (i,j) not in mp.shading:
                         # if all_points_all_dir(mp, (i,j), maxdepth, cut=True):
                         mp2 = mp.shade((i,j))
                         if self.uf.find(self.mps[mp]) != self.uf.find(self.mps[mp2]) and tsa5_coincident(mp, mp2, maxdepth, multbox=multbox, q_check=q_check, force_len=force_len):
@@ -148,9 +147,9 @@ class ShadingLemmaCoincifier(Coincifier):
                         if i == j:
                             continue
                         mp = self.mps[j]
-                        if mp_cur.mesh <= mp.mesh:
+                        if mp_cur.shading <= mp.shading:
                             is_maximal = False
-                        if mp.mesh <= mp_cur.mesh:
+                        if mp.shading <= mp_cur.shading:
                             is_minimal = False
                     if is_maximal:
                         maxima.append(mp_cur)
@@ -159,8 +158,8 @@ class ShadingLemmaCoincifier(Coincifier):
 
                 for mn in minima:
                     for mx in maxima:
-                        if mn.mesh <= mx.mesh:
-                            for add in subsets(list(mx.mesh - mn.mesh)):
+                        if mn.shading <= mx.shading:
+                            for add in subsets(list(mx.shading - mn.shading)):
                                 mid = mn.shade(set(add))
                                 if self.uf.unite(self.mps[mn], self.mps[mid]):
                                     changed = True
@@ -174,34 +173,42 @@ class ShadingLemmaCoincifier(Coincifier):
         assert patt is not None
         cnt = len(self.mps)
         mesh_perms = {}
+        # TODO: Comment this SHIT ALL THE WAY TO THE MAX
 
         sys.stderr.write('Permutations of length %d\n' % l)
         ProgressBar.create(factorial(l))
-        for perm in Permutations(l):
+        # For each permutation
+        for perm in PermSet(l):
             ProgressBar.progress()
             poss = []
-            for res in containment(patt, perm):
-                con = set(res)
+            # for each occurrence of the perm in patt
+            for res in patt.occurrences_in(perm):
+                con = set(perm[i] for i in res)
+                # prefix sums for the number of occurrences containing each
+                # point, both columns and rows, leaving -1 for those that are
+                # in an occurrence
                 colcnt = 0
                 col = [-1]*len(perm)
-                for i,v in enumerate(perm):
+                for v in perm:
                     if v in con:
                         colcnt += 1
                     else:
-                        col[v-1] = colcnt
+                        col[v] = colcnt
                 rowcnt = 0
                 row = [-1]*len(perm)
                 for v in range(len(perm)):
-                    if v+1 in con:
+                    if v in con:
                         rowcnt += 1
                     else:
                         row[v] = rowcnt
+                # these are bad because why?
                 bad = set( (u,v) for u,v in zip(col,row) if u != -1 )
                 cur = set( (u,v) for u in range(len(patt)+1) for v in range(len(patt)+1) if (u,v) not in bad )
                 poss.append(cur)
 
             last = None
             maxima = []
+            # sort the set of sets of prefix sums of occurrences for each point not in an occurrence
             for cur in sorted(poss):
                 if cur == last:
                     continue
@@ -209,6 +216,7 @@ class ShadingLemmaCoincifier(Coincifier):
                 for other in poss:
                     if cur < other:
                         add = False
+                # pick out the maximal ones
                 if add:
                     maxima.append(cur)
                 last = cur
@@ -222,7 +230,7 @@ class ShadingLemmaCoincifier(Coincifier):
         max_shaded = {}
         for i in range(cnt):
             here = self.mps[i]
-            if self.uf.find(i) not in max_shaded or len(here.mesh) > len(max_shaded[self.uf.find(i)]):
+            if self.uf.find(i) not in max_shaded or len(here.shading) > len(max_shaded[self.uf.find(i)]):
                 max_shaded[self.uf.find(i)] = here
 
         cont = {}
@@ -235,7 +243,7 @@ class ShadingLemmaCoincifier(Coincifier):
             ProgressBar.progress()
             notcnt += 1
             # print(i, here)
-            for nxt in supersets_of_mesh(n+1, here.mesh):
+            for nxt in supersets_of_mesh(n+1, here.shading):
                 nxt = tuple(sorted(nxt))
                 if nxt in mesh_perms:
                     perms |= set(mesh_perms[nxt])
@@ -257,21 +265,21 @@ class ShadingLemmaCoincifier(Coincifier):
         for l in range(self.mps.n, max_len+1):
             last = self.brute_coincify_len(l, active)
 
-            print 'Surprising coincidences at length %d' % l
-            for _,v in last.items():
-                if len(v) >= 2:
-                    print(v)
+            # print('Surprising coincidences at length %d' % l)
+            # for _,v in last.items():
+                # if len(v) >= 2:
+                    # print(v)
 
-            ss = {}
-            for i in range(len(self.mps)):
-                ss.setdefault(self.uf.find(i),[])
-                ss[self.uf.find(i)].append(i)
+            # ss = {}
+            # for i in range(len(self.mps)):
+                # ss.setdefault(self.uf.find(i),[])
+                # ss[self.uf.find(i)].append(i)
 
-            for m in sorted(active):
-                print 'Group', m
-                for t in ss[self.uf.find(m)]:
-                    print(self.mps[t])
-                    print ""
+            # for m in sorted(active):
+                # print('Group', m)
+                # for t in ss[self.uf.find(m)]:
+                    # print(self.mps[t])
+                    # print()
 
 def containment(patt, perm):
     def con(i, now):
@@ -279,7 +287,7 @@ def containment(patt, perm):
             yield now
         elif i < len(perm):
             nxt = now + [perm[i]]
-            if Permutation.to_standard(nxt) == Permutation.to_standard(patt[:len(nxt)]):
+            if Perm.to_standard(nxt) == Perm.to_standard(patt[:len(nxt)]):
                 for res in con(i+1, nxt):
                     yield res
             for res in con(i+1, now):
@@ -292,14 +300,14 @@ def supersets_of_mesh(n, mesh):
     for sub in subsets(left):
         yield (mesh | set(sub))
 
-# print MeshPattern(Permutation([1,2]),[]).non_pointless_boxes()
+# print MeshPatt(Perm([1,2]),[]).non_pointless_boxes()
 
 
 
-mps = MeshPatternSet(1, Permutation([1]))
-# mps = MeshPatternSet(2, Permutation([1,2]))
-# mps = MeshPatternSet(3, Permutation([1,2,3]))
-# mps = MeshPatternSet(3, Permutation([1,3,2]))
+# mps = MeshPattSet(1, Perm([0]))
+mps = MeshPattSet(2, Perm([0,1]))
+# mps = MeshPattSet(3, Perm([1,2,3]))
+# mps = MeshPattSet(3, Perm([1,3,2]))
 
 # ------------------------ Run the shading algorithm ------------------------ #
 # Set the maximum depth = maximum number of points can be added
@@ -312,7 +320,7 @@ force_len = 1
 with_closure = False
 
 coin = ShadingLemmaCoincifier(mps)
-coin.coincify(maxdepth, multbox=multbox, q_check=q_check, force_len=force_len)
+# coin.coincify(maxdepth, multbox=multbox, q_check=q_check, force_len=force_len)
 
 # import cProfile
 # cProfile.run('coin.coincify(maxdepth)')
@@ -353,23 +361,23 @@ if san_check:
         # print('{%s}' % ','.join(map(str,sorted(v))))
 
         if len(v) > 1:
-            print 'Sanity checking the class  %s' %v
+            print('Sanity checking the class  %s' %v)
             # Sanity check: make sure patterns in the same group are avoided by the same permutations
             ans = None
             for i in v:
                 mp = mps[i]
                 av = []
                 for l in range(1,check_len+1):
-                    for p in Permutations(l):
+                    for p in PermSet(l):
                         if p.avoids(mp):
                             av.append(p)
                 if ans is None:
                     ans = av
                 if av != ans:
-                    print 'Noooooooooooooooo'
-                    print mps[0]
-                    print ''
-                    print mps[i]
+                    print('Noooooooooooooooo')
+                    print(mps[0])
+                    print('')
+                    print(mps[i])
                     # for mp in [ mps[i] for i in v ]:
                     #     print mp
                     #     print ''
