@@ -68,6 +68,7 @@ def brute_coincify_len(l, active, contsets, singles):
     assert patt is not None
     cnt = len(mps)
     mesh_perms = {}
+    perm_ids = TrieMap()
 
     sys.stderr.write('Permutations of length %d\n' % l)
     ProgressBar.create(factorial(l))
@@ -124,14 +125,14 @@ def brute_coincify_len(l, active, contsets, singles):
     cont = {}
     notcnt = 0
     sys.stderr.write('Compare mesh patterns with occurrences, active = %d\n' % len(active))
-    # ProgressBar.create(sum(map(len, active)))
+    ProgressBar.create(sum(map(len, active)))
 
     # For each active class
     conts = {}
     for (mpatts, contset) in zip(active, contsets):
         # print(mpatts, contset)
         for i in mpatts:
-            # ProgressBar.progress()
+            ProgressBar.progress()
             perms = set()
             for (maxi, ps) in mesh_perms.items():
                 if mps[i].shading <= set(maxi):
@@ -149,7 +150,7 @@ def brute_coincify_len(l, active, contsets, singles):
 
     # print(cont)
 
-    # ProgressBar.finish()
+    ProgressBar.finish()
     nowactive = []
     nowcontset = []
     # print(cont)
@@ -199,22 +200,30 @@ mps = MeshPattSet(2, Perm([0,1]))
 # ---------- Look for surprising coincidences ---------- #
 # Upper bound (inclusive) on the length of permutations to look for surprising
 # coincidences
-perm_length = 6
+perm_length = 4
 classes, singleclasses = brute_coincify(perm_length)
+print()
+print('# Number of surprising coincidence classes {}'.format(len(classes) + len(singleclasses)))
+print('# Number of non-singleton coincidence classes {}'.format(len(classes)))
+print()
 
 # ------------------- Sanity check --------------------- #
-classes.extend([i] for i in singleclasses)
+classes.extend([[i] for i in singleclasses])
 # Set to True to perform a sanity check
-san_check = True
+san_check = False
+print_classes = True
 
 # Upper bound (inclusive) on the length of permutations to use for sanity check
-check_len = 4
+check_len = 7
 
-def san_checker():
+def internal_san_checker():
+    avoiding = []
     cnt = len(mps)
+    sys.stderr.write("Starting internal sanity check with {} classes.\n".format(len(classes)))
+    ProgressBar.create(len(classes))
     for clas in classes:
-        if len(clas) < 2:
-            break
+        # if len(clas) < 2:
+            # break
         print('Sanity checking the class  %s' % str(clas))
         for l in range(1, check_len+1):
             for p in PermSet(l):
@@ -231,8 +240,34 @@ def san_checker():
                         print(mps[i])
                         return
                     last = av
+        ProgressBar.progress()
+    ProgressBar.finish()
+    print("Sanity check completed.")
+
+def external_san_checker():
+    for i in range(len(classes)):
+        for j in range(i + 1, len(classes)):
+            differ = False
+            for l in range(1, check_len+1):
+                for p in PermSet(l):
+                    if p.avoids(classes[i][0]) != p.avoids(classes[j][0]):
+                        differ = True
+                        break
+                if differ:
+                    break
+            if not differ:
+                print('Noooooooooooooo')
+                print(classes[i])
+                print()
+                print(classes[j])
+
 
 if san_check:
-    san_checker()
+    internal_san_checker()
+    # external_san_checker()
+
+if print_classes:
+    for clas in classes:
+        print(clas)
 
 # ------------------------------------------------------ #
