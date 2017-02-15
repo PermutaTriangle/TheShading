@@ -37,6 +37,9 @@ class MeshPattSet(object):
         sys.stderr.write('Generating mesh patterns\n')
         ProgressBar.create(2**((n+1)*(n+1)) * (factorial(n) if patt is None else 1))
         for i, mp in enumerate(gen_meshpatts(n, patt)):
+            # print(i)
+            # print(mp)
+            # print()
             ProgressBar.progress()
             self.mps.append(mp)
             self.idx[mp] = i
@@ -59,7 +62,7 @@ class MeshPattSet(object):
             yield mp
 
 
-def brute_coincify_len(l, active, contsets):
+def brute_coincify_len(l, active, contsets, singles):
     n = mps.n
     patt = mps.patt
     assert patt is not None
@@ -121,13 +124,14 @@ def brute_coincify_len(l, active, contsets):
     cont = {}
     notcnt = 0
     sys.stderr.write('Compare mesh patterns with occurrences, active = %d\n' % len(active))
-    ProgressBar.create(sum(map(len, active)))
+    # ProgressBar.create(sum(map(len, active)))
 
     # For each active class
     conts = {}
     for (mpatts, contset) in zip(active, contsets):
+        # print(mpatts, contset)
         for i in mpatts:
-            ProgressBar.progress()
+            # ProgressBar.progress()
             perms = set()
             for (maxi, ps) in mesh_perms.items():
                 if mps[i].shading <= set(maxi):
@@ -138,25 +142,34 @@ def brute_coincify_len(l, active, contsets):
             cont.setdefault(permid_vec, [])
             cont[permid_vec].append(i)
 
+            # if i == 4:
+                # print(permset_id, permid_vec)
+                # print(cont[permid_vec])
+                # print(mps[i])
+
     # print(cont)
 
-    ProgressBar.finish()
+    # ProgressBar.finish()
     nowactive = []
     nowcontset = []
+    # print(cont)
 
     for cs, v in cont.items():
         if len(v) > 1:
             nowactive.append(v)
             nowcontset.append(cs)
+        else:
+            singles.append(v[0])
     return (nowactive, nowcontset)
 
 def brute_coincify(max_len):
     # active = set([ i for i in range(len(mps)) ])
     active = [list(range(len(mps)))]
     contsets = [ tuple() ]
+    singles = []
     for l in range(mps.n, max_len+1):
-        (active, contset) = brute_coincify_len(l, active, contsets)
-    return active
+        active, contsets = brute_coincify_len(l, active, contsets, singles)
+    return (active, singles)
 
         # print(active)
 
@@ -186,19 +199,22 @@ mps = MeshPattSet(2, Perm([0,1]))
 # ---------- Look for surprising coincidences ---------- #
 # Upper bound (inclusive) on the length of permutations to look for surprising
 # coincidences
-perm_length = 4
-classes = brute_coincify(perm_length)
+perm_length = 6
+classes, singleclasses = brute_coincify(perm_length)
 
 # ------------------- Sanity check --------------------- #
+classes.extend([i] for i in singleclasses)
 # Set to True to perform a sanity check
 san_check = True
 
 # Upper bound (inclusive) on the length of permutations to use for sanity check
-check_len = 7
+check_len = 4
 
 def san_checker():
     cnt = len(mps)
     for clas in classes:
+        if len(clas) < 2:
+            break
         print('Sanity checking the class  %s' % str(clas))
         for l in range(1, check_len+1):
             for p in PermSet(l):
