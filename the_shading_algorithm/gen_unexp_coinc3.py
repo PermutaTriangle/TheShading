@@ -13,17 +13,21 @@ import math
 
 global mps
 
-perm_ids = TrieMap()
+perm_ids = dict()
+
 def get_perm_id(perm):
     if perm not in perm_ids:
         perm_ids[perm] = len(perm_ids)
+        # perm_ids_dict[perm] = perm_ids[perm]
     return perm_ids[perm]
 
-perm_class_ids = TrieMap()
+perm_class_ids = dict()
+
 def get_perm_class_id(perm_class):
     # TODO: use perm_id for this as well? o.O
     if perm_class not in perm_class_ids:
         perm_class_ids[perm_class] = len(perm_class_ids)
+        # perm_class_ids_dict[perm_class] = perm_class_ids[perm_class]
     return perm_class_ids[perm_class]
 
 class MeshPattSet(object):
@@ -37,9 +41,6 @@ class MeshPattSet(object):
         sys.stderr.write('Generating mesh patterns\n')
         ProgressBar.create(2**((n+1)*(n+1)) * (factorial(n) if patt is None else 1))
         for i, mp in enumerate(gen_meshpatts(n, patt)):
-            # print(i)
-            # print(mp)
-            # print()
             ProgressBar.progress()
             self.mps.append(mp)
             self.idx[mp] = i
@@ -68,6 +69,8 @@ def brute_coincify_len(l, active, contsets, singles):
     assert patt is not None
     cnt = len(mps)
     mesh_perms = {}
+    perm_ids = dict()
+    perm_class_ids = dict()
 
     sys.stderr.write('Permutations of length %d\n' % l)
     ProgressBar.create(factorial(l))
@@ -124,32 +127,25 @@ def brute_coincify_len(l, active, contsets, singles):
     cont = {}
     notcnt = 0
     sys.stderr.write('Compare mesh patterns with occurrences, active = %d\n' % len(active))
-    # ProgressBar.create(sum(map(len, active)))
+    ProgressBar.create(sum(map(len, active)))
 
     # For each active class
     conts = {}
     for (mpatts, contset) in zip(active, contsets):
         # print(mpatts, contset)
         for i in mpatts:
-            # ProgressBar.progress()
+            ProgressBar.progress()
             perms = set()
             for (maxi, ps) in mesh_perms.items():
                 if mps[i].shading <= set(maxi):
                     # print(maxi, mps[i].shading, ps)
                     perms |= set(ps)
-            permset_id = get_perm_class_id(sorted(perms))
+            permset_id = get_perm_class_id(tuple(sorted(perms)))
             permid_vec = contset + (permset_id,)
             cont.setdefault(permid_vec, [])
             cont[permid_vec].append(i)
 
-            # if i == 4:
-                # print(permset_id, permid_vec)
-                # print(cont[permid_vec])
-                # print(mps[i])
-
-    # print(cont)
-
-    # ProgressBar.finish()
+    ProgressBar.finish()
     nowactive = []
     nowcontset = []
     # print(cont)
@@ -171,19 +167,6 @@ def brute_coincify(max_len):
         active, contsets = brute_coincify_len(l, active, contsets, singles)
     return (active, singles)
 
-        # print(active)
-
-        # print('Surprising coincidences at length %d' % l)
-        # for _,v in last.items():
-            # if len(v) >= 2:
-                # print(v)
-
-        # for m in sorted(active):
-            # print('Group', m)
-            # for t in ss[self.uf.find(m)]:
-                # print(self.mps[t])
-                # print()
-
 def supersets_of_mesh(n, mesh):
     left = [ (i,j) for i in range(n) for j in range(n) if (i,j) not in mesh ]
     for sub in subsets(left):
@@ -192,29 +175,37 @@ def supersets_of_mesh(n, mesh):
 
 # --------------------------------------------------------------------------- #
 # mps = MeshPattSet(1, Perm([0]))
-mps = MeshPattSet(2, Perm([0,1]))
-# mps = MeshPattSet(3, Perm([0,1,2]))
+# mps = MeshPattSet(2, Perm([0,1]))
+mps = MeshPattSet(3, Perm([0,1,2]))
 # mps = MeshPattSet(3, Perm([0,2,1]))
 
 # ---------- Look for surprising coincidences ---------- #
 # Upper bound (inclusive) on the length of permutations to look for surprising
 # coincidences
-perm_length = 6
+perm_length = 5
 classes, singleclasses = brute_coincify(perm_length)
+print()
+print('# Number of surprising coincidence classes {}'.format(len(classes) + len(singleclasses)))
+print('# Number of non-singleton coincidence classes {}'.format(len(classes)))
+print()
 
 # ------------------- Sanity check --------------------- #
-classes.extend([i] for i in singleclasses)
+classes.extend([[i] for i in singleclasses])
 # Set to True to perform a sanity check
 san_check = True
+print_classes = True
 
 # Upper bound (inclusive) on the length of permutations to use for sanity check
-check_len = 4
+check_len = 5
 
-def san_checker():
+def internal_san_checker():
+    avoiding = []
     cnt = len(mps)
+    sys.stderr.write("Starting internal sanity check with {} classes.\n".format(len(classes)))
+    ProgressBar.create(len(classes))
     for clas in classes:
-        if len(clas) < 2:
-            break
+        # if len(clas) < 2:
+            # break
         print('Sanity checking the class  %s' % str(clas))
         for l in range(1, check_len+1):
             for p in PermSet(l):
@@ -231,8 +222,34 @@ def san_checker():
                         print(mps[i])
                         return
                     last = av
+        ProgressBar.progress()
+    ProgressBar.finish()
+    print("Sanity check completed.")
+
+def external_san_checker():
+    for i in range(len(classes)):
+        for j in range(i + 1, len(classes)):
+            differ = False
+            for l in range(1, check_len+1):
+                for p in PermSet(l):
+                    if p.avoids(classes[i][0]) != p.avoids(classes[j][0]):
+                        differ = True
+                        break
+                if differ:
+                    break
+            if not differ:
+                print('Noooooooooooooo')
+                print(classes[i])
+                print()
+                print(classes[j])
+
 
 if san_check:
-    san_checker()
+    internal_san_checker()
+    # external_san_checker()
+
+# if print_classes:
+    # for clas in classes:
+        # print(clas)
 
 # ------------------------------------------------------ #
