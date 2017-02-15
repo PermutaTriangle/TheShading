@@ -181,12 +181,9 @@ class ShadingLemmaCoincifier(Coincifier):
         for perm in PermSet(l):
             ProgressBar.progress()
             poss = []
-            # for each occurrence of the perm in patt
+            # loop over the occurrences of the underlying pattern exactly once
             for res in patt.occurrences_in(perm):
                 con = set(perm[i] for i in res)
-                # prefix sums for the number of occurrences containing each
-                # point, both columns and rows, leaving -1 for those that are
-                # in an occurrence
                 colcnt = 0
                 col = [-1]*len(perm)
                 for v in perm:
@@ -201,14 +198,15 @@ class ShadingLemmaCoincifier(Coincifier):
                         rowcnt += 1
                     else:
                         row[v] = rowcnt
-                # these are bad because why?
+                # bad is the set of boxes that contain points and can not be shaded
                 bad = set( (u,v) for u,v in zip(col,row) if u != -1 )
+                # cur is the set of boxes that can be shaded
                 cur = set( (u,v) for u in range(len(patt)+1) for v in range(len(patt)+1) if (u,v) not in bad )
                 poss.append(cur)
 
             last = None
             maxima = []
-            # sort the set of sets of prefix sums of occurrences for each point not in an occurrence
+            # compute the maximal sets of boxes that can be shaded
             for cur in sorted(poss):
                 if cur == last:
                     continue
@@ -220,6 +218,8 @@ class ShadingLemmaCoincifier(Coincifier):
                 if add:
                     maxima.append(cur)
                 last = cur
+            # for each maximal set, append the permutation to the list of containing permutations
+            # any subset of the maximal set is then also contained in the permutation
             perm_id = get_perm_id(perm)
             for m in maxima:
                 m = tuple(sorted(m))
@@ -227,28 +227,34 @@ class ShadingLemmaCoincifier(Coincifier):
                 mesh_perms[m].append(perm_id)
         ProgressBar.finish()
 
-        max_shaded = {}
-        for i in range(cnt):
-            here = self.mps[i]
-            if self.uf.find(i) not in max_shaded or len(here.shading) > len(max_shaded[self.uf.find(i)]):
-                max_shaded[self.uf.find(i)] = here
+        # find the maximally shaded mesh pattern in each component
+        # max_shaded = {}
+        # for i in range(cnt):
+            # here = self.mps[i]
+            # if self.uf.find(i) not in max_shaded or len(here.shading) > len(max_shaded[self.uf.find(i)]):
+                # max_shaded[self.uf.find(i)] = here
 
         cont = {}
         notcnt = 0
         sys.stderr.write('Brute supersets, active = %d\n' % len(active))
         ProgressBar.create(len(active))
+        # For each active component
         for i in active:
             perms = set()
-            here = max_shaded[i]
+            #here = max_shaded[i] # maximum shaded one in the component
+            here = self.mps[i]
             ProgressBar.progress()
             notcnt += 1
             # print(i, here)
+            # for every superset of the maximum shaded one in the component
             for nxt in supersets_of_mesh(n+1, here.shading):
                 nxt = tuple(sorted(nxt))
+                # gather all permutations that contain this maximum shaded mesh pattern
                 if nxt in mesh_perms:
                     perms |= set(mesh_perms[nxt])
-            # print(i, perms)
-            # perms = tuple([ tuple(p) for p in sorted(perms) ])
+
+            # get id of the permutation class and append the active component
+            # to the list of components that contain the class
             perms_id = get_perm_class_id(sorted(perms))
             cont.setdefault(perms_id, [])
             cont[perms_id].append(i)
@@ -261,14 +267,15 @@ class ShadingLemmaCoincifier(Coincifier):
 
     def brute_coincify(self, max_len):
         # self.coincify_len(max_len)
-        active = set([ i for i in range(len(self.mps)) if i == self.uf.find(i) ])
+        # active = set([ i for i in range(len(self.mps)) if i == self.uf.find(i) ])
+        active = set([ i for i in range(len(self.mps)) ])
         for l in range(self.mps.n, max_len+1):
             last = self.brute_coincify_len(l, active)
 
-            # print('Surprising coincidences at length %d' % l)
-            # for _,v in last.items():
-                # if len(v) >= 2:
-                    # print(v)
+            print('Surprising coincidences at length %d' % l)
+            for _,v in last.items():
+                if len(v) >= 2:
+                    print(v)
 
             # ss = {}
             # for i in range(len(self.mps)):
@@ -281,55 +288,18 @@ class ShadingLemmaCoincifier(Coincifier):
                     # print(self.mps[t])
                     # print()
 
-def containment(patt, perm):
-    def con(i, now):
-        if len(now) == len(patt):
-            yield now
-        elif i < len(perm):
-            nxt = now + [perm[i]]
-            if Perm.to_standard(nxt) == Perm.to_standard(patt[:len(nxt)]):
-                for res in con(i+1, nxt):
-                    yield res
-            for res in con(i+1, now):
-                yield res
-    for res in con(0, []):
-        yield res
-
 def supersets_of_mesh(n, mesh):
     left = [ (i,j) for i in range(n) for j in range(n) if (i,j) not in mesh ]
     for sub in subsets(left):
         yield (mesh | set(sub))
-
-# print MeshPatt(Perm([1,2]),[]).non_pointless_boxes()
-
-
 
 # mps = MeshPattSet(1, Perm([0]))
 mps = MeshPattSet(2, Perm([0,1]))
 # mps = MeshPattSet(3, Perm([1,2,3]))
 # mps = MeshPattSet(3, Perm([1,3,2]))
 
-# ------------------------ Run the shading algorithm ------------------------ #
-# Set the maximum depth = maximum number of points can be added
-maxdepth = 1
-multbox = True
-q_check = False
-force_len = 1
-
-# Set to true to take the closure of each class at the end
-with_closure = False
-
-coin = ShadingLemmaCoincifier(mps)
-# coin.coincify(maxdepth, multbox=multbox, q_check=q_check, force_len=force_len)
-
-# import cProfile
-# cProfile.run('coin.coincify(maxdepth)')
-#
-# import sys
-# sys.exit(0)
-
-if with_closure: coin.take_closure()
 # --------------------------------------------------------------------------- #
+coin = ShadingLemmaCoincifier()
 
 # ---------- Look for surprising coincidences ---------- #
 # Upper bound (inclusive) on the length of permutations to look for surprising
