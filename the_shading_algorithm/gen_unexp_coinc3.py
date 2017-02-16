@@ -133,6 +133,11 @@ def brute_coincify_len(l, active, contsets, singles):
     conts = {}
     for (mpatts, contset) in zip(active, contsets):
         # print(mpatts, contset)
+
+        # We monitor whether the class will split or not
+        class_splits = False
+        cur_perms = None
+        all_perms = {}
         for i in mpatts:
             ProgressBar.progress()
             perms = set()
@@ -192,11 +197,12 @@ print()
 # ------------------- Sanity check --------------------- #
 classes.extend([[i] for i in singleclasses])
 # Set to True to perform a sanity check
-san_check = True
+san_check = False
 print_classes = True
+print_singleclasses = False
 
 # Upper bound (inclusive) on the length of permutations to use for sanity check
-check_len = 5
+check_len = 7
 
 def internal_san_checker():
     avoiding = []
@@ -204,8 +210,8 @@ def internal_san_checker():
     sys.stderr.write("Starting internal sanity check with {} classes.\n".format(len(classes)))
     ProgressBar.create(len(classes))
     for clas in classes:
-        # if len(clas) < 2:
-            # break
+        if len(clas) < 2:
+            continue
         print('Sanity checking the class  %s' % str(clas))
         for l in range(1, check_len+1):
             for p in PermSet(l):
@@ -248,8 +254,16 @@ if san_check:
     internal_san_checker()
     # external_san_checker()
 
-# if print_classes:
-    # for clas in classes:
-        # print(clas)
+if print_classes:
+    for clas in classes:
+        if len(clas) < 2:
+            continue
+        print(clas)
+
+if print_singleclasses:
+    for clas in singleclasses:
+        if len(clas) > 1:
+            continue
+        print(clas)
 
 # ------------------------------------------------------ #
