@@ -21,12 +21,13 @@ def shading_lemma(mpatt1, mpatt2):
     return mpatt1.can_shade(symdiff.pop())
 
 class ExpClass(object):
-    def __init__(self, patts, classical_pattern):
+    def __init__(self, patts, classical_pattern, active):
         self.idmap = dict()
         self.pattrank = patts
         self.adj = [ [] for _ in range(len(patts)) ]
         self.patts = [ MeshPatt.unrank(classical_pattern, n) for n in patts ]
         self.len = len(patts)
+        self.active = active
         for patt in patts:
             if patt not in self.idmap:
                 self.idmap[patt] = len(self.idmap)
@@ -46,21 +47,50 @@ class ExpClass(object):
     def add_edge(self, mpatt1, mpatt2, edgetype):
         self.adj[self.idmap[mpatt1]].append((self.idmap[mpatt2], edgetype))
 
-    def dfs(self, root):
+    def dfs(self, root, adj):
         stack = deque()
         stack.append(root)
         visited = set()
+        visited.add(root)
         while len(stack):
             cur = stack.pop()
             visited.add(cur)
-            for (nbr, etype) in self.adj[cur]:
+            for (nbr, etype) in adj[cur]:
                 if nbr not in visited:
                     visited.add(nbr)
                     stack.append(nbr)
         return visited
 
+    def scc(self):
+        rev = [ [] for i in range(len(self)) ]
+        for u in range(len(self)):
+            for (v,t) in self.adj[u]:
+                rev[v].append((u,t))
+        visited = set()
+        L = []
+        def visit(u):
+            visited.add(u)
+            for (v,t) in self.adj[u]:
+                if v not in visited:
+                    visit(v)
+            L.append(u)
+        for u in range(len(self)):
+            if u not in visited:
+                visit(u)
+        visited.clear()
+        # return len(dfs(L[0])) == self.len
+        L.reverse()
+        stack = []
+        components = []
+        for v in L:
+            if v not in visited:
+                comp = self.dfs(v, rev)
+                visited |= comp
+                components.append(list(comp))
+        return components
+
     def implies(self, i, j):
-        return j in self.dfs(i)
+        return j in self.dfs(i, self.adj)
 
     def compute_coinc(self, coincpred, oneway=True):
         for i in range(self.len):
@@ -89,6 +119,10 @@ class ExpClass(object):
 
     def output_class(self):
         res = str(self.pattrank) + '\n'
+        if len(self.scc()) == 1:
+            res += "inactive\n"
+        else:
+            res += "active\n"
         for i in range(self.len):
             for j in self.adj[i]:
                 res += "{} {}\n".format(self.pattrank[i], self.pattrank[j[0]])
@@ -107,8 +141,9 @@ def parse_classes(filename):
         linenum += 1
         while linenum < len(lines):
             assert(lines[linenum][0] == '[' and lines[linenum][-1] == ']')
-            curclass = ExpClass(eval(lines[linenum]), classical_pattern)
-            linenum += 1
+            assert(lines[linenum+1] == 'active' or lines[linenum+1] == 'inactive')
+            curclass = ExpClass(eval(lines[linenum]), classical_pattern, lines[linenum+1] == 'active')
+            linenum += 2
             while linenum < len(lines) and lines[linenum][0] != '[':
                 assert(lines[linenum][0] == '[' and lines[linenum][-1] == ']')
                 u, v = lines[linenum].split()
@@ -129,60 +164,17 @@ def main(argv):
         # if(len(clas) == 1):
         #     continue
         # print(clas)
-        clas.compute_coinc(subset_coincidence)
-        clas.compute_coinc(shading_lemma, False)
+        if clas.active:
+            clas.compute_coinc(subset_coincidence)
+            clas.compute_coinc(shading_lemma, False)
         res = clas.output_class()
         sys.stdout.write(res)
-        for i in range(len(clas)):
-            print("{}:".format(clas.pattrank[i]))
-            print(str(clas.patts[i]))
-            print()
+        # for i in range(len(clas)):
+        #     print("{}:".format(clas.pattrank[i]))
+        #     print(str(clas.patts[i]))
+        #     print()
 
-
-        # perm = f.readline().strip().split()
-        # assert len(perm) == 2 and perm[0] == 'perm'
-        # perm = Permutation(map(int, perm[1]), check=True)
-
-        # length = f.readline().strip().split()
-        # assert len(length) == 2 and length[0] == 'length'
-        # length = int(length[1])
-
-        # mp_cnt = 2**((len(perm) + 1) ** 2)
-        # uf = UnionFind(mp_cnt)
-        # assert f.readline().strip() == 'union find'
-        # for x, p in enumerate(map(int, f.readline().strip().split())):
-        #     uf.unite(x, p)
-
-        # assert f.readline().strip() == 'classes'
-        # while True:
-        #     cls = f.readline()
-        #     if cls == '':
-        #         break
-        #     cls = map(int, cls.strip().split())
-        #     classes.append(cls)
-
-    # global outfile
-    # outfile = 'surprising_%s.txt' % ''.join(map(str, perm))
-    # log('Writing output to %s' % outfile)
-    # outfile = open(outfile, 'w')
-
-    # outfile.write('perm %s\n' % ''.join(map(str, perm)))
-    # outfile.write('length %s\n' % length)
-
-    # params = []
-    # params.append((-1,False,False,0)) # Dummy params for shading lemma
-
-    # for depth in range(1, 9+1):
-    #     for multbox in [False,True]:
-    #         for q_check in [False,True]:
-    #             for force_len in range(1, len(perm)+1):
-    #                 params.append((depth, multbox, q_check, force_len))
-
-    # for par in params:
-    #     classes = classify(classes, perm, mp_cnt, uf, *par)
-
-    # outfile.close()
-    # return 0
+    return 0
 
 if __name__ == '__main__':
     sys.exit(main(sys.argv))

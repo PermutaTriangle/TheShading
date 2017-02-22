@@ -263,9 +263,11 @@ if print_classes:
         if len(clas) < 2:
             continue
         print(clas)
+        print("active")
 
 if print_singleclasses:
     for clas in singleclasses:
         print([clas])
+        print("inactive")
 
 # ------------------------------------------------------ #
