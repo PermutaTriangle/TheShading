@@ -1,0 +1,13 @@
+
+# Number of surprising coincidence classes 8
+# Number of non-singleton coincidence classes 1
+
+(0,)
+[0, 1, 2, 3, 4, 5, 8, 10, 12]
+[15]
+[6]
+[7]
+[14]
+[9]
+[11]
+[13]

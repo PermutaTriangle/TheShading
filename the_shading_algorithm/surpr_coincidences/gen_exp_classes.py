@@ -44,6 +44,7 @@ class MeshPattSet(object):
             ProgressBar.progress()
             self.mps.append(mp)
             self.idx[mp] = i
+            assert MeshPatt.unrank(patt, i) == mp
         ProgressBar.finish()
 
     def get_id(self, mp):
@@ -179,10 +180,12 @@ def supersets_of_mesh(n, mesh):
 
 
 # --------------------------------------------------------------------------- #
-# mps = MeshPattSet(1, Perm([0]))
-# mps = MeshPattSet(2, Perm([0,1]))
-mps = MeshPattSet(3, Perm([0,1,2]))
-# mps = MeshPattSet(3, Perm([0,2,1]))
+classpatt = Perm([0])
+# classpatt = Perm([0,1])
+# classpatt = Perm([0,1,2])
+# classpatt = Perm([0,2,1])
+
+mps = MeshPattSet(len(classpatt), classpatt)
 
 # ---------- Look for surprising coincidences ---------- #
 # Upper bound (inclusive) on the length of permutations to look for surprising
@@ -199,7 +202,7 @@ classes.extend([[i] for i in singleclasses])
 # Set to True to perform a sanity check
 san_check = False
 print_classes = True
-print_singleclasses = False
+print_singleclasses = True
 
 # Upper bound (inclusive) on the length of permutations to use for sanity check
 check_len = 7
@@ -255,6 +258,7 @@ if san_check:
     # external_san_checker()
 
 if print_classes:
+    print(tuple(classpatt))
     for clas in classes:
         if len(clas) < 2:
             continue
@@ -262,8 +266,6 @@ if print_classes:
 
 if print_singleclasses:
     for clas in singleclasses:
-        if len(clas) > 1:
-            continue
-        print(clas)
+        print([clas])
 
 # ------------------------------------------------------ #
