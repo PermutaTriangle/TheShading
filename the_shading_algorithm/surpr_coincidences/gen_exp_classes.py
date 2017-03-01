@@ -7,11 +7,13 @@ from permuta import (
     gen_meshpatts
 )
 from permuta.misc import UnionFind, subsets, ProgressBar, TrieMap, factorial
+from misc import shad_to_binary, is_subset
 import sys
 import time
 import math
 
-global mps
+mps = None
+classpatt = None
 
 perm_ids = dict()
 
@@ -63,10 +65,10 @@ class MeshPattSet(object):
         for mp in self.mps:
             yield mp
 
-
 def brute_coincify_len(l, active, contsets, singles):
-    n = mps.n
-    patt = mps.patt
+    global mps
+    global classpatt
+    patt = classpatt
     assert patt is not None
     cnt = len(mps)
     mesh_perms = {}
@@ -100,7 +102,7 @@ def brute_coincify_len(l, active, contsets, singles):
             bad = set( (u,v) for u,v in zip(col,row) if u != -1 )
             # cur is the set of boxes that can be shaded
             cur = set( (u,v) for u in range(len(patt)+1) for v in range(len(patt)+1) if (u,v) not in bad )
-            poss.append(cur)
+            poss.append(shad_to_binary(cur, len(patt) + 1))
 
         last = None
         maxima = []
@@ -110,7 +112,8 @@ def brute_coincify_len(l, active, contsets, singles):
                 continue
             add = True
             for other in poss:
-                if cur < other:
+                # if cur < other:
+                if is_subset(cur, other) and cur != other:
                     add = False
             # pick out the maximal ones
             if add:
@@ -120,7 +123,7 @@ def brute_coincify_len(l, active, contsets, singles):
         # any subset of the maximal set is then also contained in the permutation
         perm_id = get_perm_id(perm)
         for m in maxima:
-            m = tuple(sorted(m))
+            # m = tuple(sorted(m))
             mesh_perms.setdefault(m, [])
             mesh_perms[m].append(perm_id)
     ProgressBar.finish()
@@ -143,8 +146,9 @@ def brute_coincify_len(l, active, contsets, singles):
             ProgressBar.progress()
             perms = set()
             for (maxi, ps) in mesh_perms.items():
-                if mps[i].shading <= set(maxi):
-                    # print(maxi, mps[i].shading, ps)
+                # if mps[i].shading <= set(maxi):
+                if is_subset(mps[i], maxi):
+                # if mps[i].shading <= set(maxi):
                     perms |= set(ps)
             permset_id = get_perm_class_id(tuple(sorted(perms)))
             permid_vec = contset + (permset_id,)
@@ -167,9 +171,10 @@ def brute_coincify_len(l, active, contsets, singles):
 def brute_coincify(max_len):
     # active = set([ i for i in range(len(mps)) ])
     active = [list(range(len(mps)))]
+    # active = [list(range(len(mps)))]
     contsets = [ tuple() ]
     singles = []
-    for l in range(mps.n, max_len+1):
+    for l in range(len(classpatt), max_len+1):
         active, contsets = brute_coincify_len(l, active, contsets, singles)
     return (active, singles)
 
@@ -180,17 +185,18 @@ def supersets_of_mesh(n, mesh):
 
 
 # --------------------------------------------------------------------------- #
-classpatt = Perm([0])
-# classpatt = Perm([0,1])
+# classpatt = Perm([0])
+classpatt = Perm([0,1])
 # classpatt = Perm([0,1,2])
 # classpatt = Perm([0,2,1])
 
-mps = MeshPattSet(len(classpatt), classpatt)
+# mps = MeshPattSet(len(classpatt), classpatt)
+mps = [ i for i in range(2**((len(classpatt) + 1)**2))]
 
 # ---------- Look for surprising coincidences ---------- #
 # Upper bound (inclusive) on the length of permutations to look for surprising
 # coincidences
-perm_length = 5
+perm_length = 6
 classes, singleclasses = brute_coincify(perm_length)
 print()
 print('# Number of surprising coincidence classes {}'.format(len(classes) + len(singleclasses)))
@@ -200,12 +206,12 @@ print()
 # ------------------- Sanity check --------------------- #
 classes.extend([[i] for i in singleclasses])
 # Set to True to perform a sanity check
-san_check = False
-print_classes = True
-print_singleclasses = True
+san_check = True
+print_classes = False
+print_singleclasses = False
 
 # Upper bound (inclusive) on the length of permutations to use for sanity check
-check_len = 7
+check_len = 6
 
 def internal_san_checker():
     avoiding = []
@@ -221,12 +227,12 @@ def internal_san_checker():
                 last = None
                 for i in clas:
                     if last is None:
-                        last = p.avoids(mps[i])
+                        last = p.avoids(MeshPatt.unrank(classpatt, mps[i]))
                         continue
-                    av = p.avoids(mps[i])
+                    av = p.avoids(MeshPatt.unrank(classpatt, mps[i]))
                     if av != last:
                         print('Noooooooooooooooo')
-                        print(mps[i - 1])
+                        print(MeshPatt.unrank(classpatt, mps[i - 1]))
                         print('')
                         print(mps[i])
                         return
