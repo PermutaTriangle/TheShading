@@ -4,10 +4,14 @@
 #   - Graph datastructure for classes
 
 import sys
+import argparse
 from itertools import *
 from collections import deque
 
 from permuta import MeshPatt, Perm
+from tsa5_eq import tsa5_two as tsa5
+
+underlying_classical_pattern = None
 
 def subset_coincidence(mpatt1, mpatt2):
     return mpatt1.shading <= mpatt2.shading
@@ -19,6 +23,19 @@ def shading_lemma(mpatt1, mpatt2):
     if len(symdiff) != 1:
         return False
     return mpatt1.can_shade(symdiff.pop())
+
+def tsa5_wrapper(mpatt1, mpatt2, depth):
+    if len(mpatt1.shading) > len(mpatt2.shading):
+        return False
+    symdiff = set(mpatt1.shading ^ mpatt2.shading)
+    if len(symdiff) != 1:
+        return False
+    run = tsa5(mpatt1, symdiff.pop())
+    all = True
+    for r in run:
+        all = all and bool(r.force)
+
+    return all
 
 class ExpClass(object):
     def __init__(self, patts, classical_pattern, active):
@@ -78,7 +95,6 @@ class ExpClass(object):
             if u not in visited:
                 visit(u)
         visited.clear()
-        # return len(dfs(L[0])) == self.len
         L.reverse()
         stack = []
         components = []
@@ -92,87 +108,85 @@ class ExpClass(object):
     def implies(self, i, j):
         return j in self.dfs(i, self.adj)
 
-    def compute_coinc(self, coincpred, oneway=True):
+    def compute_coinc(self, coincpred, coincargs=(), oneway=True):
         for i in range(self.len):
-            for j in range(i + 1, self.len):
+            for j in range(self.len):
 
-                to, fro = self.implies(i, j), self.implies(j, i)
+                to = self.implies(i, j)
+                fro = self.implies(j, i)
 
-                if to and fro:
+                if to:
                     continue
 
                 mpatt1, mpatt2 = self.patts[i], self.patts[j]
 
-                coinc = coincpred(mpatt1, mpatt2)
+                coinc = coincpred(mpatt1, mpatt2, *coincargs)
 
-                if oneway:
-                    if coinc:
-                        self.add_edge(self.pattrank[i], self.pattrank[j], None)
-                    if not fro:
-                        if coincpred(mpatt2, mpatt1):
-                            self.add_edge(self.pattrank[j], self.pattrank[i], None)
-                elif coinc:
-                    if not to:
-                        self.add_edge(self.pattrank[i], self.pattrank[j], None)
-                    if not fro :
+                if coinc:
+                    self.add_edge(self.pattrank[i], self.pattrank[j], None)
+                    if not oneway and not fro:
                         self.add_edge(self.pattrank[j], self.pattrank[i], None)
 
     def output_class(self):
-        res = str(self.pattrank) + '\n'
+        res = [str(self.pattrank)]
         if len(self.scc()) == 1:
-            res += "inactive\n"
+            res.append("inactive")
         else:
-            res += "active\n"
+            res.append("active")
         for i in range(self.len):
-            for j in self.adj[i]:
-                res += "{} {}\n".format(self.pattrank[i], self.pattrank[j[0]])
-        return res
+            for j in sorted(self.adj[i]):
+                res.append("{} {}".format(self.pattrank[i], self.pattrank[j[0]]))
+        return '\n'.join(res)
 
-def parse_classes(filename):
-    with open(filename, 'r') as f:
+def parse_classes(inputfile):
+    lines = list(l.strip() for l in dropwhile(lambda x: len(x.strip()) == 0 or x.strip()[0] == "#", inputfile.readlines()))
+    linenum = 0
 
-        lines = list(l.strip() for l in dropwhile(lambda x: len(x.strip()) == 0 or x.strip()[0] == "#", f.readlines()))
-        linenum = 0
-        classes = []
+    global underlying_classical_pattern
+    underlying_classical_pattern = Perm(eval(lines[linenum].strip()))
 
-        classical_pattern = Perm(eval(lines[linenum].strip()))
-        # classical_pattern = Perm((0, 1, 2))
-        # print(classical_pattern)
-        linenum += 1
+    linenum += 1
+    while linenum < len(lines):
+        assert(lines[linenum][0] == '[' and lines[linenum][-1] == ']')
+        assert(lines[linenum+1] == 'active' or lines[linenum+1] == 'inactive')
+        curclass = ExpClass(eval(lines[linenum]), underlying_classical_pattern, lines[linenum+1] == 'active')
+        linenum += 2
         while linenum < len(lines):
-            assert(lines[linenum][0] == '[' and lines[linenum][-1] == ']')
-            assert(lines[linenum+1] == 'active' or lines[linenum+1] == 'inactive')
-            curclass = ExpClass(eval(lines[linenum]), classical_pattern, lines[linenum+1] == 'active')
-            linenum += 2
-            while linenum < len(lines) and lines[linenum][0] != '[':
-                assert(lines[linenum][0] == '[' and lines[linenum][-1] == ']')
-                u, v = lines[linenum].split()
-                curclass.add_edge(int(u), int(v))
-                linenum += 1
-            yield curclass
-            classes.append(curclass)
-        # yield (classical_pattern, classes)
+            if lines[linenum][0] == '[':
+                break
+            u, v = lines[linenum].split()
+            curclass.add_edge(int(u), int(v), None)
+            linenum += 1
+        yield curclass
 
 def main(argv):
-    if len(argv) != 2:
-        sys.stderr.write('usage: %s input_file\n' % argv[0])
-        return 1
+    parser = argparse.ArgumentParser(description='Classify mesh patterns.')
+    parser.add_argument("input_file", type=argparse.FileType('r'))
+    parser.add_argument( '-sl', '--shading-lemma', action='store_true', help="Use the Shading Lemma", dest='sl')
+    parser.add_argument( '-tsa1', '--tsa1', help='TSA1 depth', nargs=1, type=int, default=0)
+    parser.add_argument( '-tsa2', '--tsa2', help='TSA2 depth', nargs=1, type=int, default=0)
+    parser.add_argument( '-tsa3', '--tsa3', help='TSA3 depth', nargs=1, type=int, default=0)
+    parser.add_argument( '-tsa4', '--tsa4', help='TSA4 depth', nargs=1, type=int, default=0)
+    parser.add_argument( '-tsa5', '--tsa5', help='TSA5 depth', nargs=1, type=int, default=0)
 
-    # classes = parse_classes(argv[1])
+    args = parser.parse_args()
+    output = [None]
 
-    for clas in parse_classes(argv[1]):
-        # if(len(clas) == 1):
-        #     continue
-        # print(clas)
+    for clas in parse_classes(args.input_file):
+
         if clas.active:
             clas.compute_coinc(subset_coincidence)
-            clas.compute_coinc(shading_lemma, False)
+
+            if args.sl:
+                clas.compute_coinc(shading_lemma, oneway=False)
+            if args.tsa5:
+                clas.compute_coinc(tsa5_wrapper, args.tsa5, True)
+
         res = clas.output_class()
-        sys.stdout.write(res)
-        # for i in range(len(clas)):
-        #     print("{}:".format(clas.pattrank[i]))
-        #     print(str(clas.patts[i]))
-        #     print()
+        output.append(res)
+    output[0] = str(underlying_classical_pattern)
+
+    sys.stdout.write('\n'.join(output))
 
     return 0
 
