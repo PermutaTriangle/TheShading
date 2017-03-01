@@ -1,0 +1,445 @@
+
+# Number of surprising coincidence classes 220
+# Number of non-singleton coincidence classes 59
+
+(0, 1)
+[0, 1, 2, 3, 8, 9, 16, 17, 18, 19, 24, 25, 32, 33, 34, 35, 40, 41, 48, 49, 50, 51, 56, 57, 128, 129, 130, 131, 136, 137, 144, 145, 146, 147, 152, 153, 256, 257, 258, 259, 264, 265, 272, 274, 280, 288, 289, 290, 291, 296, 297, 304, 306, 312, 384, 385, 386, 387, 392, 393, 400, 402, 408]
+active
+[4, 5, 6, 7, 12, 13, 20, 21, 22, 23, 28, 36, 37, 38, 39, 44, 45, 52, 53, 54, 55, 60, 132, 133, 134, 135, 148, 149, 150, 151, 260, 261, 262, 263, 268, 269, 276, 278, 284, 292, 293, 294, 295, 300, 301, 308, 310, 316, 388, 389, 390, 391]
+active
+[29, 61]
+active
+[404, 406]
+active
+[10, 26]
+active
+[11, 27]
+active
+[42, 58]
+active
+[43, 59]
+active
+[138, 154]
+active
+[139, 155]
+active
+[14, 30, 46, 62]
+active
+[15, 31, 47, 63]
+active
+[142, 158]
+active
+[143, 159]
+active
+[270, 302]
+active
+[271, 303]
+active
+[64, 65, 66, 67, 72, 73, 80, 81, 82, 88, 89, 96, 97, 104, 105, 112, 113, 120, 121, 192, 193, 194, 195, 200, 201, 208, 209, 210, 216, 217, 320, 321, 322, 323, 328, 329, 336, 338, 344, 352, 353, 360, 361, 448, 449, 450, 451, 456, 457, 464, 466, 472]
+active
+[83, 211]
+active
+[368, 376]
+active
+[68, 69, 324, 325]
+active
+[70, 71, 196, 197, 198, 199, 326, 327, 452, 453, 454, 455]
+active
+[86, 212, 214]
+active
+[76, 77, 100, 101, 108, 109, 332, 333, 356, 357, 364, 365]
+active
+[92, 116, 124]
+active
+[87, 215]
+active
+[93, 125]
+active
+[102, 103, 358, 359]
+active
+[118, 220]
+active
+[204, 205, 460, 461]
+active
+[372, 380]
+active
+[468, 470]
+active
+[74, 90, 202, 218]
+active
+[75, 91, 203, 219]
+active
+[106, 122]
+active
+[107, 123]
+active
+[330, 458]
+active
+[331, 459]
+active
+[78, 94, 110, 126, 206, 222, 334, 366, 462]
+active
+[79, 95, 111, 127, 207, 223, 335, 367, 463]
+active
+[160, 176]
+active
+[162, 178]
+active
+[168, 184]
+active
+[416, 432]
+active
+[418, 434]
+active
+[424, 440]
+active
+[164, 166, 180, 182]
+active
+[165, 167]
+active
+[172, 188]
+active
+[420, 422, 436, 438]
+active
+[421, 423]
+active
+[428, 444]
+active
+[224, 232, 240, 248]
+active
+[225, 233]
+active
+[226, 242]
+active
+[480, 488, 496, 504]
+active
+[481, 489]
+active
+[482, 498]
+active
+[228, 229, 230, 231, 236, 237, 244, 246, 252]
+active
+[484, 485, 486, 487, 492, 493, 500, 502, 508]
+active
+[443]
+inactive
+[447]
+inactive
+[507]
+inactive
+[511]
+inactive
+[157]
+inactive
+[412]
+inactive
+[266]
+inactive
+[267]
+inactive
+[282]
+inactive
+[298]
+inactive
+[299]
+inactive
+[314]
+inactive
+[394]
+inactive
+[395]
+inactive
+[410]
+inactive
+[398]
+inactive
+[399]
+inactive
+[414]
+inactive
+[115]
+inactive
+[370]
+inactive
+[119]
+inactive
+[221]
+inactive
+[374]
+inactive
+[476]
+inactive
+[362]
+inactive
+[363]
+inactive
+[378]
+inactive
+[350]
+inactive
+[382]
+inactive
+[478]
+inactive
+[161]
+inactive
+[163]
+inactive
+[169]
+inactive
+[177]
+inactive
+[179]
+inactive
+[185]
+inactive
+[417]
+inactive
+[419]
+inactive
+[425]
+inactive
+[173]
+inactive
+[189]
+inactive
+[429]
+inactive
+[170]
+inactive
+[171]
+inactive
+[186]
+inactive
+[187]
+inactive
+[426]
+inactive
+[427]
+inactive
+[442]
+inactive
+[174]
+inactive
+[175]
+inactive
+[190]
+inactive
+[191]
+inactive
+[430]
+inactive
+[431]
+inactive
+[446]
+inactive
+[227]
+inactive
+[243]
+inactive
+[483]
+inactive
+[245]
+inactive
+[247]
+inactive
+[253]
+inactive
+[234]
+inactive
+[235]
+inactive
+[250]
+inactive
+[251]
+inactive
+[490]
+inactive
+[491]
+inactive
+[506]
+inactive
+[238]
+inactive
+[239]
+inactive
+[254]
+inactive
+[255]
+inactive
+[494]
+inactive
+[495]
+inactive
+[510]
+inactive
+[273]
+inactive
+[275]
+inactive
+[281]
+inactive
+[305]
+inactive
+[307]
+inactive
+[313]
+inactive
+[401]
+inactive
+[403]
+inactive
+[409]
+inactive
+[277]
+inactive
+[279]
+inactive
+[285]
+inactive
+[309]
+inactive
+[311]
+inactive
+[317]
+inactive
+[405]
+inactive
+[407]
+inactive
+[413]
+inactive
+[283]
+inactive
+[315]
+inactive
+[411]
+inactive
+[287]
+inactive
+[319]
+inactive
+[415]
+inactive
+[337]
+inactive
+[339]
+inactive
+[345]
+inactive
+[369]
+inactive
+[371]
+inactive
+[377]
+inactive
+[465]
+inactive
+[467]
+inactive
+[473]
+inactive
+[341]
+inactive
+[343]
+inactive
+[349]
+inactive
+[373]
+inactive
+[375]
+inactive
+[381]
+inactive
+[469]
+inactive
+[471]
+inactive
+[477]
+inactive
+[347]
+inactive
+[379]
+inactive
+[475]
+inactive
+[351]
+inactive
+[383]
+inactive
+[479]
+inactive
+[433]
+inactive
+[435]
+inactive
+[441]
+inactive
+[437]
+inactive
+[439]
+inactive
+[445]
+inactive
+[497]
+inactive
+[499]
+inactive
+[505]
+inactive
+[501]
+inactive
+[503]
+inactive
+[509]
+inactive
+[140]
+inactive
+[141]
+inactive
+[156]
+inactive
+[396]
+inactive
+[397]
+inactive
+[286]
+inactive
+[318]
+inactive
+[98]
+inactive
+[99]
+inactive
+[114]
+inactive
+[354]
+inactive
+[355]
+inactive
+[84]
+inactive
+[85]
+inactive
+[340]
+inactive
+[213]
+inactive
+[342]
+inactive
+[117]
+inactive
+[348]
+inactive
+[346]
+inactive
+[474]
+inactive
+[181]
+inactive
+[183]
+inactive
+[241]
+inactive
+[249]
+inactive
