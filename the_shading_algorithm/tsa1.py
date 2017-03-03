@@ -81,7 +81,7 @@ def tsa1(p, B, force, maxdepth, cut=False):
                 ]):
 
                 for occ in choose(len(nxtxval), k):
-                    print(occ)
+                    # print(occ)
                     hereperm = [ nxt.pattern[occ[i]] for i in range(k) ]
                     herexval = [ nxtxval[occ[i]] for i in range(k) ]
                     hereyval = [ nxtyval[hereperm[i]-1] for i in range(k) ]
@@ -144,7 +144,7 @@ def tsa1(p, B, force, maxdepth, cut=False):
                                 putin2.add((x,y))
                     inside = False
                     for x in range(left, right-1):
-                        if down < nxt[x] < up:
+                        if down < nxt.pattern[x] < up:
                             inside = True
                             break
                     if inside:
@@ -310,5 +310,5 @@ if __name__ == '__main__':
     # run = tsa1(MeshPatt(Perm([1,2,3]), [(0,1),(1,0),(2,0),(2,2),(3,0),(3,2),(3,3)]), (2,1))
     # run = tsa1(MeshPatt(Perm([1,2,3]), [(0,0),(1,0),(1,1),(2,3),(3,0),(3,1)]), (2,1))
 
-print("\n================================================================================\n".join(['\n'.join(i) for i in run]))
-print("\nTotal number of successful branches: {}\n".format(len(run)))
+    print("\n================================================================================\n".join(['\n'.join(i) for i in run]))
+    print("\nTotal number of successful branches: {}\n".format(len(run)))

@@ -7,35 +7,12 @@ import sys
 import argparse
 from itertools import *
 from collections import deque
+from functools import partial
 
 from permuta import MeshPatt, Perm
-from tsa5_eq import tsa5_two as tsa5
+from wrappers import *
 
 underlying_classical_pattern = None
-
-def subset_coincidence(mpatt1, mpatt2):
-    return mpatt1.shading <= mpatt2.shading
-
-def shading_lemma(mpatt1, mpatt2):
-    symdiff = set(mpatt1.shading ^ mpatt2.shading)
-    if len(mpatt1.shading) > len(mpatt2.shading):
-        mpatt1, mpatt2 = mpatt2, mpatt1
-    if len(symdiff) != 1:
-        return False
-    return mpatt1.can_shade(symdiff.pop())
-
-def tsa5_wrapper(mpatt1, mpatt2, depth):
-    if len(mpatt1.shading) > len(mpatt2.shading):
-        return False
-    symdiff = set(mpatt1.shading ^ mpatt2.shading)
-    if len(symdiff) != 1:
-        return False
-    run = tsa5(mpatt1, symdiff.pop())
-    all = True
-    for r in run:
-        all = all and bool(r.force)
-
-    return all
 
 class ExpClass(object):
     def __init__(self, patts, classical_pattern, active):
@@ -53,10 +30,10 @@ class ExpClass(object):
                 raise ValueError(msg)
 
     def __repr__(self):
-        return self.pattrank.__repr__()
+        return "ExpClass({})".format(self.pattrank.__repr__())
 
     def __str__(self):
-        return self.pattrank.__str__()
+        return "ExpClass({})".format(self.pattrank.__str__())
 
     def __len__(self):
         return self.len
@@ -163,6 +140,7 @@ def main(argv):
     parser = argparse.ArgumentParser(description='Classify mesh patterns.')
     parser.add_argument("input_file", type=argparse.FileType('r'))
     parser.add_argument( '-sl', '--shading-lemma', action='store_true', help="Use the Shading Lemma", dest='sl')
+    parser.add_argument( '-ssl', '--simultaneous-shading-lemma', action='store_true', help="Use the Simultaneous Shading Lemma", dest='ssl')
     parser.add_argument( '-tsa1', '--tsa1', help='TSA1 depth', nargs=1, type=int, default=0)
     parser.add_argument( '-tsa2', '--tsa2', help='TSA2 depth', nargs=1, type=int, default=0)
     parser.add_argument( '-tsa3', '--tsa3', help='TSA3 depth', nargs=1, type=int, default=0)
@@ -172,15 +150,28 @@ def main(argv):
     args = parser.parse_args()
     output = [None]
 
+    sys.stderr.write("Starting with parameters {}\n".format(args))
+
     for clas in parse_classes(args.input_file):
+        sys.stderr.write(str(clas))
 
         if clas.active:
-            clas.compute_coinc(subset_coincidence)
+            clas.compute_coinc(subset_pred)
 
             if args.sl:
                 clas.compute_coinc(shading_lemma, oneway=False)
+            if args.ssl:
+                clas.compute_coinc(simulshading_lemma, oneway=False)
+            if args.tsa1:
+                clas.compute_coinc(tsa1_pred, args.tsa1, False)
+            if args.tsa2:
+                clas.compute_coinc(tsa2_pred, args.tsa2, False)
+            if args.tsa3:
+                clas.compute_coinc(tsa3_pred, args.tsa3, False)
+            if args.tsa4:
+                clas.compute_coinc(tsa4_pred, args.tsa4, False)
             if args.tsa5:
-                clas.compute_coinc(tsa5_wrapper, args.tsa5, True)
+                clas.compute_coinc(partial(tsa_wrapper, tsa5, True), args.tsa5, True)
 
         res = clas.output_class()
         output.append(res)

@@ -194,7 +194,7 @@ def tsa2(p, B, force, maxdepth, cut=False):
         return False
 
     x = dfs(p, B, [ i+1 for i in range(k) ], [ i+1 for i in range(k) ], set([tuple(p.perm.perm)]), maxdepth)
-    print x
+    print(x)
     return [ [ MSGS[t[0]][1].format(*t[1:]) for t in ts ] for ts in traces ]
 
 def all_points_all_dir(mp, B, maxdepth, cut=False):
@@ -334,6 +334,6 @@ if __name__ == '__main__':
     # run = tsa2(MeshPattern(Permutation([1,2,3]), [(0,1),(1,0),(2,0),(2,2),(3,0),(3,2),(3,3)]), (2,1))
     # run = tsa2(MeshPattern(Permutation([1,2,3]), [(0,0),(1,0),(1,1),(2,3),(3,0),(3,1)]), (2,1))
 
-print("\n================================================================================\n".join(['\n'.join(i) for i in run]))
-print("\nTotal number of successful branches: {}\n".format(len(run)))
+    print("\n================================================================================\n".join(['\n'.join(i) for i in run]))
+    print("\nTotal number of successful branches: {}\n".format(len(run)))
 
