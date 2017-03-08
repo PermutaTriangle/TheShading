@@ -142,9 +142,9 @@ def main(argv):
     parser.add_argument( '-sl', '--shading-lemma', action='store_true', help="Use the Shading Lemma", dest='sl')
     parser.add_argument( '-ssl', '--simultaneous-shading-lemma', action='store_true', help="Use the Simultaneous Shading Lemma", dest='ssl')
     parser.add_argument( '-tsa1', '--tsa1', help='TSA1 depth', nargs=1, type=int, default=0)
-    parser.add_argument( '-tsa2', '--tsa2', help='TSA2 depth', nargs=1, type=int, default=0)
-    parser.add_argument( '-tsa3', '--tsa3', help='TSA3 depth', nargs=1, type=int, default=0)
-    parser.add_argument( '-tsa4', '--tsa4', help='TSA4 depth', nargs=1, type=int, default=0)
+    # parser.add_argument( '-tsa2', '--tsa2', help='TSA2 depth', nargs=1, type=int, default=0)
+    # parser.add_argument( '-tsa3', '--tsa3', help='TSA3 depth', nargs=1, type=int, default=0)
+    # parser.add_argument( '-tsa4', '--tsa4', help='TSA4 depth', nargs=1, type=int, default=0)
     parser.add_argument( '-tsa5', '--tsa5', help='TSA5 depth', nargs=1, type=int, default=0)
 
     args = parser.parse_args()
@@ -164,12 +164,12 @@ def main(argv):
                 clas.compute_coinc(simulshading_lemma, oneway=False)
             if args.tsa1:
                 clas.compute_coinc(tsa1_pred, args.tsa1, False)
-            if args.tsa2:
-                clas.compute_coinc(tsa2_pred, args.tsa2, False)
-            if args.tsa3:
-                clas.compute_coinc(tsa3_pred, args.tsa3, False)
-            if args.tsa4:
-                clas.compute_coinc(tsa4_pred, args.tsa4, False)
+            # if args.tsa2:
+                # clas.compute_coinc(tsa2_pred, args.tsa2, False)
+            # if args.tsa3:
+                # clas.compute_coinc(tsa3_pred, args.tsa3, False)
+            # if args.tsa4:
+                # clas.compute_coinc(tsa4_pred, args.tsa4, False)
             if args.tsa5:
                 clas.compute_coinc(partial(tsa_wrapper, tsa5, True), args.tsa5, True)
 

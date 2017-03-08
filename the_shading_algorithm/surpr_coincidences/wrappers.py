@@ -6,9 +6,10 @@ from tsa2 import all_points_all_dir as tsa2
 from tsa3 import tsa3
 from tsa4 import tsa4
 from tsa5_eq import tsa5_two as tsa5
+from tsa5_eq import tsa5_coincident
 
 def subset_pred(mpatt1, mpatt2):
-    return mpatt1.shading <= mpatt2.shading
+    return mpatt1.shading >= mpatt2.shading
 
 def shading_lemma(mpatt1, mpatt2):
     symdiff = set(mpatt1.shading ^ mpatt2.shading)
@@ -35,9 +36,17 @@ def tsa123_wrapper(tsa, mpatt1, mpatt2, depth):
         mpatt1, mpatt2 = mpatt2, mpatt1
     if len(symdiff) != 1:
         return False
-    return bool(tsa1(mpatt1, symdiff.pop(), depth))
+    return bool(tsa(mpatt1, symdiff.pop(), depth))
 
-tsa1_pred = partial(tsa123_wrapper, tsa1)
+def tsa1_wrapper(mpatt1, mpatt2, depth):
+    symdiff = set(mpatt1.shading ^ mpatt2.shading)
+    if len(mpatt1.shading) > len(mpatt2.shading):
+        mpatt1, mpatt2 = mpatt2, mpatt1
+    if len(symdiff) != 1:
+        return False
+    return tsa5_coincident(mpatt1, mpatt2, depth=depth, multbox=False, q_check=False, force_len=1)
+
+tsa1_pred = tsa1_wrapper
 tsa2_pred = partial(tsa123_wrapper, tsa2)
 tsa3_pred = partial(tsa123_wrapper, tsa3)
 
@@ -51,14 +60,15 @@ def tsa4_pred(tsa, mpatt1, mpatt2, depth):
     return bool(run.force)
 
 def tsa5_pred(mpatt1, mpatt2, depth):
-    if len(mpatt1.shading) > len(mpatt2.shading):
-        return False
-    symdiff = set(mpatt1.shading ^ mpatt2.shading)
-    if len(symdiff) != 1:
-        return False
-    run = tsa5(mpatt1, symdiff.pop(), depth)
-    all = True
-    for r in run:
-        all = all and bool(r.force)
+    # if len(mpatt1.shading) > len(mpatt2.shading):
+        # return False
+    # symdiff = set(mpatt1.shading ^ mpatt2.shading)
+    # if len(symdiff) != 1:
+        # return False
+    # run = tsa5_coincidence(mpatt1, symdiff.pop(), depth)
+    # all = True
+    # for r in run:
+        # all = all and bool(r.force)
 
-    return all
+    return tsa5_coincidence(mpatt1, mpatt2, depth=depth, )
+    # return all
