@@ -4,18 +4,10 @@
 
 (0,)
 [0, 1, 2, 3, 4, 5, 8, 10, 12]
-active
 [15]
-inactive
 [6]
-inactive
 [7]
-inactive
 [14]
-inactive
 [9]
-inactive
 [11]
-inactive
 [13]
-inactive
