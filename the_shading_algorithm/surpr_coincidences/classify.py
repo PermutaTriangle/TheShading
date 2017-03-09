@@ -141,6 +141,8 @@ def main(argv):
     parser.add_argument("input_file", type=argparse.FileType('r'))
     parser.add_argument( '-sl', '--shading-lemma', action='store_true', help="Use the Shading Lemma", dest='sl')
     parser.add_argument( '-ssl', '--simultaneous-shading-lemma', action='store_true', help="Use the Simultaneous Shading Lemma", dest='ssl')
+    parser.add_argument( '-lemma2', '--lemma2', help='Lemma 2', action='store_true')
+    parser.add_argument( '-lemma5', '--lemma5', help='Lemma 5', action='store_true')
     parser.add_argument( '-tsa1', '--tsa1', help='TSA1 depth', nargs=1, type=int, default=0)
     # parser.add_argument( '-tsa2', '--tsa2', help='TSA2 depth', nargs=1, type=int, default=0)
     # parser.add_argument( '-tsa3', '--tsa3', help='TSA3 depth', nargs=1, type=int, default=0)
@@ -162,6 +164,10 @@ def main(argv):
                 clas.compute_coinc(shading_lemma, oneway=False)
             if args.ssl:
                 clas.compute_coinc(simulshading_lemma, oneway=False)
+            if args.lemma2:
+                clas.compute_coinc(tsa1_pred, [1], False)
+            if args.lemma5:
+                clas.compute_coinc(lemma5_pred, [], False)
             if args.tsa1:
                 clas.compute_coinc(tsa1_pred, args.tsa1, False)
             # if args.tsa2:

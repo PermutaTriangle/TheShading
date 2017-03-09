@@ -30,13 +30,13 @@ def simulshading_lemma(mpatt1, mpatt2):
     else:
         return mpatt1.can_simul_shade(symdiff.pop(), symdiff.pop())
 
-def tsa123_wrapper(tsa, mpatt1, mpatt2, depth):
-    symdiff = set(mpatt1.shading ^ mpatt2.shading)
-    if len(mpatt1.shading) > len(mpatt2.shading):
-        mpatt1, mpatt2 = mpatt2, mpatt1
-    if len(symdiff) != 1:
-        return False
-    return bool(tsa(mpatt1, symdiff.pop(), depth))
+# def tsa123_wrapper(tsa, mpatt1, mpatt2, depth):
+#     symdiff = set(mpatt1.shading ^ mpatt2.shading)
+#     if len(mpatt1.shading) > len(mpatt2.shading):
+#         mpatt1, mpatt2 = mpatt2, mpatt1
+#     if len(symdiff) != 1:
+#         return False
+#     return bool(tsa(mpatt1, symdiff.pop(), depth))
 
 def tsa1_wrapper(mpatt1, mpatt2, depth):
     symdiff = set(mpatt1.shading ^ mpatt2.shading)
@@ -46,9 +46,15 @@ def tsa1_wrapper(mpatt1, mpatt2, depth):
         return False
     return tsa5_coincident(mpatt1, mpatt2, depth=depth, multbox=False, q_check=False, force_len=1)
 
+def lemma5_wrapper(mpatt1, mpatt2):
+    if len(mpatt1.shading) > len(mpatt2.shading):
+        mpatt1, mpatt2 = mpatt2, mpatt1
+    return tsa5_coincident(mpatt1, mpatt2, depth=1, multbox=True, q_check=False, force_len=1)
+
 tsa1_pred = tsa1_wrapper
-tsa2_pred = partial(tsa123_wrapper, tsa2)
-tsa3_pred = partial(tsa123_wrapper, tsa3)
+lemma5_pred = lemma5_wrapper
+# tsa2_pred = partial(tsa123_wrapper, tsa2)
+# tsa3_pred = partial(tsa123_wrapper, tsa3)
 
 def tsa4_pred(tsa, mpatt1, mpatt2, depth):
     symdiff = set(mpatt1.shading ^ mpatt2.shading)
