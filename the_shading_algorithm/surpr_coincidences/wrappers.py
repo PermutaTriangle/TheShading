@@ -49,7 +49,7 @@ def tsa1_wrapper(mpatt1, mpatt2, depth):
 def lemma5_wrapper(mpatt1, mpatt2):
     if len(mpatt1.shading) > len(mpatt2.shading):
         mpatt1, mpatt2 = mpatt2, mpatt1
-    return tsa5_coincident(mpatt1, mpatt2, depth=1, multbox=True, q_check=False, force_len=1)
+    return tsa5_coincident(mpatt1, mpatt2, depth=1, multbox=True, q_check=False, force_len=None)
 
 tsa1_pred = tsa1_wrapper
 lemma5_pred = lemma5_wrapper

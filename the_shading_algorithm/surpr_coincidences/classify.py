@@ -165,11 +165,11 @@ def main(argv):
             if args.ssl:
                 clas.compute_coinc(simulshading_lemma, oneway=False)
             if args.lemma2:
-                clas.compute_coinc(tsa1_pred, [1], False)
+                clas.compute_coinc(tsa1_pred, [1], oneway=False)
             if args.lemma5:
-                clas.compute_coinc(lemma5_pred, [], False)
+                clas.compute_coinc(lemma5_pred, [], oneway=False)
             if args.tsa1:
-                clas.compute_coinc(tsa1_pred, args.tsa1, False)
+                clas.compute_coinc(tsa1_pred, args.tsa1, oneway=False)
             # if args.tsa2:
                 # clas.compute_coinc(tsa2_pred, args.tsa2, False)
             # if args.tsa3:
