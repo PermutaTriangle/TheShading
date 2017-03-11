@@ -6,4 +6,3 @@ def shad_to_binary(shading, length):
 
 def is_subset(a, b):
     return (a & ~b) == 0
-

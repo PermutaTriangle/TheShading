@@ -62,9 +62,12 @@ def filter_binary(patterns, cpatt):
 
 ################################################################################
 
-# cpatt = Perm((0, 1))
-# cpatt = Perm((0, 2, 1))
-cpatt = Perm((0, 1, 2, 3))
+if len(sys.argv) > 1:
+    cpatt = Perm(map(int, list(sys.argv[1])))
+else:
+    cpatt = Perm((0, 1))
+    # cpatt = Perm((0, 2, 1))
+    # cpatt = Perm((0, 1, 2, 3))
 pattern_ranks = [ i for i in range(2**((len(cpatt) + 1)**2)) ]
 
 ################################################################################
@@ -90,7 +93,8 @@ if external_check:
             print(MeshPatt.unrank(cpatt, mpatt))
             sys.exit(1)
 
-print(sorted(binarypatterns))
+# print(sorted(binarypatterns))
+sys.stdout.write(' '.join(map(str, binarypatterns)) + '\n')
 # for patt in sorted(binarypatterns):
 #     print(MeshPatt.unrank(cpatt, patt))
 #     print()
