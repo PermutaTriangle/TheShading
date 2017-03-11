@@ -104,6 +104,19 @@ class ExpClass(object):
                     if not oneway and not fro:
                         self.add_edge(self.pattrank[j], self.pattrank[i], None)
 
+    def compute_coinc_SSL(self):
+        for i in range(self.len):
+            patt = self.patts[i]
+            boxes = patt.shadable_boxes()
+            for key in boxes.keys():
+                boxes[key].append(tuple())
+            for sh in product(*boxes.values()):
+                coincwith = patt.shade(k for k in chain(*sh) if k).rank()
+                if not self.implies(i, self.idmap[coincwith]):
+                    self.add_edge(self.pattrank[i], coincwith, None)
+                if not self.implies(self.idmap[coincwith], i):
+                    self.add_edge(coincwith, self.pattrank[i], None)
+
     def output_class(self):
         res = [str(self.pattrank)]
         if len(self.scc()) == 1:
@@ -163,7 +176,7 @@ def main(argv):
             if args.sl:
                 clas.compute_coinc(shading_lemma, oneway=False)
             if args.ssl:
-                clas.compute_coinc(simulshading_lemma, oneway=False)
+                clas.compute_coinc_SSL()
             if args.lemma2:
                 clas.compute_coinc(tsa1_pred, [1], oneway=False)
             if args.lemma5:
