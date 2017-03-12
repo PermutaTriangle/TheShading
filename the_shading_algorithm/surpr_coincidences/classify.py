@@ -168,7 +168,7 @@ def main(argv):
     sys.stderr.write("Starting with parameters {}\n".format(args))
 
     for clas in parse_classes(args.input_file):
-        sys.stderr.write(str(clas))
+        # sys.stderr.write(str(clas))
 
         if clas.active:
             clas.compute_coinc(subset_pred)
