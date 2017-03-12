@@ -97,7 +97,7 @@ class ExpClass(object):
 
                 mpatt1, mpatt2 = self.patts[i], self.patts[j]
 
-                coinc = coincpred(mpatt1, mpatt2, *coincargs)
+                coinc = coincpred(mpatt1, mpatt2, *coincargs, expclass=self)
 
                 if coinc:
                     self.add_edge(self.pattrank[i], self.pattrank[j], None)
@@ -159,7 +159,7 @@ def main(argv):
     parser.add_argument( '-tsa1', '--tsa1', help='TSA1 depth', nargs=1, type=int, default=0)
     # parser.add_argument( '-tsa2', '--tsa2', help='TSA2 depth', nargs=1, type=int, default=0)
     # parser.add_argument( '-tsa3', '--tsa3', help='TSA3 depth', nargs=1, type=int, default=0)
-    # parser.add_argument( '-tsa4', '--tsa4', help='TSA4 depth', nargs=1, type=int, default=0)
+    parser.add_argument( '-lemma7', '--lemma7', help='Lemma 7', action='store_true')
     parser.add_argument( '-tsa5', '--tsa5', help='TSA5 depth', nargs=1, type=int, default=0)
 
     args = parser.parse_args()
@@ -189,6 +189,8 @@ def main(argv):
                 # clas.compute_coinc(tsa3_pred, args.tsa3, False)
             # if args.tsa4:
                 # clas.compute_coinc(tsa4_pred, args.tsa4, False)
+            if args.lemma7:
+                clas.compute_coinc(lemma7_pred, oneway=False)
             if args.tsa5:
                 clas.compute_coinc(partial(tsa_wrapper, tsa5, True), args.tsa5, True)
 
