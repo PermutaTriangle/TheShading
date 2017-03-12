@@ -67,7 +67,9 @@ def tsa4_pred(tsa, mpatt1, mpatt2, depth, expclass=None):
     return bool(run.force)
 
 def lemma7_pred(mpatt1, mpatt2, expclass):
-    return tsa5_coincident(mpatt1, mpatt2, depth=1, multbox=True, q_check=True, force_len=len(mpatt1), knowledge=expclass.pattrank)
+    knowledge = ([ expclass.pattrank[i] for i in range(len(expclass.pattrank)) if expclass.implies(i, expclass.idmap[mpatt2.rank()]) ],
+                [ expclass.pattrank[i] for i in range(len(expclass.pattrank)) if expclass.implies(i, expclass.idmap[mpatt1.rank()]) ])
+    return tsa5_coincident(mpatt1, mpatt2, depth=1, multbox=True, q_check=True, force_len=len(mpatt1), knowledge=knowledge)
 
 def tsa5_pred(mpatt1, mpatt2, depth, expclass=None):
     # if len(mpatt1.shading) > len(mpatt2.shading):
