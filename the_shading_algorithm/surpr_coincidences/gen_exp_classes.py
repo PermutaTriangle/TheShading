@@ -16,11 +16,12 @@ mps = None
 classpatt = None
 
 perm_ids = dict()
+id_perm = dict()
 
 def get_perm_id(perm):
     if perm not in perm_ids:
         perm_ids[perm] = len(perm_ids)
-        # perm_ids_dict[perm] = perm_ids[perm]
+        id_perm[perm_ids[perm]] = perm
     return perm_ids[perm]
 
 perm_class_ids = dict()
@@ -72,8 +73,6 @@ def brute_coincify_len(l, active, contsets, singles):
     assert patt is not None
     cnt = len(mps)
     mesh_perms = {}
-    perm_ids = dict()
-    perm_class_ids = dict()
 
     sys.stderr.write('Permutations of length %d\n' % l)
     ProgressBar.create(factorial(l))
@@ -112,9 +111,9 @@ def brute_coincify_len(l, active, contsets, singles):
                 continue
             add = True
             for other in poss:
-                # if cur < other:
                 if is_subset(cur, other) and cur != other:
                     add = False
+                    break
             # pick out the maximal ones
             if add:
                 maxima.append(cur)
@@ -123,7 +122,6 @@ def brute_coincify_len(l, active, contsets, singles):
         # any subset of the maximal set is then also contained in the permutation
         perm_id = get_perm_id(perm)
         for m in maxima:
-            # m = tuple(sorted(m))
             mesh_perms.setdefault(m, [])
             mesh_perms[m].append(perm_id)
     ProgressBar.finish()
@@ -136,19 +134,13 @@ def brute_coincify_len(l, active, contsets, singles):
     # For each active class
     conts = {}
     for (mpatts, contset) in zip(active, contsets):
-        # print(mpatts, contset)
 
         # We monitor whether the class will split or not
-        class_splits = False
-        cur_perms = None
-        all_perms = {}
         for i in mpatts:
             ProgressBar.progress()
             perms = set()
             for (maxi, ps) in mesh_perms.items():
-                # if mps[i].shading <= set(maxi):
                 if is_subset(mps[i], maxi):
-                # if mps[i].shading <= set(maxi):
                     perms |= set(ps)
             permset_id = get_perm_class_id(tuple(sorted(perms)))
             permid_vec = contset + (permset_id,)
@@ -158,7 +150,6 @@ def brute_coincify_len(l, active, contsets, singles):
     ProgressBar.finish()
     nowactive = []
     nowcontset = []
-    # print(cont)
 
     for cs, v in cont.items():
         if len(v) > 1:
@@ -169,9 +160,7 @@ def brute_coincify_len(l, active, contsets, singles):
     return (nowactive, nowcontset)
 
 def brute_coincify(max_len):
-    # active = set([ i for i in range(len(mps)) ])
     active = [list(range(len(mps)))]
-    # active = [list(range(len(mps)))]
     contsets = [ tuple() ]
     singles = []
     for l in range(len(classpatt), max_len+1):
@@ -185,8 +174,9 @@ def supersets_of_mesh(n, mesh):
 
 
 # --------------------------------------------------------------------------- #
+classpatt = Perm(map(int, sys.argv[1].split()))
 # classpatt = Perm([0])
-classpatt = Perm([0,1])
+# classpatt = Perm([0,1])
 # classpatt = Perm([0,1,2])
 # classpatt = Perm([0,2,1])
 
@@ -196,7 +186,7 @@ mps = [ i for i in range(2**((len(classpatt) + 1)**2))]
 # ---------- Look for surprising coincidences ---------- #
 # Upper bound (inclusive) on the length of permutations to look for surprising
 # coincidences
-perm_length = 6
+perm_length = int(sys.argv[2])
 classes, singleclasses = brute_coincify(perm_length)
 print()
 print('# Number of surprising coincidence classes {}'.format(len(classes) + len(singleclasses)))
@@ -206,9 +196,9 @@ print()
 # ------------------- Sanity check --------------------- #
 classes.extend([[i] for i in singleclasses])
 # Set to True to perform a sanity check
-san_check = True
-print_classes = False
-print_singleclasses = False
+san_check = False
+print_classes = True
+print_singleclasses = True
 
 # Upper bound (inclusive) on the length of permutations to use for sanity check
 check_len = 6
