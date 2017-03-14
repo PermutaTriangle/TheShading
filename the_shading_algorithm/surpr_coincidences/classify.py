@@ -112,6 +112,11 @@ class ExpClass(object):
                 boxes[key].append(tuple())
             for sh in product(*boxes.values()):
                 coincwith = patt.shade(k for k in chain(*sh) if k).rank()
+                if coincwith not in self.idmap:
+                    sys.stdout.write(str(self) + '\n')
+                    sys.stdout.write("The pattern {} is not in the expclass.\n")
+                    sys.stdout.write("\n" + str(patt) + "\n")
+                    sys.stdout.write("\n" + str(coincwith) + "\n")
                 if not self.implies(i, self.idmap[coincwith]):
                     self.add_edge(self.pattrank[i], coincwith, None)
                 if not self.implies(self.idmap[coincwith], i):
