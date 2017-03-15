@@ -524,6 +524,7 @@ if __name__ == '__main__':
 
     # 2-comp
     # run = tsa5_two(MeshPatt(Perm([0,1]), [(0,1),(0,2),(1,1),(1,2),(2,0)]), MeshPatt(Perm([0,1]), [(0,2),(1,0),(1,1),(2,0),(2,1)]), 2)
+    run = tsa5_two(MeshPatt.unrank(Perm([0,1]), 118), MeshPatt.unrank(Perm([0,1]), 220), depth=1, force_len=2)
     # run = TSA(MeshPatt(Perm([1,2]), [(0,1),(0,2),(1,1),(1,2),(2,0)]), MeshPatt(Perm([1,2]), [(0,2),(1,0),(1,1),(2,0),(2,1)]), 2).run()
     # run = TSA(MeshPatt(Perm([1,2]), [(0,2),(1,0),(1,1),(2,0),(2,1)]), MeshPatt(Perm([1,2]), [(0,1),(0,2),(1,1),(1,2),(2,0)]), 2).run()
     # run = tsa5(MeshPatt(Perm([0,1]), [(0,2),(1,0),(1,1),(2,0),(2,1)]), MeshPatt(Perm([0,1]), [(0,1),(0,2),(1,1),(1,2),(2,0)]), 2, True, True, 1)
