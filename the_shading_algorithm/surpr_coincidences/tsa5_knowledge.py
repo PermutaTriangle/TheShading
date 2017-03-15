@@ -492,7 +492,7 @@ class TSA:
         ress = []
         if self.q.shading <= self.p.shading:
             self.p, self.q = self.q, self.p
-        self.knowledge = (self.knowledge[1], self.knowledge[0])
+            self.knowledge = (self.knowledge[1], self.knowledge[0])
 
         ress.append(self.tsa5())
         if not (self.p.shading <= self.q.shading):
@@ -531,10 +531,10 @@ if __name__ == '__main__':
     # run = tsa5(MeshPatt.unrank((0,1), 9), (2,1), depth=1, multbox=False, q_check=False, force_len=1)
     # run = tsa5(MeshPatt.unrank((0,1), 1), (1,0), depth=1, multbox=False, q_check=False, force_len=1)
     # print(run)
-    # for line in run:
-        # print(line)
-    # import sys
-    # sys.exit(0)
+    for line in run:
+        print(line)
+    import sys
+    sys.exit(0)
 
 
 # [1 2 3] PATTERNS
