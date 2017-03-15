@@ -6,8 +6,8 @@ from tsa2 import all_points_all_dir as tsa2
 from tsa3 import tsa3
 from tsa4 import tsa4
 from tsa5_knowledge import tsa5_two as tsa5
-# from tsa5_knowledge import tsa5_coincident
-from tsa5_eq import tsa5_coincident
+from tsa5_knowledge import tsa5_coincident
+# from tsa5_eq import tsa5_coincident
 from classify import ExpClass
 
 def subset_pred(mpatt1, mpatt2, expclass=None):
@@ -68,10 +68,10 @@ def tsa4_pred(tsa, mpatt1, mpatt2, depth, expclass=None):
     return bool(run.force)
 
 def lemma7_pred(mpatt1, mpatt2, expclass):
-    # knowledge = ([ expclass.pattrank[i] for i in range(len(expclass.pattrank)) if expclass.implies(i, expclass.idmap[mpatt2.rank()]) ],
-                # [ expclass.pattrank[i] for i in range(len(expclass.pattrank)) if expclass.implies(i, expclass.idmap[mpatt1.rank()]) ])
-    # return tsa5_coincident(mpatt1, mpatt2, depth=1, multbox=True, q_check=True, force_len=len(mpatt1), knowledge=knowledge)
-    return tsa5_coincident(mpatt1, mpatt2, depth=1, multbox=True, q_check=True, force_len=len(mpatt1))
+    knowledge = ([ expclass.pattrank[i] for i in range(len(expclass.pattrank)) if expclass.implies(i, expclass.idmap[mpatt2.rank()]) ],
+                [ expclass.pattrank[i] for i in range(len(expclass.pattrank)) if expclass.implies(i, expclass.idmap[mpatt1.rank()]) ])
+    return tsa5_coincident(mpatt1, mpatt2, depth=1, multbox=True, q_check=True, force_len=len(mpatt1), knowledge=knowledge)
+    # return tsa5_coincident(mpatt1, mpatt2, depth=1, multbox=True, q_check=True, force_len=len(mpatt1))
 
 def tsa5_pred(mpatt1, mpatt2, depth, expclass=None):
     # if len(mpatt1.shading) > len(mpatt2.shading):
