@@ -106,10 +106,12 @@ class ExpClass(object):
 
     def compute_coinc_SSL(self):
         for i in range(self.len):
+        # for i in range(1):
             patt = self.patts[i]
             boxes = patt.shadable_boxes()
             for key in boxes.keys():
                 boxes[key].append(tuple())
+            # print(boxes)
             for sh in product(*boxes.values()):
                 coincwith = patt.shade(k for k in chain(*sh) if k).rank()
                 if coincwith not in self.idmap:
@@ -201,6 +203,7 @@ def main(argv):
 
         res = clas.output_class()
         output.append(res)
+        # break
     output[0] = str(underlying_classical_pattern)
 
     sys.stdout.write('\n'.join(output))
