@@ -49,8 +49,8 @@ def tsa1_wrapper(mpatt1, mpatt2, depth, expclass=None):
     return tsa5_coincident(mpatt1, mpatt2, depth=depth, multbox=False, q_check=False, force_len=1)
 
 def lemma5_wrapper(mpatt1, mpatt2, expclass=None):
-    if len(mpatt1.shading) > len(mpatt2.shading):
-        mpatt1, mpatt2 = mpatt2, mpatt1
+    # if len(mpatt1.shading) > len(mpatt2.shading):
+        # mpatt1, mpatt2 = mpatt2, mpatt1
     return tsa5_coincident(mpatt1, mpatt2, depth=1, multbox=True, q_check=False, force_len=None)
 
 tsa1_pred = tsa1_wrapper
@@ -68,8 +68,9 @@ def tsa4_pred(tsa, mpatt1, mpatt2, depth, expclass=None):
     return bool(run.force)
 
 def lemma7_pred(mpatt1, mpatt2, expclass):
-    knowledge = ([ expclass.pattrank[i] for i in range(len(expclass.pattrank)) if expclass.implies(i, expclass.idmap[mpatt2.rank()]) ],
-                [ expclass.pattrank[i] for i in range(len(expclass.pattrank)) if expclass.implies(i, expclass.idmap[mpatt1.rank()]) ])
+    # knowledge = ([ expclass.pattrank[i] for i in range(len(expclass.pattrank)) if expclass.implies(i, expclass.idmap[mpatt2.rank()]) ],
+                # [ expclass.pattrank[i] for i in range(len(expclass.pattrank)) if expclass.implies(i, expclass.idmap[mpatt1.rank()]) ])
+    knowledge = [expclass.pattrank[i] for i in range(len(expclass.pattrank)) if expclass.implies(i, expclass.idmap[mpatt2.rank()])]
     return tsa5_coincident(mpatt1, mpatt2, depth=1, multbox=True, q_check=True, force_len=len(mpatt1), knowledge=knowledge)
     # return tsa5_coincident(mpatt1, mpatt2, depth=1, multbox=True, q_check=True, force_len=len(mpatt1))
 
