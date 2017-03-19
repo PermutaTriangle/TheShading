@@ -8,7 +8,7 @@ from tsa4 import tsa4
 from tsa5_knowledge import tsa5_two as tsa5
 from tsa5_knowledge import tsa5_coincident
 # from tsa5_eq import tsa5_coincident
-from classify import ExpClass
+# from classify import ExpClass
 
 def subset_pred(mpatt1, mpatt2, expclass=None):
     return mpatt1.shading >= mpatt2.shading
