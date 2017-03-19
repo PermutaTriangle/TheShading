@@ -31,15 +31,20 @@ class TSAForce:
 
         for i in range(len(perm)):
             cur = set()
-            if xval[i] == i+1:
+            # if xval[i] == i+1:
+            if xval[i] == i:
                 same[i] = True
-            if xval[i] < i+1:
+            # if xval[i] < i+1:
+            if xval[i] < i:
                 cur.add(DIR_WEST)
-            if xval[i] > i+1:
+            # if xval[i] > i+1:
+            if xval[i] > i:
                 cur.add(DIR_EAST)
-            if yval[perm[i]-1] > perm[i]:
+            # if yval[perm[i]-1] > perm[i]:
+            if yval[perm[i]] > perm[i]:
                 cur.add(DIR_NORTH)
-            if yval[perm[i]-1] < perm[i]:
+            # if yval[perm[i]-1] < perm[i]:
+            if yval[perm[i]] < perm[i]:
                 cur.add(DIR_SOUTH)
 
             poss[i] = cur
@@ -52,7 +57,7 @@ class TSAForce:
         def bt(same_prefix, done):
             if len(rperm) == min(force_len, len(perm)):
                 if not same_prefix:
-                    res.force.add(tuple([ (x+1,dirs[x]) for x in rperm ]))
+                    res.force.add(tuple([ (x,dirs[x]) for x in rperm ]))
             else:
                 for i in range(len(perm)):
                     if i in done:
@@ -253,8 +258,10 @@ class TSA:
     def add_point(self, mp, xyval, putin, d):
         xval, yval = xyval
         nxt = mp.add_point(putin,d)
-        xval = [0] + xval + [self.k+1]
-        yval = [0] + yval + [self.k+1]
+        # xval = [0] + xval + [self.k+1]
+        # yval = [0] + yval + [self.k+1]
+        xval = [-1] + xval + [self.k]
+        yval = [-1] + yval + [self.k]
         xval = xval[1:putin[0]+1] + [(xval[putin[0]]+xval[putin[0]+1])/2.0] + xval[putin[0]+1:-1]
         yval = yval[1:putin[1]+1] + [(yval[putin[1]]+yval[putin[1]+1])/2.0] + yval[putin[1]+1:-1]
         return (nxt, (xval, yval))
@@ -390,13 +397,19 @@ class TSA:
                 boxes = set()
                 inside = False
                 for add in adds:
-                    txval = [0] + subxval + [self.k+1]
-                    tyval = [0] + subyval + [self.k+1]
+                    # txval = [0] + subxval + [self.k+1]
+                    # tyval = [0] + subyval + [self.k+1]
+                    # left,right = txval[add[0]], txval[add[0]+1]
+                    # down,up = tyval[add[1]], tyval[add[1]+1]
+                    txval = [-1] + subxval + [self.k]
+                    tyval = [-1] + subyval + [self.k]
                     left,right = txval[add[0]], txval[add[0]+1]
                     down,up = tyval[add[1]], tyval[add[1]+1]
 
-                    left,right = ([0]+xval+[self.k+1]).index(left), ([0]+xval+[self.k+1]).index(right)
-                    down,up = ([0]+yval+[self.k+1]).index(down), ([0]+yval+[self.k+1]).index(up)
+                    # left,right = ([0]+xval+[self.k+1]).index(left), ([0]+xval+[self.k+1]).index(right)
+                    # down,up = ([0]+yval+[self.k+1]).index(down), ([0]+yval+[self.k+1]).index(up)
+                    left,right = ([-1]+xval+[self.k]).index(left), ([-1]+xval+[self.k]).index(right)
+                    down,up = ([-1]+yval+[self.k]).index(down), ([-1]+yval+[self.k]).index(up)
 
                     for x in range(left,right):
                         for y in range(down,up):
@@ -460,7 +473,7 @@ class TSA:
 
         # res = self.init_dfs(self.p, self.shade, force, ([ i+1 for i in range(self.k) ], [ i+1 for i in range(self.k) ]), set([tuple(self.p.perm.perm)]))
         # res = self.init_dfs(self.p, self.shade, force, ([ i+1 for i in range(self.k) ], [ i+1 for i in range(self.k) ]), set([tuple([ i for i in range(1,self.k+1) ])]))
-        res = self.dfs(self.p, force, ([ i+1 for i in range(self.k) ], [ i+1 for i in range(self.k) ]), set())
+        res = self.dfs(self.p, force, ([ i for i in range(self.k) ], [ i for i in range(self.k) ]), set())
         return res
 
     def tsa5(self):
@@ -507,7 +520,7 @@ def tsa5_coincident(mp1, mp2, depth, multbox=True, q_check=True, force_len=None)
 
 if __name__ == '__main__':
 
-    run = tsa5_two(MeshPatt.unrank(Perm((0,1,2)), 0), MeshPatt.unrank(Perm((0,1,2)), 34923), depth=1, multbox=True, q_check=True, force_len=3)
+    run = tsa5_two(MeshPatt.unrank(Perm((0,1,2)), 8), MeshPatt.unrank(Perm((0,1,2)), 34923), depth=1, multbox=True, q_check=True, force_len=3)
 
     for line in run:
         print(line)
