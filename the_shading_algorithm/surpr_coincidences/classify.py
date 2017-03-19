@@ -197,7 +197,7 @@ def main(argv):
             # if args.tsa4:
                 # clas.compute_coinc(tsa4_pred, args.tsa4, False)
             if args.lemma7:
-                clas.compute_coinc(lemma7_pred, oneway=False)
+                clas.compute_coinc(lemma7_pred, oneway=True)
             if args.tsa5:
                 clas.compute_coinc(partial(tsa_wrapper, tsa5, True), args.tsa5, True)
 

@@ -33,10 +33,15 @@
 # python classify.py results/surprising_coincidence_012_SL.txt -lemma5 > results/surprising_coincidence_012_SL_Lemma5.txt
 # printf "(1,3,2) Lemma 5\n"
 # python classify.py results/surprising_coincidence_021_SL.txt -lemma5 > results/surprising_coincidence_021_SL_Lemma5.txt
-
+ 
 printf "(1,2) Lemma 7\n"
-python classify.py results/surprising_coincidence_01_SL.txt -lemma7 > results/surprising_coincidence_01_SL_Lemma7.txt
+python classify.py results/sl/surprising_coincidence_01_SL.txt -lemma7 > results/lemma7/surprising_coincidence_01_SL_Lemma7.txt
+cp results/lemma7/surprising_coincidence_01_SL_Lemma7.txt  results/lemma7/surprising_coincidence_01_SL_Lemma7_0.txt
 printf "(1,2,3) Lemma 7\n"
-python classify.py results/surprising_coincidence_012_SL.txt -lemma7 > results/surprising_coincidence_012_SL_Lemma7.txt
+python classify.py results/sl/surprising_coincidence_012_SL.txt -lemma7 > results/lemma7/surprising_coincidence_012_SL_Lemma7.txt
+cp results/lemma7/surprising_coincidence_012_SL_Lemma7.txt  results/lemma7/surprising_coincidence_012_SL_Lemma7_0.txt
 printf "(1,3,2) Lemma 7\n"
-python classify.py results/surprising_coincidence_021_SL.txt -lemma7 > results/surprising_coincidence_021_SL_Lemma7.txt
+python classify.py results/sl/surprising_coincidence_021_SL.txt -lemma7 > results/lemma7/surprising_coincidence_021_SL_Lemma7.txt
+cp results/lemma7/surprising_coincidence_021_SL_Lemma7.txt  results/lemma7/surprising_coincidence_021_SL_Lemma7_0.txt
+
+./run_lem7.sh
