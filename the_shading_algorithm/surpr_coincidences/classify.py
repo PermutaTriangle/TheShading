@@ -8,6 +8,7 @@ import argparse
 from itertools import *
 from collections import deque
 from functools import partial
+import graphviz
 
 from permuta import MeshPatt, Perm
 from wrappers import *
@@ -134,6 +135,15 @@ class ExpClass(object):
             for j in sorted(self.adj[i]):
                 res.append("{} {}".format(self.pattrank[i], self.pattrank[j[0]]))
         return '\n'.join(res)
+
+    def graphviz(self):
+        dot = graphviz.Digraph(comment="active" if self.active else "inactive")
+        for patt in self.pattrank:
+            dot.node(str(patt))
+        for patt in self.pattrank:
+            for edge in self.adj[self.idmap[patt]]:
+                dot.edge(str(patt), str(self.pattrank[edge[0]]))
+        return dot
 
 def parse_classes(inputfile):
     lines = list(l.strip() for l in dropwhile(lambda x: len(x.strip()) == 0 or x.strip()[0] == "#", inputfile.readlines()))
