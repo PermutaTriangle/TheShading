@@ -230,9 +230,9 @@ class TSA:
         self.force_len = force_len
         if not knowledge:
             # self.knowledge = ([shad_to_binary(self.q.shading, self.k + 1)], [shad_to_binary(self.p.shading, self.k + 1)])
-            self.knowledge = [shad_to_binary(self.q.shading, self.k + 1)]
+            self.knowledge = set([shad_to_binary(self.q.shading, self.k + 1)])
         else:
-            self.knowledge = knowledge
+            self.knowledge = set(knowledge)
 
     def do_empty_boxes(self, boxes, mp, *args):
         if len(boxes) == 1:
@@ -350,7 +350,8 @@ class TSA:
             subbinshad = shad_to_binary(sub.shading, self.k + 1)
             pbinshad = shad_to_binary(self.p.shading, self.k + 1)
             # if self.q_check and any(is_subset(k, subbinshad) for k in self.knowledge[0]):
-            if self.q_check and any(is_subset(k, subbinshad) for k in self.knowledge):
+            # if self.q_check and any(is_subset(k, subbinshad) for k in self.knowledge):
+            if self.q_check and subbinshad in self.knowledge:
                 desc2 = desc1 + '\nThis is an instance of a pattern implying the occurrence of the objective pattern q.'
                 return TSAResult(force, desc=desc2)
             # if self.q_check and self.q.shading <= sub.shading:
@@ -514,15 +515,8 @@ class TSA:
 
     def run(self):
         ress = []
-        # if self.q.shading <= self.p.shading:
-            # self.p, self.q = self.q, self.p
-            # self.knowledge = (self.knowledge[1], self.knowledge[0])
 
         ress.append(self.tsa5())
-        # if not (self.p.shading <= self.q.shading):
-            # self.p, self.q = self.q, self.p
-            # self.knowledge = (self.knowledge[1], self.knowledge[0])
-            # ress.append(self.tsa5())
 
         return ress
 
@@ -533,20 +527,23 @@ def tsa5_two(mp1, mp2, depth, multbox=True, q_check=True, force_len=None, knowle
 def tsa5(mp, shade, depth, multbox=True, q_check=True, force_len=None, knowledge=None):
     return tsa5_two(mp, mp.shade(shade), depth, multbox=multbox, q_check=q_check, force_len=force_len)
 
-def tsa5_implies(mp1, mp2, depth, multbox=True, q_check=True, force_len=None):
-    run = tsa5_two(mp1, mp2, depth, multbox=multbox, q_check=q_check, force_len=force_len)
+def tsa5_implies(mp1, mp2, depth, multbox=True, q_check=True, force_len=None, knowledge=None):
+    run = tsa5_two(mp1, mp2, depth, multbox=multbox, q_check=q_check, force_len=force_len, knowledge=knowledge)
     for r in run:
         if bool(r.force):
             return True
     return False
 
-def tsa5_coincident(mp1, mp2, depth, multbox=True, q_check=True, force_len=None, knowledge=None):
-    run = tsa5_two(mp1, mp2, depth, multbox=multbox, q_check=q_check, force_len=force_len, knowledge=knowledge)
-    for r in run:
+def tsa5_coincident(mp1, mp2, depth, multbox=True, q_check=True, force_len=None, knowledge=(None, None)):
+    res = []
+    run = tsa5_two(mp1, mp2, depth, multbox=multbox, q_check=q_check, force_len=force_len, knowledge=knowledge[0])
+    res.extend(run)
+    run = tsa5_two(mp2, mp1, depth, multbox=multbox, q_check=q_check, force_len=force_len, knowledge=knowledge[1])
+    res.extend(run)
+    for r in res:
         if not bool(r.force):
             return False
     return True
-
 
 if __name__ == '__main__':
 
