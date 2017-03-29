@@ -11,9 +11,24 @@ from functools import partial
 import graphviz
 
 from permuta import MeshPatt, Perm
+from misc import is_subset
 from wrappers import *
 
 underlying_classical_pattern = None
+
+class ExpClasses(object):
+
+    def __init__(self, classes):
+        self.classes = classes
+        self.clasmap = dict()
+        for (i, clas) in enumerate(classes):
+            for patt in clas.pattrank:
+                self.clasmap[patt] = i
+
+    def implies(self, p, q):
+        pclass = self.clasmap[p]
+        visited = self.classes[pclass].dfs(self.classes[pclass].idmap[p], self.classes[pclass].adj)
+        return any(is_subset(q, self.classes[pclass].pattrank[r]) for r in visited)
 
 class ExpClass(object):
     def __init__(self, patts, classical_pattern, active):
@@ -184,6 +199,8 @@ def main(argv):
 
     sys.stderr.write("Starting with parameters {}\n".format(args))
 
+    lem7 = []
+
     for clas in parse_classes(args.input_file):
         # sys.stderr.write(str(clas))
 
@@ -206,15 +223,23 @@ def main(argv):
                 # clas.compute_coinc(tsa3_pred, args.tsa3, False)
             # if args.tsa4:
                 # clas.compute_coinc(tsa4_pred, args.tsa4, False)
-            if args.lemma7:
-                clas.compute_coinc(lemma7_pred, oneway=True)
             if args.tsa5:
                 clas.compute_coinc(partial(tsa_wrapper, tsa5, True), args.tsa5, True)
 
-        res = clas.output_class()
-        output.append(res)
+        if args.lemma7:
+            lem7.append(clas)
+        else:
+            res = clas.output_class()
+            output.append(res)
         # break
+
     output[0] = str(underlying_classical_pattern)
+
+    if args.lemma7:
+        # print(lem7)
+        for clas in lem7:
+            clas.compute_coinc(lemma7_pred, oneway=True, coincargs=(ExpClasses(lem7),))
+            output.append(clas.output_class())
 
     sys.stdout.write('\n'.join(output))
 

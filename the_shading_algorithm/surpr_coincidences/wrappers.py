@@ -67,11 +67,12 @@ def tsa4_pred(tsa, mpatt1, mpatt2, depth, expclass=None):
     run = tsa1(mpatt1, symdiff.pop(), depth)
     return bool(run.force)
 
-def lemma7_pred(mpatt1, mpatt2, expclass):
+def lemma7_pred(mpatt1, mpatt2, expclasses, expclass):
     # knowledge = ([ expclass.pattrank[i] for i in range(len(expclass.pattrank)) if expclass.implies(i, expclass.idmap[mpatt2.rank()]) ],
                 # [ expclass.pattrank[i] for i in range(len(expclass.pattrank)) if expclass.implies(i, expclass.idmap[mpatt1.rank()]) ])
-    knowledge = [expclass.pattrank[i] for i in range(len(expclass.pattrank)) if expclass.implies(i, expclass.idmap[mpatt2.rank()])]
-    return tsa5_implies(mpatt1, mpatt2, depth=1, multbox=True, q_check=True, force_len=len(mpatt1), knowledge=knowledge)
+    # knowledge = [expclass.pattrank[i] for i in range(len(expclass.pattrank)) if expclass.implies(i, expclass.idmap[mpatt2.rank()])]
+    run = tsa5_implies(mpatt1, mpatt2, depth=1, multbox=True, q_check=True, force_len=len(mpatt1), knowledge=expclasses)
+    return bool(run)
     # return tsa5_coincident(mpatt1, mpatt2, depth=1, multbox=True, q_check=True, force_len=len(mpatt1))
 
 def tsa5_pred(mpatt1, mpatt2, depth, expclass=None):
