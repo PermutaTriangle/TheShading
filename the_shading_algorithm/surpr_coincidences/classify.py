@@ -191,7 +191,7 @@ def main(argv):
     parser.add_argument( '-tsa1', '--tsa1', help='TSA1 depth', nargs=1, type=int, default=0)
     # parser.add_argument( '-tsa2', '--tsa2', help='TSA2 depth', nargs=1, type=int, default=0)
     # parser.add_argument( '-tsa3', '--tsa3', help='TSA3 depth', nargs=1, type=int, default=0)
-    parser.add_argument( '-lemma7', '--lemma7', help='Lemma 7', action='store_true')
+    parser.add_argument( '-lemma7', '--lemma7', help='Lemma 7 depth', nargs=1, type=int, default=0)
     parser.add_argument( '-tsa5', '--tsa5', help='TSA5 depth', nargs=1, type=int, default=0)
 
     args = parser.parse_args()
@@ -238,7 +238,7 @@ def main(argv):
     if args.lemma7:
         # print(lem7)
         for clas in lem7:
-            clas.compute_coinc(lemma7_pred, oneway=True, coincargs=(ExpClasses(lem7),))
+            clas.compute_coinc(lemma7_pred, oneway=True, coincargs=(ExpClasses(lem7), args.lemma7))
             output.append(clas.output_class())
 
     sys.stdout.write('\n'.join(output))
