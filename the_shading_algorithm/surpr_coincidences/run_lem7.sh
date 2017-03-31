@@ -12,8 +12,7 @@
     #done
 #}
 
-#for p in {"01","012","021"}; do
-    p="01"
+for p in {"01","012","021"}; do
     for d in {2..7}; do
         if [ ! -d results/lemma7/depth_"$d" ]; then
             mkdir results/lemma7/depth_"$d"
@@ -37,5 +36,5 @@
             fi
         done
     done
-#done
+done
 
