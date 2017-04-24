@@ -17,6 +17,7 @@ classpatt = None
 
 perm_ids = dict()
 id_perm = dict()
+perm_set = None
 
 def get_perm_id(perm):
     if perm not in perm_ids:
@@ -77,7 +78,7 @@ def brute_coincify_len(l, active, contsets, singles):
     sys.stderr.write('Permutations of length %d\n' % l)
     ProgressBar.create(factorial(l))
     # For each permutation
-    for perm in PermSet(l):
+    for perm in perm_set.of_length(l):
         ProgressBar.progress()
         poss = []
         # loop over the occurrences of the underlying pattern exactly once
@@ -175,13 +176,12 @@ def supersets_of_mesh(n, mesh):
 
 # --------------------------------------------------------------------------- #
 classpatt = Perm(map(int, sys.argv[1].split()))
-# classpatt = Perm([0])
-# classpatt = Perm([0,1])
-# classpatt = Perm([0,1,2])
-# classpatt = Perm([0,2,1])
 
 # mps = MeshPattSet(len(classpatt), classpatt)
-mps = [ i for i in range(2**((len(classpatt) + 1)**2))]
+# mps = [ i for i in range(2**((len(classpatt) + 1)**2))]
+mps = [ int(p) for p in sys.stdin.readlines()]
+avoidance_set = [Perm((2,0,1))]
+perm_set = PermSet.avoiding(avoidance_set)
 
 # ---------- Look for surprising coincidences ---------- #
 # Upper bound (inclusive) on the length of permutations to look for surprising
@@ -258,12 +258,12 @@ if print_classes:
     for clas in classes:
         if len(clas) < 2:
             continue
-        print(clas)
+        print([mps[i] for i in clas])
         print("active")
 
 if print_singleclasses:
     for clas in singleclasses:
-        print([clas])
+        print([mps[clas]])
         print("inactive")
 
 # ------------------------------------------------------ #
