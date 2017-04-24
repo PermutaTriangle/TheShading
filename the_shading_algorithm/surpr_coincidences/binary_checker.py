@@ -5,13 +5,14 @@ from collections import Counter
 from permuta import *
 from permuta.misc import ProgressBar, factorial
 from misc import shad_to_binary, is_subset
+perm_set = None
 
 def filter_binary(patterns, cpatt):
     binarypatterns = patterns
     for l in range(len(cpatt), len(cpatt) * 2 + 2):
         sys.stderr.write("Permutations of length {}\n".format(l))
         ProgressBar.create(factorial(l))
-        for perm in PermSet(l):
+        for perm in perm_set.of_length(l):
             ProgressBar.progress()
             poss = []
             for res in cpatt.occurrences_in(perm):
@@ -62,12 +63,12 @@ def filter_binary(patterns, cpatt):
 
 ################################################################################
 
-if len(sys.argv) > 1:
-    cpatt = Perm(map(int, list(sys.argv[1])))
-else:
-    cpatt = Perm((0, 1))
-    # cpatt = Perm((0, 2, 1))
-    # cpatt = Perm((0, 1, 2, 3))
+cpatt = Perm(map(int, list(sys.argv[1])))
+avoidance = []
+if len(sys.argv) > 2:
+    # avoidance = [ Perm(map(int, p)) for p in map(list, sys.argv[2].split())]
+    avoidance = [ Perm(map(int, p)) for p in map(list, sys.argv[2:]) ]
+perm_set = PermSet.avoiding(avoidance)
 pattern_ranks = [ i for i in range(2**((len(cpatt) + 1)**2)) ]
 
 ################################################################################
@@ -79,7 +80,7 @@ binarypatterns = filter_binary(pattern_ranks, cpatt)
 if internal_check:
     for patt in binarypatterns:
         for length in range(len(cpatt), len(cpatt) * 2 + 2):
-            for perm in PermSet(length):
+            for perm in perm_set.of_length(length):
                 if perm.count_occurrences_of(MeshPatt.unrank(cpatt, patt)) > 1:
                     print("INTERNAL FAAAAAAAAAAAAAAAAAAAAAIIIIIIIIIIIIIIIIIIIIIIIIILLLLLLLLLLLLLLL")
                     print(MeshPatt.unrank(cpatt, patt))
@@ -88,13 +89,13 @@ if external_check:
     for mpatt in gen_meshpatts(len(cpatt), cpatt):
         if mpatt.rank() in binarypatterns:
             continue
-        if all(perm.count_occurrences_of(mpatt) == 1 for length in range(len(cpatt), len(cpatt) * 2 + 2) for perm in PermSet(length)):
+        if all(perm.count_occurrences_of(mpatt) == 1 for length in range(len(cpatt), len(cpatt) * 2 + 2) for perm in perm_set.of_length(length)):
             print("EXTERNAL FAAAAAAAAAAAAAAAAAAAAAIIIIIIIIIIIIIIIIIIIIIIIIILLLLLLLLLLLLLLL")
             print(MeshPatt.unrank(cpatt, mpatt))
             sys.exit(1)
 
 # print(sorted(binarypatterns))
-sys.stdout.write(' '.join(map(str, binarypatterns)) + '\n')
+sys.stdout.write('\n'.join(map(str, binarypatterns)) + '\n')
 # for patt in sorted(binarypatterns):
 #     print(MeshPatt.unrank(cpatt, patt))
 #     print()
