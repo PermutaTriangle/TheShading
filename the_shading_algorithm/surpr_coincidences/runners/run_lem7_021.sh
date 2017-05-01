@@ -1,6 +1,8 @@
 #!/usr/bin/bash
 #SBATCH --job-name=ShadingLemma021
 
+source ~/permenv/bin/activate
+
 for d in {5..7}; do
     if [ ! -d results/lemma7/depth_"$d" ]; then
         mkdir results/lemma7/depth_"$d"
