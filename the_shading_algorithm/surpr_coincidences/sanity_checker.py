@@ -1,19 +1,23 @@
 
 import sys
 from permuta import *
+from permuta.misc import ProgressBar, factorial
 from classify import parse_classes, ExpClasses
 from tsa5_knowledge import tsa5_two as tsa5
 
-inputfile = open(sys.argv[1])
-expclasses = ExpClasses(list(parse_classes(inputfile)))
-# expclasses = None
-depth = 2
+maxlength = int(sys.argv[1])
+cpatt = Perm(map(int, sys.argv[2].split()))
+mpatts = [MeshPatt.unrank(cpatt, m) for m in map(int, sys.argv[3:])]
 
-cpatt = Perm((0,1,2))
-mpatt1 = 1144
-mpatt2 = 3192
-
-run = tsa5(MeshPatt.unrank(cpatt, mpatt1), MeshPatt.unrank(cpatt, mpatt2), depth=depth, multbox=True, q_check=False, force_len=None, knowledge=expclasses)
-
-for r in run:
-    print(r)
+for l in range(len(cpatt), maxlength + 1):
+    sys.stderr.write("Length {} permutations\n".format(l))
+    # ProgressBar.create(factorial(l))
+    for p in PermSet(l):
+        # ProgressBar.progress()
+        if len(set([p.avoids(mpatt) for mpatt in mpatts])) != 1:
+            print("Found permutation")
+            print(cpatt)
+            print(mpatts)
+            print([p.avoids(mpatt) for mpatt in mpatts])
+            sys.exit(0)
+    # ProgressBar.finish()
