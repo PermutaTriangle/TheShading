@@ -1,4 +1,3 @@
-
 import os, sys
 from permuta import *
 from permuta.misc import ProgressBar, factorial
@@ -7,9 +6,9 @@ from tsa5_knowledge import tsa5_two as tsa5
 
 maxlength = int(sys.argv[1])
 cpatt = Perm(map(int, sys.argv[2].split()))
-# mpatts = [MeshPatt.unrank(cpatt, m) for m in map(int, sys.argv[3:])]
-JOBID = int(os.environ['SLURM_ARRAY_TASK_ID'])
-mpatts = [MeshPatt.unrank(cpatt, mpatt) for mpatt in list(map(int, open(sys.argv[3]).readlines()[JOBID].split()))]
+mpatts = [MeshPatt.unrank(cpatt, m) for m in map(int, sys.argv[3:])]
+# JOBID = int(os.environ['SLURM_ARRAY_TASK_ID'])
+# mpatts = [MeshPatt.unrank(cpatt, mpatt) for mpatt in list(map(int, open(sys.argv[3]).readlines()[JOBID].split()))]
 sys.stderr.write(str([mpatt.rank() for mpatt in mpatts]))
 sys.stderr.write("\n")
 
