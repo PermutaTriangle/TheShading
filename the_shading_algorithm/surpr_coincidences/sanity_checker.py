@@ -17,7 +17,7 @@ for l in range(len(cpatt), maxlength + 1):
     for p in PermSet(l):
         if len(set([p.avoids(mpatt) for mpatt in mpatts])) != 1:
             print("Found permutation")
-            print(cpatt)
+            print(p)
             print(mpatts)
             print([p.avoids(mpatt) for mpatt in mpatts])
             sys.exit(0)
