@@ -520,6 +520,7 @@ def tsa5_coincident(mp1, mp2, depth, multbox=True, q_check=True, force_len=None)
 
 if __name__ == '__main__':
 
+    # run = tsa5_two(MeshPatt.unrank(Perm((0,1,2)), 8), MeshPatt.unrank(Perm((0,1,2)), 34923), depth=1, multbox=True, q_check=True, force_len=3)
     run = tsa5_two(MeshPatt.unrank(Perm((0,1,2)), 8), MeshPatt.unrank(Perm((0,1,2)), 34923), depth=1, multbox=True, q_check=True, force_len=3)
 
     for line in run:

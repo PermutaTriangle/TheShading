@@ -1,0 +1,87 @@
+
+# Number of surprising coincidence classes 41
+# Number of non-singleton coincidence classes 29
+
+(0, 1)
+[0, 23, 55, 151, 263, 269, 278, 284, 295, 301, 310, 316, 391, 397, 406, 412]
+active
+[31, 63, 159]
+active
+[271, 303, 399]
+active
+[286, 414]
+active
+[87, 119, 215]
+active
+[89, 93, 121, 125, 217, 221, 323, 327, 329, 333, 338, 342, 344, 348, 355, 359, 361, 365, 451, 455, 457, 461, 466, 470, 472, 476]
+active
+[370, 374, 376, 380]
+active
+[91, 95, 123, 127, 219, 223, 331, 335, 363, 367, 459, 463]
+active
+[346, 350, 474, 478]
+active
+[378, 382]
+active
+[423, 429]
+active
+[438, 444]
+active
+[249, 253]
+active
+[483, 487, 489, 493, 498, 502, 504, 508]
+active
+[251, 255]
+active
+[491, 495]
+active
+[506, 510]
+active
+[279, 407]
+active
+[285, 413]
+active
+[287, 415]
+active
+[339, 343, 467, 471]
+active
+[345, 349, 473, 477]
+active
+[371, 375]
+active
+[377, 381]
+active
+[347, 351, 475, 479]
+active
+[379, 383]
+active
+[499, 503]
+active
+[505, 509]
+active
+[507, 511]
+active
+[447]
+inactive
+[183]
+inactive
+[191]
+inactive
+[431]
+inactive
+[446]
+inactive
+[247]
+inactive
+[311]
+inactive
+[317]
+inactive
+[319]
+inactive
+[439]
+inactive
+[445]
+inactive
+[318]
+inactive

@@ -352,7 +352,7 @@ class TSA:
             # if self.q_check and any(is_subset(k, subbinshad) for k in self.knowledge):
             if self.knowledge:
                 if self.knowledge.implies(subbinshad, qbinshad):
-                    desc2 = desc1 + '\nThis is an instance of a pattern implying the occurrence of the objective pattern q.'
+                    desc2 = desc1 + '\nThis is an instance of a pattern {} implying the occurrence of the objective pattern q.'.format(subbinshad)
                     return TSAResult(force, desc=desc2)
             elif self.q_check and self.q.shading <= sub.shading:
                 desc2 = desc1 + '\nThis is an instance of the objective pattern q.'
