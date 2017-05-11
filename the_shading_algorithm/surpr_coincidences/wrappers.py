@@ -1,5 +1,7 @@
 from permuta import MeshPatt, Perm
 from functools import partial
+import sys
+import os
 
 from tsa1 import all_points_all_dir as tsa1
 from tsa2 import all_points_all_dir as tsa2
@@ -67,11 +69,22 @@ def tsa4_pred(tsa, mpatt1, mpatt2, depth, expclass=None):
     run = tsa1(mpatt1, symdiff.pop(), depth)
     return bool(run.force)
 
-def lemma7_pred(mpatt1, mpatt2, expclasses, depth, expclass):
+def lemma7_pred(mpatt1, mpatt2, expclass, expclasses, depth, prooflog=None):
     # knowledge = ([ expclass.pattrank[i] for i in range(len(expclass.pattrank)) if expclass.implies(i, expclass.idmap[mpatt2.rank()]) ],
                 # [ expclass.pattrank[i] for i in range(len(expclass.pattrank)) if expclass.implies(i, expclass.idmap[mpatt1.rank()]) ])
     # knowledge = [expclass.pattrank[i] for i in range(len(expclass.pattrank)) if expclass.implies(i, expclass.idmap[mpatt2.rank()])]
     run = tsa5_implies(mpatt1, mpatt2, depth=depth[0], multbox=True, q_check=True, force_len=len(mpatt1), knowledge=expclasses)
+    if bool(run):
+        if prooflog:
+            try:
+                with open(os.path.join(prooflog[0], "{}_{}_proof.txt".format(mpatt1.rank(), mpatt2.rank())), 'w+') as f:
+                    for r in run:
+                        f.write(str(r))
+                        f.write('\n')
+                    f.flush()
+            except:
+                sys.stderr.write("Failed to open a file in proof directory {}".format(str(prooflog)))
+                sys.stderr.write('\n')
     return bool(run)
     # return tsa5_coincident(mpatt1, mpatt2, depth=1, multbox=True, q_check=True, force_len=len(mpatt1))
 

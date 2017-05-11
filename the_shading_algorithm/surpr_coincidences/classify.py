@@ -113,7 +113,7 @@ class ExpClass(object):
 
                 mpatt1, mpatt2 = self.patts[i], self.patts[j]
 
-                coinc = coincpred(mpatt1, mpatt2, *coincargs, expclass=self)
+                coinc = coincpred(mpatt1, mpatt2, self, *coincargs)
 
                 if coinc:
                     self.add_edge(self.pattrank[i], self.pattrank[j], None)
@@ -193,6 +193,7 @@ def main(argv):
     # parser.add_argument( '-tsa3', '--tsa3', help='TSA3 depth', nargs=1, type=int, default=0)
     parser.add_argument( '-lemma7', '--lemma7', help='Lemma 7 depth', nargs=1, type=int, default=0)
     parser.add_argument( '-tsa5', '--tsa5', help='TSA5 depth', nargs=1, type=int, default=0)
+    parser.add_argument( '-proof', '--proof', help='Directory for proof outputs', nargs=1, type=str)
 
     args = parser.parse_args()
     output = [None]
@@ -237,8 +238,9 @@ def main(argv):
 
     if args.lemma7:
         # print(lem7)
+        lem7classes = ExpClasses(lem7)
         for clas in lem7:
-            clas.compute_coinc(lemma7_pred, oneway=True, coincargs=(ExpClasses(lem7), args.lemma7))
+            clas.compute_coinc(lemma7_pred, oneway=True, coincargs=(lem7classes, args.lemma7, args.proof))
             output.append(clas.output_class())
 
     sys.stdout.write('\n'.join(output))
