@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #SBATCH --job-name=TSA_sancheck
-#SBATCH --array=1-10
+#SBATCH --array=1-2
 #SBATCH --output=logs/tsa_sancheck_%A_%a.out
 #SBATCH --error=logs/tsa_sancheck_%A_%a.err
 
