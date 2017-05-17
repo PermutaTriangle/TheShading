@@ -175,13 +175,17 @@ def supersets_of_mesh(n, mesh):
 
 
 # --------------------------------------------------------------------------- #
-classpatt = Perm(map(int, sys.argv[1].split()))
+classpatt = Perm(map(int, sys.argv[1]))
 
 # mps = MeshPattSet(len(classpatt), classpatt)
 # mps = [ i for i in range(2**((len(classpatt) + 1)**2))]
 mps = [ int(p) for p in sys.stdin.readlines()]
-avoidance_set = [Perm((2,0,1))]
+# avoidance_set = [Perm((0,2,1))]
+avoidance_set = [Perm(map(int, p)) for p in sys.argv[3:]]
 perm_set = PermSet.avoiding(avoidance_set)
+
+sys.stderr.write("Classical pattern {}\n".format(classpatt))
+sys.stderr.write("Avoiding {}\n".format(perm_set))
 
 # ---------- Look for surprising coincidences ---------- #
 # Upper bound (inclusive) on the length of permutations to look for surprising
