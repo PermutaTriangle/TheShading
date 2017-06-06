@@ -8,8 +8,8 @@ from misc import shad_to_binary, is_subset
 perm_set = None
 
 def filter_binary(patterns, cpatt):
-    binarypatterns = patterns
-    for l in range(len(cpatt), len(cpatt) * 2 + 2):
+    binarypatterns = set(patterns)
+    for l in range(len(cpatt), len(cpatt) * 2 + 1):
         sys.stderr.write("Permutations of length {}\n".format(l))
         ProgressBar.create(factorial(l))
         for perm in perm_set.of_length(l):
@@ -37,20 +37,19 @@ def filter_binary(patterns, cpatt):
                 cur = set( (u,v) for u in range(len(cpatt)+1) for v in range(len(cpatt)+1) if (u,v) not in bad )
                 poss.append(shad_to_binary(cur, len(cpatt) + 1))
 
-            occcount = Counter(poss)
-
             occurring = set()
+            nonbinary = set()
             for binpatt in binarypatterns:
                 for occ in poss:
                     if is_subset(binpatt, occ):
                         if binpatt in occurring:
-                            binarypatterns.remove(binpatt)
+                            nonbinary.add(binpatt)
                             # print(MeshPatt.unrank(cpatt, binpatt))
                             # print(perm)
                             break
                         else:
                             occurring.add(binpatt)
-            # print(binarypatterns)
+            binarypatterns -= nonbinary
         ProgressBar.finish()
 
     return binarypatterns
@@ -75,6 +74,7 @@ pattern_ranks = [ i for i in range(2**((len(cpatt) + 1)**2)) ]
 
 internal_check = False
 external_check = False
+print_clas = True
 binarypatterns = filter_binary(pattern_ranks, cpatt)
 
 if internal_check:
@@ -93,6 +93,9 @@ if external_check:
             print("EXTERNAL FAAAAAAAAAAAAAAAAAAAAAIIIIIIIIIIIIIIIIIIIIIIIIILLLLLLLLLLLLLLL")
             print(MeshPatt.unrank(cpatt, mpatt))
             sys.exit(1)
+
+if print_clas:
+    sys.stdout.write("0\n")
 
 # print(sorted(binarypatterns))
 sys.stdout.write('\n'.join(map(str, binarypatterns)) + '\n')
