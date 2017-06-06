@@ -1,0 +1,20 @@
+/users/home/tomasm12/PermutaTriangle/TheShading/the_shading_algorithm/surpr_coincidences
+
+ Lemma 7
+ depth 6
+  iteration 0
+Starting with parameters Namespace(force_len=[1], input_file=<_io.TextIOWrapper name='results/lemma7_pruned_fl1/depth_6/surprising_coincidence_021_SL_Lemma7_0.txt' mode='r' encoding='ANSI_X3.4-1968'>, lemma2=False, lemma5=False, lemma7=[6], proof=['results/proofs/lemma7/021-fl1'], sl=False, ssl=False, tsa1=0, tsa5=0)
+245143c245143
+< inactive
+---
+> inactive
+\ No newline at end of file
+  iteration 1
+Starting with parameters Namespace(force_len=[1], input_file=<_io.TextIOWrapper name='results/lemma7_pruned_fl1/depth_6/surprising_coincidence_021_SL_Lemma7_1.txt' mode='r' encoding='ANSI_X3.4-1968'>, lemma2=False, lemma5=False, lemma7=[6], proof=['results/proofs/lemma7/021-fl1'], sl=False, ssl=False, tsa1=0, tsa5=0)
+
+ Lemma 7
+ depth 7
+  iteration 0
+slurmstepd: error: *** JOB 5114 ON compute-0-26 CANCELLED AT 2017-06-01T11:50:02 DUE TO TIME LIMIT ***
+slurmstepd: error: unlink(/tmp/slurmd/job05114/slurm_script): No such file or directory
+slurmstepd: error: rmdir(/tmp/slurmd/job05114): No such file or directory

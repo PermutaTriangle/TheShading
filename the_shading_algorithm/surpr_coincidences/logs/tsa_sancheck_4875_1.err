@@ -1,0 +1,102 @@
+[2740, 3764]
+Length 3 permutations
+   Permutations starting with 0
+   Permutations starting with 1
+   Permutations starting with 2
+Length 4 permutations
+   Permutations starting with 0
+   Permutations starting with 1
+   Permutations starting with 2
+   Permutations starting with 3
+Length 5 permutations
+   Permutations starting with 0
+   Permutations starting with 1
+   Permutations starting with 2
+   Permutations starting with 3
+   Permutations starting with 4
+Length 6 permutations
+   Permutations starting with 0
+   Permutations starting with 1
+   Permutations starting with 2
+   Permutations starting with 3
+   Permutations starting with 4
+   Permutations starting with 5
+Length 7 permutations
+   Permutations starting with 0
+   Permutations starting with 1
+   Permutations starting with 2
+   Permutations starting with 3
+   Permutations starting with 4
+   Permutations starting with 5
+   Permutations starting with 6
+Length 8 permutations
+   Permutations starting with 0
+   Permutations starting with 1
+   Permutations starting with 2
+   Permutations starting with 3
+   Permutations starting with 4
+   Permutations starting with 5
+   Permutations starting with 6
+   Permutations starting with 7
+Length 9 permutations
+   Permutations starting with 0
+   Permutations starting with 1
+   Permutations starting with 2
+   Permutations starting with 3
+   Permutations starting with 4
+   Permutations starting with 5
+   Permutations starting with 6
+   Permutations starting with 7
+   Permutations starting with 8
+Length 10 permutations
+   Permutations starting with 0
+   Permutations starting with 1
+   Permutations starting with 2
+   Permutations starting with 3
+   Permutations starting with 4
+   Permutations starting with 5
+   Permutations starting with 6
+   Permutations starting with 7
+   Permutations starting with 8
+   Permutations starting with 9
+Length 11 permutations
+   Permutations starting with 0
+   Permutations starting with 1
+   Permutations starting with 2
+   Permutations starting with 3
+   Permutations starting with 4
+   Permutations starting with 5
+   Permutations starting with 6
+   Permutations starting with 7
+   Permutations starting with 8
+   Permutations starting with 9
+   Permutations starting with 10
+Length 12 permutations
+   Permutations starting with 0
+   Permutations starting with 1
+   Permutations starting with 2
+   Permutations starting with 3
+   Permutations starting with 4
+   Permutations starting with 5
+   Permutations starting with 6
+   Permutations starting with 7
+   Permutations starting with 8
+   Permutations starting with 9
+   Permutations starting with 10
+   Permutations starting with 11
+Length 13 permutations
+   Permutations starting with 0
+   Permutations starting with 1
+   Permutations starting with 2
+   Permutations starting with 3
+   Permutations starting with 4
+   Permutations starting with 5
+   Permutations starting with 6
+   Permutations starting with 7
+   Permutations starting with 8
+   Permutations starting with 9
+   Permutations starting with 10
+   Permutations starting with 11
+slurmstepd: error: *** JOB 4876 ON compute-0-9 CANCELLED AT 2017-05-27T11:25:10 DUE TO TIME LIMIT ***
+slurmstepd: error: unlink(/tmp/slurmd/job04876/slurm_script): No such file or directory
+slurmstepd: error: rmdir(/tmp/slurmd/job04876): No such file or directory
