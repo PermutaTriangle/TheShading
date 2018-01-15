@@ -72,19 +72,24 @@ pattern_ranks = [ i for i in range(2**((len(cpatt) + 1)**2)) ]
 
 ################################################################################
 
-internal_check = False
+internal_check = True
 external_check = False
 print_clas = True
 binarypatterns = filter_binary(pattern_ranks, cpatt)
 
 if internal_check:
+    sys.stderr.write("Internal checking\n")
+    ProgressBar.create(len(binarypatterns))
     for patt in binarypatterns:
+        ProgressBar.progress()
+        mpatt = MeshPatt.unrank(cpatt, patt)
         for length in range(len(cpatt), len(cpatt) * 2 + 2):
             for perm in perm_set.of_length(length):
-                if perm.count_occurrences_of(MeshPatt.unrank(cpatt, patt)) > 1:
+                if perm.count_occurrences_of(mpatt) > 1:
                     print("INTERNAL FAAAAAAAAAAAAAAAAAAAAAIIIIIIIIIIIIIIIIIIIIIIIIILLLLLLLLLLLLLLL")
                     print(MeshPatt.unrank(cpatt, patt))
                     sys.exit(1)
+    ProgressBar.finish()
 if external_check:
     for mpatt in gen_meshpatts(len(cpatt), cpatt):
         if mpatt.rank() in binarypatterns:
