@@ -1,16 +1,13 @@
 # coding: utf-8
-
 from permuta import (
     Perm,
     PermSet,
     MeshPatt,
     gen_meshpatts
 )
-from permuta.misc import UnionFind, subsets, ProgressBar, TrieMap, factorial
+from permuta.misc import subsets, ProgressBar, factorial
 from misc import shad_to_binary, is_subset
 import sys
-import time
-import math
 
 mps = None
 classpatt = None
@@ -19,20 +16,22 @@ perm_ids = dict()
 id_perm = dict()
 perm_set = None
 
+
 def get_perm_id(perm):
     if perm not in perm_ids:
         perm_ids[perm] = len(perm_ids)
         id_perm[perm_ids[perm]] = perm
     return perm_ids[perm]
 
+
 perm_class_ids = dict()
 
+
 def get_perm_class_id(perm_class):
-    # TODO: use perm_id for this as well? o.O
     if perm_class not in perm_class_ids:
         perm_class_ids[perm_class] = len(perm_class_ids)
-        # perm_class_ids_dict[perm_class] = perm_class_ids[perm_class]
     return perm_class_ids[perm_class]
+
 
 class MeshPattSet(object):
     def __init__(self, n, patt=None):
@@ -43,7 +42,8 @@ class MeshPattSet(object):
         self.idx = {}
 
         sys.stderr.write('Generating mesh patterns\n')
-        ProgressBar.create(2**((n+1)*(n+1)) * (factorial(n) if patt is None else 1))
+        ProgressBar.create(2**((n+1)*(n+1)) * (factorial(n)
+                           if patt is None else 1))
         for i, mp in enumerate(gen_meshpatts(n, patt)):
             ProgressBar.progress()
             self.mps.append(mp)
@@ -67,12 +67,12 @@ class MeshPattSet(object):
         for mp in self.mps:
             yield mp
 
+
 def brute_coincify_len(l, active, contsets, singles):
     global mps
     global classpatt
     patt = classpatt
     assert patt is not None
-    cnt = len(mps)
     mesh_perms = {}
 
     sys.stderr.write('Permutations of length %d\n' % l)
@@ -99,9 +99,10 @@ def brute_coincify_len(l, active, contsets, singles):
                 else:
                     row[v] = rowcnt
             # bad is the set of boxes that contain points and can not be shaded
-            bad = set( (u,v) for u,v in zip(col,row) if u != -1 )
+            bad = set((u, v) for u, v in zip(col, row) if u != -1)
             # cur is the set of boxes that can be shaded
-            cur = set( (u,v) for u in range(len(patt)+1) for v in range(len(patt)+1) if (u,v) not in bad )
+            cur = set((u, v) for u in range(len(patt)+1)
+                      for v in range(len(patt)+1) if (u, v) not in bad)
             poss.append(shad_to_binary(cur, len(patt) + 1))
 
         last = None
@@ -119,8 +120,9 @@ def brute_coincify_len(l, active, contsets, singles):
             if add:
                 maxima.append(cur)
             last = cur
-        # for each maximal set, append the permutation to the list of containing permutations
-        # any subset of the maximal set is then also contained in the permutation
+        # for each maximal set, append the permutation to the list of
+        # containing permutations any subset of the maximal set is then also
+        # contained in the permutation
         perm_id = get_perm_id(perm)
         for m in maxima:
             mesh_perms.setdefault(m, [])
@@ -128,12 +130,12 @@ def brute_coincify_len(l, active, contsets, singles):
     ProgressBar.finish()
 
     cont = {}
-    notcnt = 0
-    sys.stderr.write('Compare mesh patterns with occurrences, active = %d\n' % len(active))
+    sys.stderr.write(
+        'Compare mesh patterns with occurrences, active = %d\n'.format(
+            len(active)))
     ProgressBar.create(sum(map(len, active)))
 
     # For each active class
-    conts = {}
     for (mpatts, contset) in zip(active, contsets):
 
         # We monitor whether the class will split or not
@@ -160,16 +162,18 @@ def brute_coincify_len(l, active, contsets, singles):
             singles.append(v[0])
     return (nowactive, nowcontset)
 
+
 def brute_coincify(max_len):
     active = [list(range(len(mps)))]
-    contsets = [ tuple() ]
+    contsets = [tuple()]
     singles = []
     for l in range(len(classpatt), max_len+1):
         active, contsets = brute_coincify_len(l, active, contsets, singles)
     return (active, singles)
 
+
 def supersets_of_mesh(n, mesh):
-    left = [ (i,j) for i in range(n) for j in range(n) if (i,j) not in mesh ]
+    left = [(i, j) for i in range(n) for j in range(n) if (i, j) not in mesh]
     for sub in subsets(left):
         yield (mesh | set(sub))
 
@@ -177,10 +181,7 @@ def supersets_of_mesh(n, mesh):
 # --------------------------------------------------------------------------- #
 classpatt = Perm(map(int, sys.argv[1]))
 
-# mps = MeshPattSet(len(classpatt), classpatt)
-# mps = [ i for i in range(2**((len(classpatt) + 1)**2))]
-mps = [ int(p) for p in sys.stdin.readlines()]
-# avoidance_set = [Perm((0,2,1))]
+mps = [int(p) for p in sys.stdin.readlines()]
 avoidance_set = [Perm(map(int, p)) for p in sys.argv[3:]]
 perm_set = PermSet.avoiding(avoidance_set)
 
@@ -193,7 +194,8 @@ sys.stderr.write("Avoiding {}\n".format(perm_set))
 perm_length = int(sys.argv[2])
 classes, singleclasses = brute_coincify(perm_length)
 print()
-print('# Number of surprising coincidence classes {}'.format(len(classes) + len(singleclasses)))
+print('# Number of surprising coincidence classes {}'.format(
+    len(classes) + len(singleclasses)))
 print('# Number of non-singleton coincidence classes {}'.format(len(classes)))
 print()
 
@@ -207,10 +209,11 @@ print_singleclasses = True
 # Upper bound (inclusive) on the length of permutations to use for sanity check
 check_len = 6
 
+
 def internal_san_checker():
-    avoiding = []
-    cnt = len(mps)
-    sys.stderr.write("Starting internal sanity check with {} classes.\n".format(len(classes)))
+    sys.stderr.write(
+        "Starting internal sanity check with {} classes.\n".format(
+            len(classes)))
     ProgressBar.create(len(classes))
     for clas in classes:
         if len(clas) < 2:
@@ -234,6 +237,7 @@ def internal_san_checker():
         ProgressBar.progress()
     ProgressBar.finish()
     print("Sanity check completed.")
+
 
 def external_san_checker():
     for i in range(len(classes)):
@@ -269,5 +273,3 @@ if print_singleclasses:
     for clas in singleclasses:
         print([mps[clas]])
         print("inactive")
-
-# ------------------------------------------------------ #
