@@ -1,23 +1,21 @@
-
-# TODO:
-#   - Strongly connected component
-#   - Graph datastructure for classes
-
 import sys
 import argparse
-from itertools import *
+from itertools import product, chain, dropwhile
 from collections import deque
-from functools import partial
 import graphviz
 
 from permuta import MeshPatt, Perm
 from misc import is_subset
-from wrappers import *
+from wrappers import (subset_pred,
+                      shading_lemma,
+                      tsa1_pred,
+                      lemma5_pred,
+                      lemma7_pred)
 
 underlying_classical_pattern = None
 
-class ExpClasses(object):
 
+class ExpClasses(object):
     def __init__(self, classes):
         self.classes = classes
         self.clasmap = dict()
@@ -27,15 +25,18 @@ class ExpClasses(object):
 
     def implies(self, p, q):
         pclass = self.clasmap[p]
-        visited = self.classes[pclass].dfs(self.classes[pclass].idmap[p], self.classes[pclass].adj)
-        return any(is_subset(q, self.classes[pclass].pattrank[r]) for r in visited)
+        visited = self.classes[pclass].dfs(self.classes[pclass].idmap[p],
+                                           self.classes[pclass].adj)
+        return any(is_subset(q, self.classes[pclass].pattrank[r])
+                   for r in visited)
+
 
 class ExpClass(object):
     def __init__(self, patts, classical_pattern, active):
         self.idmap = dict()
         self.pattrank = patts
-        self.adj = [ [] for _ in range(len(patts)) ]
-        self.patts = [ MeshPatt.unrank(classical_pattern, n) for n in patts ]
+        self.adj = [[] for _ in range(len(patts))]
+        self.patts = [MeshPatt.unrank(classical_pattern, n) for n in patts]
         self.len = len(patts)
         self.active = active
         for patt in patts:
@@ -72,15 +73,16 @@ class ExpClass(object):
         return visited
 
     def scc(self):
-        rev = [ [] for i in range(len(self)) ]
+        rev = [[] for i in range(len(self))]
         for u in range(len(self)):
-            for (v,t) in self.adj[u]:
-                rev[v].append((u,t))
+            for (v, t) in self.adj[u]:
+                rev[v].append((u, t))
         visited = set()
         L = []
+
         def visit(u):
             visited.add(u)
-            for (v,t) in self.adj[u]:
+            for (v, t) in self.adj[u]:
                 if v not in visited:
                     visit(v)
             L.append(u)
@@ -89,7 +91,6 @@ class ExpClass(object):
                 visit(u)
         visited.clear()
         L.reverse()
-        stack = []
         components = []
         for v in L:
             if v not in visited:
@@ -122,17 +123,16 @@ class ExpClass(object):
 
     def compute_coinc_SSL(self):
         for i in range(self.len):
-        # for i in range(1):
             patt = self.patts[i]
             boxes = patt.shadable_boxes()
             for key in boxes.keys():
                 boxes[key].append(tuple())
-            # print(boxes)
             for sh in product(*boxes.values()):
                 coincwith = patt.shade(k for k in chain(*sh) if k).rank()
                 if coincwith not in self.idmap:
                     sys.stdout.write(str(self) + '\n')
-                    sys.stdout.write("The pattern {} is not in the expclass.\n")
+                    sys.stdout.write(
+                        "The pattern {} is not in the expclass.\n")
                     sys.stdout.write("\n" + str(patt) + "\n")
                     sys.stdout.write("\n" + str(coincwith) + "\n")
                 if not self.implies(i, self.idmap[coincwith]):
@@ -148,7 +148,8 @@ class ExpClass(object):
             res.append("active")
         for i in range(self.len):
             for j in sorted(self.adj[i]):
-                res.append("{} {}".format(self.pattrank[i], self.pattrank[j[0]]))
+                res.append("{} {}".format(
+                    self.pattrank[i], self.pattrank[j[0]]))
         return '\n'.join(res)
 
     def graphviz(self):
@@ -160,8 +161,11 @@ class ExpClass(object):
                 dot.edge(str(patt), str(self.pattrank[edge[0]]))
         return dot
 
+
 def parse_classes(inputfile):
-    lines = list(l.strip() for l in dropwhile(lambda x: len(x.strip()) == 0 or x.strip()[0] == "#", inputfile.readlines()))
+    lines = list(l.strip() for l in dropwhile(
+        lambda x: len(x.strip()) == 0 or x.strip()[0] == "#",
+        inputfile.readlines()))
     linenum = 0
 
     global underlying_classical_pattern
@@ -171,7 +175,9 @@ def parse_classes(inputfile):
     while linenum < len(lines):
         assert(lines[linenum][0] == '[' and lines[linenum][-1] == ']')
         assert(lines[linenum+1] == 'active' or lines[linenum+1] == 'inactive')
-        curclass = ExpClass(eval(lines[linenum]), underlying_classical_pattern, lines[linenum+1] == 'active')
+        curclass = ExpClass(eval(lines[linenum]),
+                            underlying_classical_pattern,
+                            lines[linenum+1] == 'active')
         linenum += 2
         while linenum < len(lines):
             if lines[linenum][0] == '[':
@@ -181,20 +187,25 @@ def parse_classes(inputfile):
             linenum += 1
         yield curclass
 
+
 def main(argv):
     parser = argparse.ArgumentParser(description='Classify mesh patterns.')
     parser.add_argument("input_file", type=argparse.FileType('r'))
-    parser.add_argument( '-sl', '--shading-lemma', action='store_true', help="Use the Shading Lemma", dest='sl')
-    parser.add_argument( '-ssl', '--simultaneous-shading-lemma', action='store_true', help="Use the Simultaneous Shading Lemma", dest='ssl')
-    parser.add_argument( '-lemma2', '--lemma2', help='Lemma 2', action='store_true')
-    parser.add_argument( '-lemma5', '--lemma5', help='Lemma 5', action='store_true')
-    parser.add_argument( '-tsa1', '--tsa1', help='TSA1 depth', nargs=1, type=int, default=0)
-    # parser.add_argument( '-tsa2', '--tsa2', help='TSA2 depth', nargs=1, type=int, default=0)
-    # parser.add_argument( '-tsa3', '--tsa3', help='TSA3 depth', nargs=1, type=int, default=0)
-    parser.add_argument( '-lemma7', '--lemma7', help='Lemma 7 depth', nargs=1, type=int, default=0)
-    parser.add_argument( '-tsa5', '--tsa5', help='TSA5 depth', nargs=1, type=int, default=0)
-    parser.add_argument( '-proof', '--proof', help='Directory for proof outputs', nargs=1, type=str)
-    parser.add_argument( '-fl', '--force_len', help='Number of force points', nargs=1, type=int)
+    parser.add_argument('-sl', '--shading-lemma', action='store_true',
+                        help="Use the Shading Lemma", dest='sl')
+    parser.add_argument('-ssl', '--simultaneous-shading-lemma',
+                        action='store_true',
+                        help="Use the Simultaneous Shading Lemma", dest='ssl')
+    parser.add_argument('-lemma2', '--lemma2', help='Lemma 2',
+                        action='store_true')
+    parser.add_argument('-lemma5', '--lemma5', help='Lemma 5',
+                        action='store_true')
+    parser.add_argument('-lemma7', '--lemma7', help='Lemma 7 depth', nargs=1,
+                        type=int, default=0)
+    parser.add_argument('-proof', '--proof',
+                        help='Directory for proof outputs', nargs=1, type=str)
+    parser.add_argument('-fl', '--force_len', help='Number of force points',
+                        nargs=1, type=int)
 
     args = parser.parse_args()
     output = [None]
@@ -204,7 +215,6 @@ def main(argv):
     lem7 = []
 
     for clas in parse_classes(args.input_file):
-        # sys.stderr.write(str(clas))
 
         if clas.active:
             clas.compute_coinc(subset_pred)
@@ -217,36 +227,27 @@ def main(argv):
                 clas.compute_coinc(tsa1_pred, [1], oneway=False)
             if args.lemma5:
                 clas.compute_coinc(lemma5_pred, [], oneway=False)
-            if args.tsa1:
-                clas.compute_coinc(tsa1_pred, args.tsa1, oneway=False)
-            # if args.tsa2:
-                # clas.compute_coinc(tsa2_pred, args.tsa2, False)
-            # if args.tsa3:
-                # clas.compute_coinc(tsa3_pred, args.tsa3, False)
-            # if args.tsa4:
-                # clas.compute_coinc(tsa4_pred, args.tsa4, False)
-            if args.tsa5:
-                clas.compute_coinc(partial(tsa_wrapper, tsa5, True), args.tsa5, True)
 
         if args.lemma7:
             lem7.append(clas)
         else:
             res = clas.output_class()
             output.append(res)
-        # break
 
     output[0] = str(underlying_classical_pattern)
 
     if args.lemma7:
         lem7classes = ExpClasses(lem7)
         for clas in lem7:
-            clas.compute_coinc(lemma7_pred, oneway=True, coincargs=(lem7classes, args.lemma7, args.force_len, args.proof))
+            clas.compute_coinc(lemma7_pred, oneway=True,
+                               coincargs=(lem7classes, args.lemma7,
+                                          args.force_len, args.proof))
             output.append(clas.output_class())
 
     sys.stdout.write('\n'.join(output))
 
     return 0
 
+
 if __name__ == '__main__':
     sys.exit(main(sys.argv))
-
