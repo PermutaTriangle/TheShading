@@ -1,0 +1,8 @@
+Algorithm: tsa1(depth=1)
+Closure: False
+Length of permutations for unexpected coincidences: 8
+
+[113, 209, 320, 338, 344]
+[118, 220]
+[32, 50, 51, 152, 153, 291, 306, 393, 408]
+[36, 53, 149, 278, 284]

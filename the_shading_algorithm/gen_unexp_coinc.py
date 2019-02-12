@@ -312,7 +312,7 @@ force_len = 1
 with_closure = False
 
 coin = ShadingLemmaCoincifier(mps)
-coin.coincify(maxdepth, multbox=multbox, q_check=q_check, force_len=force_len)
+# coin.coincify(maxdepth, multbox=multbox, q_check=q_check, force_len=force_len)
 
 # import cProfile
 # cProfile.run('coin.coincify(maxdepth)')
