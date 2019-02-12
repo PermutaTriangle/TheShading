@@ -1,0 +1,8 @@
+/users/home/tomasm12/PermutaTriangle/TheShading/the_shading_algorithm/surpr_coincidences
+
+ Lemma 7
+ depth 6
+  iteration 0
+slurmstepd: error: *** JOB 4418 ON compute-0-32 CANCELLED AT 2017-05-24T12:07:03 DUE TO TIME LIMIT ***
+slurmstepd: error: unlink(/tmp/slurmd/job04418/slurm_script): No such file or directory
+slurmstepd: error: rmdir(/tmp/slurmd/job04418): No such file or directory

@@ -1,8 +1,0 @@
-ERROR
-Traceback (most recent call last):
-  File "process_task.py", line 35, in <module>
-    tsa = TSA(task.mp1, task.mp2, depth)
-  File "../tsa2_clean.py", line 78, in __init__
-    assert len(add) == 1
-AssertionError
-
